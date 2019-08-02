@@ -1,0 +1,42 @@
+#menu{
+    height:100%;
+    width:100%;
+    font-size: 1rem;
+    background:#35527b;
+    text-align: center;
+    padding-top:10%;
+}
+.menu-header-icon{
+    float:right;
+}
+.menu-header{
+    float:right;
+    padding-left: 10px;
+}
+.list-group-item{
+    width:150px;
+    height:30px;
+    padding:0;
+    background: #35527b;
+    
+}
+.menu-item{
+    color: white;
+    height:30px;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    justify-content: left;
+    align-items: center;
+}
+.menu-item:hover{
+    color: white;
+}
+.card{
+    background: #35527b;
+}
+
+.card-header{
+    color:white;
+    background: #35527b;
+    margin-left:0;
+}

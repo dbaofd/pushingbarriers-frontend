@@ -1,0 +1,16 @@
+#mycontainer{
+    width:100%;
+    height:95%;
+}
+#myside{
+  float:left;
+  width:15%;
+  height:100%;
+  background: black;
+}
+#router-switch{
+  float: left;
+  width:85%;
+  height:100%;
+  background: white;
+}

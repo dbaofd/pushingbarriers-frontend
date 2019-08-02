@@ -1,0 +1,10 @@
+.page-li{
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    justify-content: center;
+    align-items: center;
+    color: #007bff;;
+}
+#my-pagination{
+    width:100%;
+}

@@ -22,7 +22,7 @@ class AdminPage extends React.Component{
             adminName:localStorage.getItem("adminName"),
         };
     }
-
+    //check login
     checkLoginStatus(){
         let url=api+"/checkToken";
         let formData=new FormData();

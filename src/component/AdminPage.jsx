@@ -3,10 +3,11 @@ import Error from './Error';
 import Navigation from './Navigation';
 import SlideBar from './SlideBar';
 import Game from './Game';
+import Training from'./Training';
 import '../css/AdminPage.css'
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
 
-var api=""
+var api="";
 
 const brewing=()=>{
     return(
@@ -33,11 +34,13 @@ class AdminPage extends React.Component{
             body: formData,
         }).then(res => res.json()
         ).then(data => {
-            if(data.msg=="success"){
-                console.log("success")
-            }else if(data.msg=="unmarched_adminname"){
+            if(data.msg==="success"){
+                console.log("check login status successfully")
+            }else if(data.msg==="unmarched_adminname"){
                 this.props.history.push('/Login');
-            }else if(data.msg=="wrong_token"){
+            }else if(data.msg==="wrong_token"){
+                this.props.history.push('/Login');
+            }else{
                 this.props.history.push('/Login');
             }
         })
@@ -58,6 +61,7 @@ class AdminPage extends React.Component{
                 <Switch>
                     <Route path="/" component={brewing} exact/>
                     <Route path="/Game" component={Game}/>
+                    <Route path="/Training" component={Training}/>
                     <Route component={Error}/>
                 </Switch>
                 </div>

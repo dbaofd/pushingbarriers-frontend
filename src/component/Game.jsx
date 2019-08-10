@@ -8,7 +8,7 @@ var currentPage=1;//initialize current page, this global variable makes sense
 //when we put "currentPage" in state, every time when we try to update it, 
 //setState just can't immediately update its value, which may 
 //cause problem in requesting data of different pages
-var api=""
+var api="";
 class Game extends React.Component{
     constructor(props){
         super(props);
@@ -30,7 +30,7 @@ class Game extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            if(data.code==401){
+            if(data.code===401){
                 alert(data.message+" wrong token!");
                 data=[];
             }
@@ -49,15 +49,15 @@ class Game extends React.Component{
             headers:headers,
         }).then(res => res.json()
         ).then(data => {
-            if(data.code==401){
+            if(data.code===401){
                 alert(data.message+" wrong token!");
                 data=[];
             }
             this.setState({
                 updateTime:moment(data.gameupdatetimeDate).format('YYYY/MM/DD'),
             });
-            console.log(data.gameupdatetimeDate);
-            console.log(moment(data.gameupdatetimeDate).format('YYYY/MM/DD'))
+            //console.log(data.gameupdatetimeDate);
+            //console.log(moment(data.gameupdatetimeDate).format('YYYY/MM/DD'))
         });
     }
 
@@ -79,8 +79,9 @@ class Game extends React.Component{
         return teamOptions;
     }
 
-    getGameByPage(activePage){
-        currentPage=activePage;
+    getGameByPage=(activePage)=>{//this function will be used by child component
+        currentPage=activePage;//using => to define the function has benefits
+        //we don't need to put "bind(this)"  
         let url=api+"/games/"+currentPage+"/"+this.selectedPagesize.value+"/"+this.selectedTeam.value+
         "/"+this.selectedPeriod.value+"/"+this.selectedSortedAttr.value;
         //console.log(url);
@@ -91,7 +92,7 @@ class Game extends React.Component{
             headers:headers,
         }).then(res => res.json()
         ).then(data => {
-            if(data.code==401){
+            if(data.code===401){
                 alert(data.message+" wrong token!");
                 data.content=[];
                 data.totalPages=null;
@@ -195,10 +196,15 @@ class Game extends React.Component{
                     </Table>
                 </div>
                 <div id="game-footer">
-                    <MyPagination totalPages={this.state.totalPages} totalElements={this.state.totalElements} updateTime={this.state.updateTime} currentPage={currentPage} fromParentGetGameByPage={this.getGameByPage.bind(this)}/>
+                    <MyPagination 
+                    totalPages={this.state.totalPages} 
+                    totalElements={this.state.totalElements} 
+                    updateTime={this.state.updateTime} 
+                    currentPage={currentPage} 
+                    fromParentGetGameByPage={this.getGameByPage}/>
                 </div>
             </div>
-        );
+        );//here we don't need to write "this.getGameByPage.bind(this)"
     }
 }
 

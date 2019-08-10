@@ -34,17 +34,17 @@ class Login extends React.Component{
             body: formData,
         }).then(res => res.json()
         ).then(data => {
-            if (data.msg=="wrong_password"){
+            if (data.msg==="wrong_password"){
                 this.setState({
                     namebordercolor:"#fff",
                     pswbordercolor:"red"
                 })
-            }else if(data.msg=="wrong_admin_name"){
+            }else if(data.msg==="wrong_admin_name"){
                 this.setState({
                     namebordercolor:"red",
                     pswbordercolor:"#fff"
                 })
-            }else if(data.msg=="fail_to_connect_radis"){
+            }else if(data.msg==="fail_to_connect_radis"){
                 alert("fail_to_connect_radis");
             }else{
                 this.setState({

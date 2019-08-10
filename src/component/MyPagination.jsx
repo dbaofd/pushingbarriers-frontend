@@ -35,7 +35,7 @@ class MyPagination extends React.Component{
                 </Pagination>);
         }else if(active<5&&active<=(totalPages-4)){
             for (let number = 1; number <= active; number++) {
-                if(number!=active){
+                if(number!==active){
                     items.push(
                         <Pagination.Item key={number} onClick={()=>this.pageClick(number)}>
                         {number}
@@ -66,7 +66,7 @@ class MyPagination extends React.Component{
                 </Pagination>);
         }else if(active<5&&active>(totalPages-4)){
             for (let number = 1; number <= totalPages; number++) {
-                if(number!=active){
+                if(number!==active){
                     items.push(
                         <Pagination.Item key={number} onClick={()=>this.pageClick(number)}>
                         {number}

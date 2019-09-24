@@ -60,24 +60,29 @@ class TrainingModal extends React.Component{
     }
 
     updateTrainingDetail(){
-        let url=api+"/updateTrainingDetail"
-        let headers=new Headers();
-        headers.append("token",localStorage.getItem("token"));
-        let formData=new FormData();
-        formData.append('driver',this.driver.value);
-        formData.append('time',this.time.value);
-        formData.append('status',this.selectedStatus.value);
-        formData.append('id',this.state.trainingData.trainingId);
-        fetch(url,{
-            method:"post",
-            body:formData,
-            headers:headers,//we need to put correct token to send the request
-        }).then(res => res.json()
-        ).then(data => {
-            console.log(data.msg);
-        });
-        this.updateConfirmButton();
-        this.handleClose();
+        if(this.note.value.length<=500){
+            let url=api+"/updateTrainingDetail"
+            let headers=new Headers();
+            headers.append("token",localStorage.getItem("token"));
+            let formData=new FormData();
+            formData.append('driver',this.driver.value);
+            formData.append('time',this.time.value);
+            formData.append('status',this.selectedStatus.value);
+            formData.append("note",this.note.value)
+            formData.append('id',this.state.trainingData.trainingId);
+            fetch(url,{
+                method:"post",
+                body:formData,
+                headers:headers,//we need to put correct token to send the request
+            }).then(res => res.json()
+            ).then(data => {
+                console.log(data.msg);
+            });
+            this.updateConfirmButton();
+            this.handleClose();
+        }else{
+            alert("Please ensure the note is less than 500 characters!")
+        }
     }
     
     updateConfirmButton(){
@@ -89,10 +94,13 @@ class TrainingModal extends React.Component{
         }else if(this.selectedStatus.value==="2"){
             confirmBtn.setAttribute("class","btn btn-danger");
         }
-        let time=document.getElementById('training_time'+this.state.trainingData.trainingId)
+        let time=document.getElementById('training_time'+this.state.trainingData.trainingId);
         let driver=document.getElementById('training_driver'+this.state.trainingData.trainingId);
+        let note=document.getElementById('training_note'+this.state.trainingData.trainingId);
         time.innerText=this.time.value;
         driver.innerText=this.driver.value;
+        console.log(this.note.value);
+        note.innerText=this.note.value;
     }
     render(){
         return(
@@ -115,6 +123,10 @@ class TrainingModal extends React.Component{
                                 <tr>
                                     <td><label>Time:</label></td>
                                     <td><input type="text" ref = {(input)=> this.time = input} defaultValue={this.state.trainingData.trainingTime}/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Note:</label></td>
+                                    <td><textarea  placeholder="No more than 500 characters"ref = {(input)=> this.note = input} defaultValue={this.state.trainingData.trainingNote}/></td>
                                 </tr>
                                 <tr>
                                     <td><label>Status:</label></td>

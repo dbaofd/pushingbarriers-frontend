@@ -4,3 +4,7 @@
     height:100%;
     width:100%;
 }
+.training_note_div{
+    overflow-y: auto;
+    height:60px;
+}

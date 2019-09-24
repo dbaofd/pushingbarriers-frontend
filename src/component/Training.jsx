@@ -75,13 +75,12 @@ class Training extends React.Component{
             <tr key={training.trainingId}>
                 <td>{training.trainingId}</td>
                 <td id={'training_time'+training.trainingId}>{training.trainingTime}</td>
-                <td>{training.trainingPlayerId}</td>
                 <td>{training.trainingPlayer}</td>
-                <td>{training.trainingDriverId}</td>
                 <td id={'training_driver'+training.trainingId}>{training.trainingDriver}</td>
                 <td>{training.trainingClub}</td>
                 <td>{training.trainingPlayerAddress}</td>
                 <td>{training.trainingAddress}</td>
+                <td id={'training_note'+training.trainingId}><div class="training_note_div">{training.trainingNote}</div></td>
                 <td><Button variant={buttonType} id={training.trainingId} onClick={(e)=>this.confirmTrip(e)}>confirm</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow(training)}>Edit</Button></td>
             </tr>
@@ -140,13 +139,12 @@ class Training extends React.Component{
                         <tr>
                             <th>#</th>
                             <th>Time</th>
-                            <th>PlayerId</th>
                             <th>Player</th>
-                            <th>DriverId</th>
                             <th>Driver</th>
                             <th>Club</th>
                             <th>PlayerAddress</th>
                             <th>TrainingAddress</th>
+                            <th>Note</th>
                             <th>Confirm</th>
                             <th>Edit</th>
                         </tr>
@@ -159,13 +157,12 @@ class Training extends React.Component{
                         <tr>
                             <th>#</th>
                             <th>Time</th>
-                            <th>PlayerId</th>
                             <th>Player</th>
-                            <th>DriverId</th>
                             <th>Driver</th>
                             <th>Club</th>
                             <th>PlayerAddress</th>
                             <th>TrainingAddress</th>
+                            <th>Note</th>
                             <th>Confirm</th>
                             <th>Edit</th>
                         </tr>
@@ -178,13 +175,12 @@ class Training extends React.Component{
                         <tr>
                             <th>#</th>
                             <th>Time</th>
-                            <th>PlayerId</th>
                             <th>Player</th>
-                            <th>DriverId</th>
                             <th>Driver</th>
                             <th>Club</th>
                             <th>PlayerAddress</th>
                             <th>TrainingAddress</th>
+                            <th>Note</th>
                             <th>Confirm</th>
                             <th>Edit</th>
                         </tr>
@@ -197,13 +193,12 @@ class Training extends React.Component{
                         <tr>
                             <th>#</th>
                             <th>Time</th>
-                            <th>PlayerId</th>
                             <th>Player</th>
-                            <th>DriverId</th>
                             <th>Driver</th>
                             <th>Club</th>
                             <th>PlayerAddress</th>
                             <th>TrainingAddress</th>
+                            <th>Note</th>
                             <th>Confirm</th>
                             <th>Edit</th>
                         </tr>

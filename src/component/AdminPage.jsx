@@ -4,10 +4,12 @@ import Navigation from './Navigation';
 import SlideBar from './SlideBar';
 import Game from './Game';
 import Training from'./Training';
+import Trainingtemplate from './Trainingtemplate';
+import Player from "./Player";
+import '../config.js';
 import '../css/AdminPage.css'
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
 
-var api="";
 
 const brewing=()=>{
     return(
@@ -25,7 +27,7 @@ class AdminPage extends React.Component{
     }
     //check login
     checkLoginStatus(){
-        let url=api+"/checkToken";
+        let url=global.constants.api+"/checkToken";
         let formData=new FormData();
         formData.append("token",this.state.token);
         formData.append("adminName",this.state.adminName);
@@ -62,6 +64,8 @@ class AdminPage extends React.Component{
                     <Route path="/" component={brewing} exact/>
                     <Route path="/Game" component={Game}/>
                     <Route path="/Training" component={Training}/>
+                    <Route path="/Trainingtemplate" component={Trainingtemplate}/>
+                    <Route path="/Player" component={Player}/>
                     <Route component={Error}/>
                 </Switch>
                 </div>

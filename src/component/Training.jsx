@@ -1,13 +1,13 @@
 import React from "react";
 import '../css/Training.css';
-import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap"
+import '../config.js';
+import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import TrainingModal from "./TrainingModal";
 
 var trainingTrsMonday=[];
 var trainingTrsTuesday=[];
 var trainingTrsWednesday=[];
 var trainingTrsThursday=[];
-var api="";
 
 class Training extends React.Component{
     constructor(props){
@@ -18,7 +18,7 @@ class Training extends React.Component{
     }
 
     getTraining(){
-        let url=api+"/alltrainings"
+        let url=global.constants.api+"/alltrainings"
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -43,7 +43,7 @@ class Training extends React.Component{
     confirmTrip(e){
         if(e.target.getAttribute("class")==="btn btn-success"){
             e.target.setAttribute("class","btn btn-secondary")
-            let url=api+"/updateConfirmation"
+            let url=global.constants.api+"/updateConfirmation"
             let headers=new Headers();
             headers.append("token",localStorage.getItem("token"));
             let formData=new FormData();
@@ -125,7 +125,7 @@ class Training extends React.Component{
         this.child = ref
     }
 
-    handleModalShow(training){
+    handleModalShow(training){//call child component function 
         this.child.handleShow(training);
     }
 

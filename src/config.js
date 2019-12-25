@@ -1,0 +1,3 @@
+global.constants={
+    api:"",
+};

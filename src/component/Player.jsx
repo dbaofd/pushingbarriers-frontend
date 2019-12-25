@@ -1,0 +1,180 @@
+import React from "react";
+import "../css/Player.css";
+import '../config.js';
+import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
+import Moment from 'moment';
+import PlayerModal from "./PlayerModal";
+import AddNewPlayerModal from "./AddNewPlayerModal";
+import ReactToExcel from 'react-html-table-to-excel';
+
+var players=[];
+class Player extends React.Component{
+    constructor(props){
+        super(props);
+        
+        this.state={
+            playerInfo:"",
+        }
+    }
+
+    getAllPlayersInfo(){
+        let url=global.constants.api+"/allplayers";
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        fetch(url,{
+            method:"get", 
+            headers:headers,
+        }).then(res => res.json()
+        ).then(data => {
+            if(data.code===401){
+                alert(data.message+" wrong token!");
+                data=[];
+            }
+            this.setState({
+                playerInfo:data,
+            });
+        });
+    }
+
+    componentWillMount(){
+        this.getAllPlayersInfo();
+    }
+
+    playerTemplate(playerIndex){
+        let tdStyle={};
+        if(this.state.playerInfo[playerIndex].playerStatus==0){
+            tdStyle={
+                color:"red"
+            };
+        }
+        return(
+            <tr key={this.state.playerInfo[playerIndex].playerId}>
+                <td>{this.state.playerInfo[playerIndex].playerId}</td>
+                <td>{this.state.playerInfo[playerIndex].playerName}</td>
+                <td>{this.state.playerInfo[playerIndex].playerGender}</td>
+                <td>{this.state.playerInfo[playerIndex].playerPhoneNum}</td>
+                <td>{Moment(this.state.playerInfo[playerIndex].playerBirthday).format('YYYY/MM/DD')}</td>
+                <td>{this.state.playerInfo[playerIndex].playerAddress}</td>
+                <td>{this.state.playerInfo[playerIndex].playerParentName}</td>
+                <td>{this.state.playerInfo[playerIndex].playerParentPhoneNum}</td>
+                <td style={tdStyle}>{this.state.playerInfo[playerIndex].playerStatus}</td>
+                <td><Button variant="info" onClick={()=>this.handleModalShow(playerIndex)}>Edit</Button></td>
+            </tr>
+        );
+    }
+
+    setPlayers(){
+        players=[];
+        // for(let player of this.state.playerInfo){
+        //     players.push(this.playerTemplate(player));
+        // }
+        for(let i=0;i<this.state.playerInfo.length;i++){
+            players.push(this.playerTemplate(i));
+        }
+    }
+
+    onRefForPlayerModal = (ref) => {//get "this" returned by child component
+        this.child = ref;
+    }
+
+    onRefForAddNewPlayerModal = (ref)=>{
+        this.child2=ref;
+    }
+
+    handleModalShow(playerIndex){//call child component function 
+        this.child.handleShow(playerIndex);
+    }
+
+    handleModalShow2(){
+        this.child2.handleShow();
+    }
+
+    //once child component update player info, child component will call this function to update this component state
+    onChangeState(playerIndex,name,gender,phoneNum,birthday,parentName,parentPhoneNum,address,status){
+        let data=this.state.playerInfo;
+        data[playerIndex].playerName=name;
+        data[playerIndex].playerGender=gender;
+        data[playerIndex].playerPhoneNum=phoneNum;
+        data[playerIndex].playerBirthday=birthday;
+        data[playerIndex].playerParentName=parentName;
+        data[playerIndex].playerParentPhoneNum=parentPhoneNum;
+        data[playerIndex].playerAddress=address;
+        data[playerIndex].playerStatus=status;
+        this.setState({
+            playerInfo: data,
+        });
+    }
+
+    searchPlayerByName(){
+        let url;
+        if(this.playerNameInput.value.length!=0){
+            url=global.constants.api+"/findPlayersByPlayerName/"+this.playerNameInput.value;
+        }else{
+            url=global.constants.api+"/allplayers";
+        }
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        fetch(url,{
+            method:"get", 
+            headers:headers,
+        }).then(res => res.json()
+        ).then(data => {
+            if(data.code===401){
+                alert(data.message+" wrong token!");
+                data=[];
+            }
+            this.setState({
+                playerInfo:data,
+            });
+        });
+    }
+    render(){
+        this.setPlayers();
+        return(
+            <div id="player">
+                <div id="player-bar">
+                    <div id="player-export-excel">
+                        <ReactToExcel 
+                        table="my-player-table" 
+                        filename="exportPlayerInfo" 
+                        id="export-excel-btn"
+                        buttonText="Export"/>
+                    </div>
+                    <div id="player-add">
+                        <Button variant="primary" id="player-add-btn" onClick={()=>this.handleModalShow2()}>New Player</Button>
+                    </div>
+                    <div id="player-search">
+                        <Button variant="danger" id="player-search-btn" onClick={()=>this.searchPlayerByName()}>Search</Button>
+                    </div>
+                    <div id="player-name-textbox">
+                        <input type="text" id="player-name-input" placeholder="Search by player name" ref = {(input)=> this.playerNameInput = input}/>
+                    </div>
+                </div>
+                <div id="player-table">
+                    <Table striped bordered hover id="my-player-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>PhoneNum</th>
+                                <th>Birthday</th>
+                                <th>Address</th>
+                                <th>Parent Name</th>
+                                <th>Parent PhoneNum</th>
+                                <th>Status</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {players}
+                        </tbody>
+                    </Table>
+                    <PlayerModal allplayer={this.state.playerInfo}  onRef={this.onRefForPlayerModal} onSubmited={this.onChangeState.bind(this)}/>
+                    <AddNewPlayerModal onRef={this.onRefForAddNewPlayerModal} onSubmited={this.searchPlayerByName.bind(this)}/>
+                </div>
+            </div>);
+    }
+}
+
+export default Player

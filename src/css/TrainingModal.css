@@ -1,6 +1,6 @@
 #trainingDetail tr{
     height:100%;
-    width:100;
+    width:100%;
     display:block;
     text-align: center;
 }
@@ -14,12 +14,14 @@
 
 #trainingDetail input{
     text-align: left;
-    border:0px;
+    border:1px;
+    outline: none;
 }
 
 #trainingDetail select{
-    border: 0px;
+    border: 1px;
     text-align: left;
+    outline: none;
 }
 
 .modal-content{

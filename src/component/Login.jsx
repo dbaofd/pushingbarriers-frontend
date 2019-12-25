@@ -1,7 +1,8 @@
 import React from "react";
 import '../css/Login.css';
+import '../config.js';
 import md5 from 'md5'
-var api=""
+
 class Login extends React.Component{
     constructor(props){
         super(props);
@@ -25,7 +26,7 @@ class Login extends React.Component{
         });
     }
     loginRequest(){
-        let url=api+"/login";
+        let url=global.constants.api+"/login";
         let formData=new FormData();
         formData.append('adminName',this.state.adminname);
         formData.append('adminPassword',this.state.adminpassword);

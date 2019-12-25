@@ -3,7 +3,7 @@ import '../css/SlideBar.css';
 import {NavLink} from "react-router-dom";
 import {Accordion,Card,ListGroup} from 'react-bootstrap';
 class SlideBar extends React.Component{
-    constructor(props){
+    constructor(props){ 
         super(props);
     }
     render(){
@@ -21,6 +21,7 @@ class SlideBar extends React.Component{
                             <ListGroup variant="flush">
                                 <ListGroup.Item><NavLink className="menu-item" to='/Game'>Game</NavLink></ListGroup.Item>
                                 <ListGroup.Item><NavLink className="menu-item" to='/Training'>Training</NavLink></ListGroup.Item>
+                                <ListGroup.Item><NavLink className="menu-item" to='/Trainingtemplate'>Update Training</NavLink></ListGroup.Item>
                             </ListGroup>
                         </Card.Body>
                         </Accordion.Collapse>
@@ -34,7 +35,7 @@ class SlideBar extends React.Component{
                         <Accordion.Collapse eventKey="1">
                         <Card.Body>
                             <ListGroup variant="flush">
-                                <ListGroup.Item><NavLink className="menu-item" to='/'>Players</NavLink></ListGroup.Item>
+                                <ListGroup.Item><NavLink className="menu-item" to='/Player'>Players</NavLink></ListGroup.Item>
                                 <ListGroup.Item><NavLink className="menu-item" to='/'>Drivers</NavLink></ListGroup.Item>                          
                             </ListGroup>
                         </Card.Body>

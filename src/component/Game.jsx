@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button,Table} from "react-bootstrap"
 import '../css/Game.css';
+import '../config.js';
 import MyPagination from './MyPagination';
 import moment from 'moment';
 import ReactToExcel from 'react-html-table-to-excel';
@@ -8,7 +9,6 @@ var currentPage=1;//initialize current page, this global variable makes sense
 //when we put "currentPage" in state, every time when we try to update it, 
 //setState just can't immediately update its value, which may 
 //cause problem in requesting data of different pages
-var api="";
 class Game extends React.Component{
     constructor(props){
         super(props);
@@ -22,7 +22,7 @@ class Game extends React.Component{
     }
 
     getAllTeams(){
-        let url=api+"/allteams";
+        let url=global.constants.api+"/allteams";
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -41,7 +41,7 @@ class Game extends React.Component{
     }
 
     getUpdateTime(){
-        let url=api+"/get-update-time";
+        let url=global.constants.api+"/get-update-time";
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -82,7 +82,7 @@ class Game extends React.Component{
     getGameByPage=(activePage)=>{//this function will be used by child component
         currentPage=activePage;//using => to define the function has benefits
         //we don't need to put "bind(this)"  
-        let url=api+"/games/"+currentPage+"/"+this.selectedPagesize.value+"/"+this.selectedTeam.value+
+        let url=global.constants.api+"/games/"+currentPage+"/"+this.selectedPagesize.value+"/"+this.selectedTeam.value+
         "/"+this.selectedPeriod.value+"/"+this.selectedSortedAttr.value;
         //console.log(url);
         let headers=new Headers();
@@ -171,7 +171,7 @@ class Game extends React.Component{
                     <div id="export-excel">
                         <ReactToExcel 
                         table="my-game-table" 
-                        filename="exportFile" 
+                        filename="exportGameInfo" 
                         id="export-excel-btn"
                         buttonText="Export"/>
                     </div>

@@ -1,8 +1,7 @@
 import React from "react";
 import {Button,Modal} from "react-bootstrap"
 import '../css/TrainingModal.css';
-
-var api="";
+import '../config.js';
 
 class TrainingModal extends React.Component{
     constructor(props){
@@ -61,7 +60,7 @@ class TrainingModal extends React.Component{
 
     updateTrainingDetail(){
         if(this.note.value.length<=500){
-            let url=api+"/updateTrainingDetail"
+            let url=global.constants.api+"/updateTrainingDetail";
             let headers=new Headers();
             headers.append("token",localStorage.getItem("token"));
             let formData=new FormData();
@@ -104,44 +103,42 @@ class TrainingModal extends React.Component{
     }
     render(){
         return(
-            <>
-                <Modal show={this.state.show} onHide={this.handleClose}>
-                    <Modal.Header>
-                    <Modal.Title>Training Detail</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <table id="trainingDetail"> 
-                            <tbody>
-                                <tr>
-                                    <td><label>Player:</label></td>
-                                    <td>{this.state.trainingData.trainingPlayer}</td>
-                                </tr>
-                                <tr>
-                                    <td><label>Driver:</label></td>
-                                    <td><input type="text" ref = {(input)=> this.driver = input} defaultValue={this.state.trainingData.trainingDriver}/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Time:</label></td>
-                                    <td><input type="text" ref = {(input)=> this.time = input} defaultValue={this.state.trainingData.trainingTime}/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Note:</label></td>
-                                    <td><textarea  placeholder="No more than 500 characters"ref = {(input)=> this.note = input} defaultValue={this.state.trainingData.trainingNote}/></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Status:</label></td>
-                                    <td>{this.setSelect()}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    <Button variant="primary" onClick={()=>this.updateTrainingDetail()}>
-                        Save Changes
-                    </Button>
-                    </Modal.Footer>
-                </Modal>
-            </>
+            <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal.Header>
+                <Modal.Title>Training Detail</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <table id="trainingDetail"> 
+                        <tbody>
+                            <tr>
+                                <td><label>Player:</label></td>
+                                <td>{this.state.trainingData.trainingPlayer}</td>
+                            </tr>
+                            <tr>
+                                <td><label>Driver:</label></td>
+                                <td><input type="text" ref = {(input)=> this.driver = input} defaultValue={this.state.trainingData.trainingDriver}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Time:</label></td>
+                                <td><input type="text" ref = {(input)=> this.time = input} defaultValue={this.state.trainingData.trainingTime}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Note:</label></td>
+                                <td><textarea  placeholder="No more than 500 characters"ref = {(input)=> this.note = input} defaultValue={this.state.trainingData.trainingNote}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Status:</label></td>
+                                <td>{this.setSelect()}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="primary" onClick={()=>this.updateTrainingDetail()}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
         );
     }
 }

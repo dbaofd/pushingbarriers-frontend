@@ -172,6 +172,7 @@ class Game extends React.Component{
                         <ReactToExcel 
                         table="my-game-table" 
                         filename="exportGameInfo" 
+                        sheet="exportdriverInfo"
                         id="export-excel-btn"
                         buttonText="Export"/>
                     </div>

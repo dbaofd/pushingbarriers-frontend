@@ -124,7 +124,7 @@ class TrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>Note:</label></td>
-                                <td><textarea  placeholder="No more than 500 characters"ref = {(input)=> this.note = input} defaultValue={this.state.trainingData.trainingNote}/></td>
+                                <td><textarea  placeholder="No more than 500 characters" ref = {(input)=> this.note = input} defaultValue={this.state.trainingData.trainingNote}/></td>
                             </tr>
                             <tr>
                                 <td><label>Status:</label></td>

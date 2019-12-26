@@ -19,8 +19,7 @@ class Login extends React.Component{
     }
     inputChangeForAdminPassword(){
         let val=this.refs.adminpassword.value;
-        const salt="fjeiojgoeigjgokwao";
-        let md5Pwd=md5(md5(val+salt));
+        let md5Pwd=md5(md5(val+global.constants.salt));
         this.setState({ 
             adminpassword:md5Pwd
         });

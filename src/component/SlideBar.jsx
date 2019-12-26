@@ -36,7 +36,7 @@ class SlideBar extends React.Component{
                         <Card.Body>
                             <ListGroup variant="flush">
                                 <ListGroup.Item><NavLink className="menu-item" to='/Player'>Players</NavLink></ListGroup.Item>
-                                <ListGroup.Item><NavLink className="menu-item" to='/'>Drivers</NavLink></ListGroup.Item>                          
+                                <ListGroup.Item><NavLink className="menu-item" to='/Driver'>Drivers</NavLink></ListGroup.Item>                          
                             </ListGroup>
                         </Card.Body>
                         </Accordion.Collapse>

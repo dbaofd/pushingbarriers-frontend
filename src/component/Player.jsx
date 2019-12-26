@@ -42,6 +42,10 @@ class Player extends React.Component{
 
     playerTemplate(playerIndex){
         let tdStyle={};
+        //here need to use "==" rather than "===", because playerStatus will be set to string type
+        //when innitially get playerStatus from database, it is integer, when update player info
+        //playerStatus will be char, when compare char with 0 by using "===", they don't equal.
+        //e.g. '0'==0 true, '0'===0 false
         if(this.state.playerInfo[playerIndex].playerStatus==0){
             tdStyle={
                 color:"red"
@@ -107,7 +111,7 @@ class Player extends React.Component{
 
     searchPlayerByName(){
         let url;
-        if(this.playerNameInput.value.length!=0){
+        if(this.playerNameInput.value.length!==0){
             url=global.constants.api+"/findPlayersByPlayerName/"+this.playerNameInput.value;
         }else{
             url=global.constants.api+"/allplayers";
@@ -137,6 +141,7 @@ class Player extends React.Component{
                         <ReactToExcel 
                         table="my-player-table" 
                         filename="exportPlayerInfo" 
+                        sheet="exportdriverInfo"
                         id="export-excel-btn"
                         buttonText="Export"/>
                     </div>
@@ -148,6 +153,9 @@ class Player extends React.Component{
                     </div>
                     <div id="player-name-textbox">
                         <input type="text" id="player-name-input" placeholder="Search by player name" ref = {(input)=> this.playerNameInput = input}/>
+                    </div>
+                    <div id="totalNumberOfPlayers">
+                        <li>{players.length} players in total</li>
                     </div>
                 </div>
                 <div id="player-table">

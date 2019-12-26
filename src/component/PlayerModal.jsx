@@ -100,42 +100,31 @@ class PlayerModal extends React.Component{
         let optionYear=[];
         let optionMonth=[];
         let optionDay=[];
+        //here still can't use "===", this.state.playerBirthYear and playerBirthMonth etc,are all string type
+        //which are different with i j.
         for(let i=thisYear; i>=1970;i--){
-            if(i==this.state.playerBirthYear){
-                optionYear.push(<option value={i} key={i} selected>{i}</option>);
-            }else{
-                optionYear.push(<option value={i} key={i}>{i}</option>);
-            }
+            optionYear.push(<option value={i} key={i}>{i}</option>);
         }
 
         for(let j=1;j<=12;j++){
-            if(j==this.state.playerBirthMonth){
-                optionMonth.push(<option value={j} key={j} selected>{j}</option>);
-            }else{
-                optionMonth.push(<option value={j} key={j}>{j}</option>);
-            }
+            optionMonth.push(<option value={j} key={j}>{j}</option>);
         }
 
         let maxiumDayOfMonth=Moment(this.state.playerBirthYear+"-"+this.state.playerBirthMonth).endOf('month').format('D');
         //console.log(document.getElementsByName("playerBirthDay")[0]);
         for(let k=1;k<=maxiumDayOfMonth;k++){
-            if(k==this.state.playerBirthDay){
-                //document.getElementsByName("playerBirthDay")[0].value=k;
-                optionDay.push(<option value={k} key={k} selected>{k}</option>);
-            }else{
-                optionDay.push(<option value={k} key={k}>{k}</option>);
-            }
+            optionDay.push(<option value={k} key={k}>{k}</option>);
         }
         //alert(Moment(this.state.playerData.playerBirthday).endOf('month').format('D'));
         return (
             <>
-                <select name="playerBirthYear" onChange={this.handleChange}>
+                <select name="playerBirthYear" value={this.state.playerBirthYear} onChange={this.handleChange}>
                     {optionYear}
                 </select>
-                <select name="playerBirthMonth" onChange={this.handleChange}>
+                <select name="playerBirthMonth" value={this.state.playerBirthMonth} onChange={this.handleChange}>
                     {optionMonth}
                 </select>
-                <select name="playerBirthDay" onChange={this.handleChange} >
+                <select name="playerBirthDay" value={this.state.playerBirthDay} onChange={this.handleChange} >
                     {optionDay}
                 </select>
             </>
@@ -153,7 +142,7 @@ class PlayerModal extends React.Component{
                         <tbody>
                             <tr>
                                 <td><label>Name:</label></td>
-                                <td><input type="text" name="playerName" value={this.state.playerName} onChange={this.handleChange} maxlength="100"/></td>
+                                <td><input type="text" name="playerName" value={this.state.playerName} onChange={this.handleChange} maxLength="100"/></td>
                             </tr>
                             <tr>
                                 <td><label>Gender:</label></td>
@@ -173,19 +162,19 @@ class PlayerModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PhoneNum:</label></td>
-                                <td><input type="text" name="playerPhoneNum"value={this.state.playerPhoneNum} onChange={this.handleChange} maxlength="15"/></td>
+                                <td><input type="text" name="playerPhoneNum"value={this.state.playerPhoneNum} onChange={this.handleChange} maxLength="15"/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent Name:</label></td>
-                                <td><input type="text" name="playerParentName" value={this.state.playerParentName} onChange={this.handleChange} maxlength="100"/></td>
+                                <td><input type="text" name="playerParentName" value={this.state.playerParentName} onChange={this.handleChange} maxLength="100"/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent PhoneNum:</label></td>
-                                <td><input type="text" name="playerParentPhoneNum" value={this.state.playerParentPhoneNum} onChange={this.handleChange} maxlength="15"/></td>
+                                <td><input type="text" name="playerParentPhoneNum" value={this.state.playerParentPhoneNum} onChange={this.handleChange} maxLength="15"/></td>
                             </tr>
                             <tr>
                                 <td><label>Address:</label></td>
-                                <td><textarea name="playerAddress" value={this.state.playerAddress} onChange={this.handleChange} maxlength="170"/></td>
+                                <td><textarea name="playerAddress" value={this.state.playerAddress} onChange={this.handleChange} maxLength="170"/></td>
                             </tr>
                             <tr>
                                 <td><label>Status:</label></td>

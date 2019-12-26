@@ -6,6 +6,7 @@ import Game from './Game';
 import Training from'./Training';
 import Trainingtemplate from './Trainingtemplate';
 import Player from "./Player";
+import Driver from "./Driver";
 import '../config.js';
 import '../css/AdminPage.css'
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
@@ -66,6 +67,7 @@ class AdminPage extends React.Component{
                     <Route path="/Training" component={Training}/>
                     <Route path="/Trainingtemplate" component={Trainingtemplate}/>
                     <Route path="/Player" component={Player}/>
+                    <Route path="/Driver" component={Driver}/>
                     <Route component={Error}/>
                 </Switch>
                 </div>

@@ -80,7 +80,7 @@ class Training extends React.Component{
                 <td>{training.trainingClub}</td>
                 <td>{training.trainingPlayerAddress}</td>
                 <td>{training.trainingAddress}</td>
-                <td id={'training_note'+training.trainingId}><div class="training_note_div">{training.trainingNote}</div></td>
+                <td id={'training_note'+training.trainingId}><div className="training_note_div">{training.trainingNote}</div></td>
                 <td><Button variant={buttonType} id={training.trainingId} onClick={(e)=>this.confirmTrip(e)}>confirm</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow(training)}>Edit</Button></td>
             </tr>

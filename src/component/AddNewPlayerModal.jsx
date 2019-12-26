@@ -104,7 +104,7 @@ class AddNewPlayerModal extends React.Component{
                         <tbody>
                             <tr>
                                 <td><label>Name:</label></td>
-                                <td><input type="text" maxlength="100" ref = {(input)=> this.newPlayerName = input}/></td>
+                                <td><input type="text" maxLength="100" ref = {(input)=> this.newPlayerName = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Gender:</label></td>
@@ -124,19 +124,19 @@ class AddNewPlayerModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PhoneNum:</label></td>
-                                <td><input type="text" maxlength="15" ref = {(input)=> this.newPlayerPhoneNum = input}/></td>
+                                <td><input type="text" maxLength="15" ref = {(input)=> this.newPlayerPhoneNum = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent Name:</label></td>
-                                <td><input type="text" maxlength="100" ref = {(input)=> this.newPlayerParentName = input}/></td>
+                                <td><input type="text" maxLength="100" ref = {(input)=> this.newPlayerParentName = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent PhoneNum:</label></td>
-                                <td><input type="text"  maxlength="15" ref = {(input)=> this.newPlayerParentPhoneNum = input}/></td>
+                                <td><input type="text"  maxLength="15" ref = {(input)=> this.newPlayerParentPhoneNum = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Address:</label></td>
-                                <td><textarea maxlength="170" ref = {(input)=> this.newPlayerAddress = input}/></td>
+                                <td><textarea maxLength="170" ref = {(input)=> this.newPlayerAddress = input}/></td>
                             </tr>
                         </tbody>
                     </table>

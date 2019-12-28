@@ -43,3 +43,11 @@
     width: 450px;
 }
 
+.MuiAutocomplete-root{
+    width:200px;
+}
+
+.MuiInputBase-root{
+    border:none;
+
+}

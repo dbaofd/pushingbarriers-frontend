@@ -4,7 +4,10 @@ import '../css/AddNewPlayerModal.css';
 import '../config.js';
 import Moment from 'moment';
 import reactHtmlTableToExcel from "react-html-table-to-excel";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
+var selectedTeams;
 class AddNewPlayerModal extends React.Component{
     constructor(props){
         super(props);
@@ -64,35 +67,47 @@ class AddNewPlayerModal extends React.Component{
                     {optionMonth}
                 </select>
                 <select id="newPlayerBirthDay" >
+                    <option value="1" key="1">1</option>
                 </select>
             </>
         );
     }
 
     addNewPlayer(){
-        let url=global.constants.api+"/insertNewPlayer";
-        let headers=new Headers();
-        headers.append("token",localStorage.getItem("token"));
-        let formData=new FormData();
-        formData.append('playerName',this.newPlayerName.value);
-        formData.append('playerGender',this.newPlayerGender.value);
-        formData.append('playerPhoneNum',this.newPlayerPhoneNum.value);
-        formData.append("playerBirthDay",new Date(document.getElementById("newPlayerBirthYear").value+"-"+
-        document.getElementById("newPlayerBirthMonth").value+"-"+document.getElementById("newPlayerBirthDay").value));
-        formData.append('playerParentName',this.newPlayerParentName.value);
-        formData.append('playerParentPhoneNum',this.newPlayerParentPhoneNum.value);
-        formData.append('playerAddress',this.newPlayerAddress.value);
-        fetch(url,{
-            method:"post",
-            body:formData,
-            headers:headers,//we need to put correct token to send the request
-        }).then(res => res.json()
-        ).then(data => {
-            console.log(data.msg);
-            this.props.onSubmited();
-        });
-        this.handleClose();
+        if(this.newPlayerName.value!=""&&this.newPlayerPhoneNum.value!=""&&this.newPlayerParentName.value!=""&&
+        this.newPlayerParentPhoneNum.value&&this.newPlayerAddress.value&&selectedTeams!=null&&selectedTeams!=""){
+            let url=global.constants.api+"/insertNewPlayer";
+            let headers=new Headers();
+            headers.append("token",localStorage.getItem("token"));
+            let formData=new FormData();
+            formData.append('playerName',this.newPlayerName.value);
+            formData.append('playerGender',this.newPlayerGender.value);
+            formData.append('playerPhoneNum',this.newPlayerPhoneNum.value);
+            formData.append("playerBirthDay",new Date(document.getElementById("newPlayerBirthYear").value+"-"+
+            document.getElementById("newPlayerBirthMonth").value+"-"+document.getElementById("newPlayerBirthDay").value));
+            formData.append('playerParentName',this.newPlayerParentName.value);
+            formData.append('playerParentPhoneNum',this.newPlayerParentPhoneNum.value);
+            formData.append('playerAddress',this.newPlayerAddress.value);
+            let teamList=[];
+            for(let i=0;i<selectedTeams.length;i++){
+                teamList.push(selectedTeams[i].teamId);
+            }
+            formData.append('teamList',teamList);
+            fetch(url,{
+                method:"post",
+                body:formData,
+                headers:headers,//we need to put correct token to send the request
+            }).then(res => res.json()
+            ).then(data => {
+                alert(data.msg);
+                this.props.onSubmited();
+            });
+            this.handleClose();
+        }else{
+            alert("Please fill all the infomation!");
+        }
     }
+
     render(){
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>
@@ -137,6 +152,28 @@ class AddNewPlayerModal extends React.Component{
                             <tr>
                                 <td><label>Address:</label></td>
                                 <td><textarea maxLength="170" ref = {(input)=> this.newPlayerAddress = input}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Team:</label></td>
+                                <td>
+                                    <Autocomplete
+                                        multiple
+                                        id="tags-standard"
+                                        options={this.props.allteam}
+                                        getOptionLabel={option => option.teamName}
+                                        renderInput={params => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            placeholder="Add teams"
+                                            fullWidth
+                                        />
+                                        )}
+                                        onChange={(event, value) =>{
+                                            selectedTeams=value;
+                                        }}
+                                    />
+                                </td>
                             </tr>
                         </tbody>
                     </table>

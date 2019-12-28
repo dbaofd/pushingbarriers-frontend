@@ -3,7 +3,10 @@ import {Button,Modal} from "react-bootstrap"
 import '../css/PlayerModal.css';
 import '../config.js';
 import Moment from 'moment';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
+var updatedTeams;
 class PlayerModal extends React.Component{
     constructor(props){
         super(props);
@@ -55,32 +58,44 @@ class PlayerModal extends React.Component{
 
     handleSubmit(event){
         event.preventDefault();
-        let url=global.constants.api+"/updatePlayerInfo";
-        let headers=new Headers();
-        headers.append("token",localStorage.getItem("token"));
-        let formData=new FormData();
-        formData.append('name',this.state.playerName);
-        formData.append('gender',this.state.playerGender);
-        formData.append('phoneNum',this.state.playerPhoneNum);
-        formData.append("birthday",new Date(this.state.playerBirthYear+"-"+
-        this.state.playerBirthMonth+"-"+this.state.playerBirthDay));
-        formData.append('parentName',this.state.playerParentName);
-        formData.append('parentPhoneNum',this.state.playerParentPhoneNum);
-        formData.append('address',this.state.playerAddress);
-        formData.append('status',this.state.playerStatus);
-        formData.append('id',this.state.playerId);
-        fetch(url,{
-            method:"post",
-            body:formData,
-            headers:headers,//we need to put correct token to send the request
-        }).then(res => res.json()
-        ).then(data => {
-            console.log(data.msg);
-            let birthday=this.state.playerBirthYear+"/"+this.state.playerBirthMonth+"/"+this.state.playerBirthDay;
-            this.props.onSubmited(this.state.playerIndex, this.state.playerName, this.state.playerGender,this.state.playerPhoneNum,
-                birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus);
-        });
-        this.handleClose();
+        if(this.state.playerName!=""&&this.state.playerPhoneNum!=""&&this.state.playerParentName!=""&&
+        this.state.playerParentPhoneNum!=""&&this.state.playerAddress!=""){
+            let url=global.constants.api+"/updatePlayerInfo";
+            let headers=new Headers();
+            headers.append("token",localStorage.getItem("token"));
+            let formData=new FormData();
+            formData.append('name',this.state.playerName);
+            formData.append('gender',this.state.playerGender);
+            formData.append('phoneNum',this.state.playerPhoneNum);
+            formData.append("birthday",new Date(this.state.playerBirthYear+"-"+
+            this.state.playerBirthMonth+"-"+this.state.playerBirthDay));
+            formData.append('parentName',this.state.playerParentName);
+            formData.append('parentPhoneNum',this.state.playerParentPhoneNum);
+            formData.append('address',this.state.playerAddress);
+            formData.append('status',this.state.playerStatus);
+            formData.append('id',this.state.playerId);
+            let teamList=[];
+            if(updatedTeams!=null){
+                for(let i=0;i<updatedTeams.length;i++){
+                    teamList.push(updatedTeams[i].teamId);
+                }
+            }
+            formData.append('teams',teamList);
+            fetch(url,{
+                method:"post",
+                body:formData,
+                headers:headers,//we need to put correct token to send the request
+            }).then(res => res.json()
+            ).then(data => {
+                let birthday=this.state.playerBirthYear+"/"+this.state.playerBirthMonth+"/"+this.state.playerBirthDay;
+                this.props.onSubmited(this.state.playerIndex, this.state.playerName, this.state.playerGender,this.state.playerPhoneNum,
+                    birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus);
+                alert(data.msg);
+            });
+            this.handleClose();
+        }else{
+            alert("Please fill all the infomation!")
+        }
     }
     componentDidMount(){
         //pass "this" to parent component in order to 
@@ -183,6 +198,27 @@ class PlayerModal extends React.Component{
                                         <option>1</option>
                                         <option>0</option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Team:</label></td>
+                                <td>
+                                    <Autocomplete
+                                        multiple
+                                        options={this.props.allteam}
+                                        getOptionLabel={option => option.teamName}
+                                        renderInput={params => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            placeholder="Update team"
+                                            fullWidth
+                                        />
+                                        )}
+                                        onChange={(event, value) =>{
+                                            updatedTeams=value;
+                                        }}
+                                    />
                                 </td>
                             </tr>
                         </tbody>

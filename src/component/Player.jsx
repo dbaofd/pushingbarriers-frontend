@@ -14,6 +14,7 @@ class Player extends React.Component{
         
         this.state={
             playerInfo:"",
+            teamInfo:"",
         }
     }
 
@@ -36,8 +37,28 @@ class Player extends React.Component{
         });
     }
 
+    getAllTeams(){
+        let url=global.constants.api+"/findAllTeams";
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        fetch(url,{
+            method:"get", 
+            headers:headers,
+        }).then(res => res.json()
+        ).then(data => {
+            if(data.code===401){
+                alert(data.message+" wrong token!");
+                data=[];
+            }
+            this.setState({
+                teamInfo:data,
+            });
+        });
+    }
+
     componentWillMount(){
         this.getAllPlayersInfo();
+        this.getAllTeams();
     }
 
     playerTemplate(playerIndex){
@@ -178,8 +199,8 @@ class Player extends React.Component{
                             {players}
                         </tbody>
                     </Table>
-                    <PlayerModal allplayer={this.state.playerInfo}  onRef={this.onRefForPlayerModal} onSubmited={this.onChangeState.bind(this)}/>
-                    <AddNewPlayerModal onRef={this.onRefForAddNewPlayerModal} onSubmited={this.searchPlayerByName.bind(this)}/>
+                    <PlayerModal allplayer={this.state.playerInfo}  allteam={this.state.teamInfo} onRef={this.onRefForPlayerModal} onSubmited={this.onChangeState.bind(this)}/>
+                    <AddNewPlayerModal onRef={this.onRefForAddNewPlayerModal} allteam={this.state.teamInfo} onSubmited={this.searchPlayerByName.bind(this)}/>
                 </div>
             </div>);
     }

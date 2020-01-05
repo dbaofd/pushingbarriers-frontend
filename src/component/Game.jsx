@@ -67,7 +67,7 @@ class Game extends React.Component{
     }
 
     setTeamOptions(){
-        const teamOptions=[];//set team options, using info graped from database.
+        let teamOptions=[];//set team options, using info graped from database.
         teamOptions.push(
             <option key="Allteam">AllTeams</option>
         );

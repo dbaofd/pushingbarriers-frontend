@@ -19,7 +19,7 @@ class Player extends React.Component{
     }
 
     getAllPlayersInfo(){
-        let url=global.constants.api+"/allplayers";
+        let url=global.constants.api+"/allPlayers";
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -162,15 +162,12 @@ class Player extends React.Component{
                         <ReactToExcel 
                         table="my-player-table" 
                         filename="exportPlayerInfo" 
-                        sheet="exportdriverInfo"
+                        sheet="exportPlayerInfo"
                         id="export-excel-btn"
                         buttonText="Export"/>
                     </div>
-                    <div id="player-add">
-                        <Button variant="primary" id="player-add-btn" onClick={()=>this.handleModalShow2()}>New Player</Button>
-                    </div>
-                    <div id="player-search">
-                        <Button variant="danger" id="player-search-btn" onClick={()=>this.searchPlayerByName()}>Search</Button>
+                    <div id="playerteam-search">
+                        <Button variant="danger" id="playerteam-search-btn" onClick={()=>this.searchPlayerByName()}>Search</Button>
                     </div>
                     <div id="player-name-textbox">
                         <input type="text" id="player-name-input" placeholder="Search by player name" ref = {(input)=> this.playerNameInput = input}/>

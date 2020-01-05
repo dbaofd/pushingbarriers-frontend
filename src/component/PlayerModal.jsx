@@ -90,7 +90,7 @@ class PlayerModal extends React.Component{
                 let birthday=this.state.playerBirthYear+"/"+this.state.playerBirthMonth+"/"+this.state.playerBirthDay;
                 this.props.onSubmited(this.state.playerIndex, this.state.playerName, this.state.playerGender,this.state.playerPhoneNum,
                     birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus);
-                alert(data.msg);
+                console.log(data.msg);
             });
             this.handleClose();
         }else{

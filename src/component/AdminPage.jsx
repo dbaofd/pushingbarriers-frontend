@@ -8,6 +8,7 @@ import Trainingtemplate from './Trainingtemplate';
 import Player from "./Player";
 import Driver from "./Driver";
 import Team from "./Team";
+import PlayerTeam from "./PlayerTeam";
 import '../config.js';
 import '../css/AdminPage.css'
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
@@ -70,6 +71,7 @@ class AdminPage extends React.Component{
                     <Route path="/Player" component={Player}/>
                     <Route path="/Driver" component={Driver}/>
                     <Route path="/Team" component={Team}/>
+                    <Route path="/PlayerTeam" component={PlayerTeam}/>
                     <Route component={Error}/>
                 </Switch>
                 </div>

@@ -60,11 +60,11 @@ class Training extends React.Component{
         }
     }
     getConfirmButtonType(status){
-        if(status==="0"){
+        if(status===0){
             return "success";
-        }else if(status==="1"){
+        }else if(status===1){
             return "secondary";
-        }else if(status==="2"){
+        }else if(status===2){
             return "danger";
         }
     }

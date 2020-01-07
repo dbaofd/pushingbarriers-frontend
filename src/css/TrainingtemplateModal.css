@@ -1,9 +1,9 @@
-#newPlayerDetail tr{
+#trainingDetail tr{
     height:100%;
     width:100%;
     text-align: center;
 }
-#newPlayerDetail label{
+#trainingDetail label{
     display:block;
     text-align: right;
     height:20px;
@@ -11,7 +11,7 @@
     margin-right:15px;
 }
 
-#newPlayerDetail input{
+#trainingDetail input{
     text-align: left;
     outline: none;
     height:20px;
@@ -21,7 +21,7 @@
     border-color: rgb(218, 222, 216);
     
 }
-#newPlayerDetail textarea{
+#trainingDetail textarea{
     text-align: left;
     outline: none;
     height:50px;
@@ -32,9 +32,9 @@
 }
 
 
-#newPlayerDetail select{
+#trainingDetail select{
     border: 0px;
-    width: 65px;
+    width: 105px;
     height:20px;
     text-align: left;
 }
@@ -43,11 +43,3 @@
     width: 450px;
 }
 
-.MuiAutocomplete-root{
-    width:200px;
-}
-
-.MuiInputBase-root{
-    border:none;
-
-}

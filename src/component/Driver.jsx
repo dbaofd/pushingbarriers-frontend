@@ -16,7 +16,7 @@ class Driver extends React.Component{
     }
 
     getAllDriversInfo(){
-        let url=global.constants.api+"/alldrivers";
+        let url=global.constants.api+"/allDrivers";
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{

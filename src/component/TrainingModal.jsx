@@ -31,7 +31,7 @@ class TrainingModal extends React.Component{
     }
 
     setSelect(){
-        if(this.state.trainingData.trainingConfirmation==="1"){
+        if(this.state.trainingData.trainingConfirmation===1){
             return (
                 <select ref = {(input)=> this.selectedStatus = input}>
                     <option value="1">Confirmed</option>
@@ -39,7 +39,7 @@ class TrainingModal extends React.Component{
                     <option value="2">Cancelled</option>
                 </select>
             );
-        }else if(this.state.trainingData.trainingConfirmation==="0"){
+        }else if(this.state.trainingData.trainingConfirmation===0){
             return (
                 <select ref = {(input)=> this.selectedStatus = input}>
                     <option value="0">Unconfirmed</option>
@@ -47,7 +47,7 @@ class TrainingModal extends React.Component{
                     <option value="2">Cancelled</option>
                 </select>
             );
-        }else if(this.state.trainingData.trainingConfirmation==="2"){
+        }else if(this.state.trainingData.trainingConfirmation===2){
             return (
                 <select ref = {(input)=> this.selectedStatus = input}>
                     <option value="2">Cancelled</option>

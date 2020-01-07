@@ -73,9 +73,8 @@ class AddNewPlayerModal extends React.Component{
         );
     }
 
-    addNewPlayer(){
-        if(this.newPlayerName.value!=""&&this.newPlayerPhoneNum.value!=""&&this.newPlayerParentName.value!=""&&
-        this.newPlayerParentPhoneNum.value&&this.newPlayerAddress.value&&selectedTeams!=null&&selectedTeams!=""){
+    handleSubmit=()=>{
+        if(selectedTeams!=null&&selectedTeams!=""){
             let url=global.constants.api+"/insertNewPlayer";
             let headers=new Headers();
             headers.append("token",localStorage.getItem("token"));
@@ -99,7 +98,6 @@ class AddNewPlayerModal extends React.Component{
                 headers:headers,//we need to put correct token to send the request
             }).then(res => res.json()
             ).then(data => {
-                alert(data.msg);
                 this.props.onSubmited();
             });
             this.handleClose();
@@ -111,6 +109,7 @@ class AddNewPlayerModal extends React.Component{
     render(){
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>
+                <form onSubmit={this.handleSubmit}>
                 <Modal.Header>
                 <Modal.Title>New Player</Modal.Title>
                 </Modal.Header>
@@ -119,7 +118,7 @@ class AddNewPlayerModal extends React.Component{
                         <tbody>
                             <tr>
                                 <td><label>Name:</label></td>
-                                <td><input type="text" maxLength="100" ref = {(input)=> this.newPlayerName = input}/></td>
+                                <td><input type="text" maxLength="100" required="required" ref = {(input)=> this.newPlayerName = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Gender:</label></td>
@@ -139,19 +138,19 @@ class AddNewPlayerModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PhoneNum:</label></td>
-                                <td><input type="text" maxLength="15" ref = {(input)=> this.newPlayerPhoneNum = input}/></td>
+                                <td><input type="text" maxLength="15" required="required" ref = {(input)=> this.newPlayerPhoneNum = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent Name:</label></td>
-                                <td><input type="text" maxLength="100" ref = {(input)=> this.newPlayerParentName = input}/></td>
+                                <td><input type="text" maxLength="100" required="required" ref = {(input)=> this.newPlayerParentName = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent PhoneNum:</label></td>
-                                <td><input type="text"  maxLength="15" ref = {(input)=> this.newPlayerParentPhoneNum = input}/></td>
+                                <td><input type="text"  maxLength="15" required="required" ref = {(input)=> this.newPlayerParentPhoneNum = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Address:</label></td>
-                                <td><textarea maxLength="170" ref = {(input)=> this.newPlayerAddress = input}/></td>
+                                <td><textarea maxLength="170" required="required" ref = {(input)=> this.newPlayerAddress = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Team:</label></td>
@@ -179,10 +178,11 @@ class AddNewPlayerModal extends React.Component{
                     </table>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="primary" onClick={()=>this.addNewPlayer()}>
+                <Button variant="primary" type="submit">
                     Add
                 </Button>
                 </Modal.Footer>
+                </form>
             </Modal>
         );
     }

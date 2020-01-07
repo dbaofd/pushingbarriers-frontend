@@ -135,7 +135,7 @@ class Player extends React.Component{
         if(this.playerNameInput.value.length!==0){
             url=global.constants.api+"/findPlayersByPlayerName/"+this.playerNameInput.value;
         }else{
-            url=global.constants.api+"/allplayers";
+            url=global.constants.api+"/allPlayers";
         }
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
@@ -165,6 +165,9 @@ class Player extends React.Component{
                         sheet="exportPlayerInfo"
                         id="export-excel-btn"
                         buttonText="Export"/>
+                    </div>
+                    <div id="player-add">
+                        <Button variant="primary" id="player-add-btn" onClick={()=>this.handleModalShow2()}>New Player</Button>
                     </div>
                     <div id="playerteam-search">
                         <Button variant="danger" id="playerteam-search-btn" onClick={()=>this.searchPlayerByName()}>Search</Button>

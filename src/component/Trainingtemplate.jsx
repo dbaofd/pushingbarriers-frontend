@@ -1,17 +1,24 @@
 import React from "react";
 import "../css/Trainingtemplate.css";
 import '../config.js';
+import TrainingtemplateModal from './TrainingtemplateModal';
+import AddNewTrainingModal from './AddNewTrainingModal';
+import DeleteTrainingModal from './DeleteTrainingModal';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap"
+import ReactToExcel from 'react-html-table-to-excel';
 
-var trainingTemTrsMonday=[];
-var trainingTemTrsTuesday=[];
-var trainingTemTrsWednesday=[];
-var trainingTemTrsThursday=[];
+var trainingTemTrsMonday;
+var trainingTemTrsTuesday;
+var trainingTemTrsWednesday;
+var trainingTemTrsThursday;
+var trainingTemTrsFriday;
 class Trainingtemplate extends React.Component{
     constructor(props){
         super(props);
         this.state={
             trainingTemplateInfo: "",
+            allPlayers:"",
+            allDrivers:"",
         }
     }
     getTrainingTemplate(){
@@ -33,23 +40,88 @@ class Trainingtemplate extends React.Component{
         });
     }
 
-    componentWillMount(){
-        this.getTrainingTemplate();
+    getAllPlayersInfo(){
+        let url=global.constants.api+"/allPlayers";
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        fetch(url,{
+            method:"get", 
+            headers:headers,
+        }).then(res => res.json()
+        ).then(data => {
+            if(data.code===401){
+                alert(data.message+" wrong token!");
+                data=[];
+            }
+            this.setState({
+                allPlayers:data,
+            });
+        });
     }
 
-    trainingTemTrTemplate(training){
+    getAllDriversInfo(){
+        let url=global.constants.api+"/allDrivers";
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        fetch(url,{
+            method:"get", 
+            headers:headers,
+        }).then(res => res.json()
+        ).then(data => {
+            if(data.code===401){
+                alert(data.message+" wrong token!");
+                data=[];
+            }
+            this.setState({
+                allDrivers:data,
+            });
+        });
+    }
+
+    componentWillMount(){
+        this.getTrainingTemplate();
+        this.getAllDriversInfo();
+        this.getAllPlayersInfo();
+    }
+
+    onRefForTrainingTemplateModal = (ref) => {//get "this" returned by child component
+        this.child = ref;
+    }
+
+    handleModalShow(trainingIndex){
+        this.child.handleShow(trainingIndex);
+    }
+
+    onRefForAddNewTrainingModal = (ref) => {
+        this.child2 = ref;
+    }
+
+    handleModalShow2(){
+        this.child2.handleShow();
+    }
+
+    onRefForDeleteTrainingModal = (ref) => {
+        this.child3 = ref;
+    }
+
+    handleModalShow3(trainingId){
+        this.child3.handleShow(trainingId);
+    }
+
+    trainingTemTrTemplate(trainingIndex){
         return(
-            <tr key={training.trainingId}>
-                <td>{training.trainingId}</td>
-                <td id={'training_time'+training.trainingId}>{training.trainingTime}</td>
-                <td>{training.trainingPlayerId}</td>
-                <td>{training.trainingPlayer}</td>
-                <td>{training.trainingDriverId}</td>
-                <td id={'training_driver'+training.trainingId}>{training.trainingDriver}</td>
-                <td>{training.trainingClub}</td>
-                <td>{training.trainingPlayerAddress}</td>
-                <td>{training.trainingAddress}</td>
-                <td><Button variant="info">Edit</Button></td>
+            <tr key={this.state.trainingTemplateInfo[trainingIndex].trainingId}>
+                <td>{this.state.trainingTemplateInfo[trainingIndex].trainingId}</td>
+                <td id={'training_time'+this.state.trainingTemplateInfo[trainingIndex].trainingId}>{this.state.trainingTemplateInfo[trainingIndex].trainingTime}</td>
+                <td>{this.state.trainingTemplateInfo[trainingIndex].trainingPlayerId}</td>
+                <td>{this.state.trainingTemplateInfo[trainingIndex].trainingPlayer}</td>
+                <td>{this.state.trainingTemplateInfo[trainingIndex].trainingDriverId}</td>
+                <td id={'training_driver'+this.state.trainingTemplateInfo[trainingIndex].trainingId}>{this.state.trainingTemplateInfo[trainingIndex].trainingDriver}</td>
+                <td>{this.state.trainingTemplateInfo[trainingIndex].trainingClub}</td>
+                <td>{this.state.trainingTemplateInfo[trainingIndex].trainingPlayerAddress}</td>
+                <td>{this.state.trainingTemplateInfo[trainingIndex].trainingAddress}</td>
+                <td><Button variant="info" onClick={()=>this.handleModalShow(trainingIndex)}>Edit</Button></td>
+                <td><Button variant="danger" style={{ float: 'left' }} onClick={()=>this.handleModalShow3(this.state.trainingTemplateInfo[trainingIndex].trainingId)}>Delete</Button></td>
             </tr>
         );
     }
@@ -59,105 +131,188 @@ class Trainingtemplate extends React.Component{
         trainingTemTrsTuesday=[];
         trainingTemTrsWednesday=[];
         trainingTemTrsThursday=[];
-        for(let training of this.state.trainingTemplateInfo){
-            if(training.trainingDay==="Monday"){
+        trainingTemTrsFriday=[];
+        for(let i=0;i<this.state.trainingTemplateInfo.length;i++){
+            if(this.state.trainingTemplateInfo[i].trainingDay==="Monday"){
                 trainingTemTrsMonday.push(
-                    this.trainingTemTrTemplate(training)
+                    this.trainingTemTrTemplate(i)
                 );
-            }else if(training.trainingDay==="Tuesday"){
+            }else if(this.state.trainingTemplateInfo[i].trainingDay==="Tuesday"){
                 trainingTemTrsTuesday.push(
-                    this.trainingTemTrTemplate(training)
+                    this.trainingTemTrTemplate(i)
                 );
-            }else if(training.trainingDay==="Wednesday"){
+            }else if(this.state.trainingTemplateInfo[i].trainingDay==="Wednesday"){
                 trainingTemTrsWednesday.push(
-                    this.trainingTemTrTemplate(training)
+                    this.trainingTemTrTemplate(i)
                 );
-            }else if(training.trainingDay==="Thursday"){
+            }else if(this.state.trainingTemplateInfo[i].trainingDay==="Thursday"){
                 trainingTemTrsThursday.push(
-                    this.trainingTemTrTemplate(training)
+                    this.trainingTemTrTemplate(i)
+                );
+            }else if(this.state.trainingTemplateInfo[i].trainingDay==="Friday"){
+                trainingTemTrsFriday.push(
+                    this.trainingTemTrTemplate(i)
                 );
             }
         }
+    }
+
+    //once child component update player info, child component will call this function to update this component state
+    onChangeState(trainingIndex,trainingDay,trainingTime,trainingPlayerId,trainingPlayer,trainingDriverId,
+    trainingDriver,trainingClub,trainingPlayerAddress,trainingAddress){
+        let data=this.state.trainingTemplateInfo;
+        data[trainingIndex].trainingDay=trainingDay;
+        data[trainingIndex].trainingTime=trainingTime;
+        data[trainingIndex].trainingPlayerId=trainingPlayerId;
+        data[trainingIndex].trainingPlayer=trainingPlayer;
+        data[trainingIndex].trainingDriverId=trainingDriverId;
+        data[trainingIndex].trainingDriver=trainingDriver;
+        data[trainingIndex].trainingClub=trainingClub;
+        data[trainingIndex].trainingPlayerAddress=trainingPlayerAddress;
+        data[trainingIndex].trainingAddress=trainingAddress;
+        this.setState({
+            trainingTemplateInfo: data,
+        });
     }
 
     render(){
         this.setTrainingTem();
         return(
             <div id="trainingtemplate">
-                <Table striped bordered hover id="my-trainingtemplate-table">
-                    <thead>
-                        <tr><th>Monday</th></tr>
-                        <tr>
-                            <th>#</th>
-                            <th>Time</th>
-                            <th>Player Id</th>
-                            <th>Player</th>
-                            <th>Driver Id</th>
-                            <th>Driver</th>
-                            <th>Club</th>
-                            <th>PlayerAddress</th>
-                            <th>TrainingAddress</th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {trainingTemTrsMonday}
-                    </tbody>
-                    <thead>
-                        <tr><th>Tuesday</th></tr>
-                        <tr>
-                            <th>#</th>
-                            <th>Time</th>
-                            <th>Player Id</th>
-                            <th>Player</th>
-                            <th>Driver Id</th>
-                            <th>Driver</th>
-                            <th>Club</th>
-                            <th>PlayerAddress</th>
-                            <th>TrainingAddress</th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {trainingTemTrsTuesday}
-                    </tbody>
-                    <thead>
-                        <tr><th>Wednesday</th></tr>
-                        <tr>
-                            <th>#</th>
-                            <th>Time</th>
-                            <th>Player Id</th>
-                            <th>Player</th>
-                            <th>Driver Id</th>
-                            <th>Driver</th>
-                            <th>Club</th>
-                            <th>PlayerAddress</th>
-                            <th>TrainingAddress</th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {trainingTemTrsWednesday}
-                    </tbody>
-                    <thead>
-                        <tr><th>Thursday</th></tr>
-                        <tr>
-                            <th>#</th>
-                            <th>Time</th>
-                            <th>Player Id</th>
-                            <th>Player</th>
-                            <th>Driver Id</th>
-                            <th>Driver</th>
-                            <th>Club</th>
-                            <th>PlayerAddress</th>
-                            <th>TrainingAddress</th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {trainingTemTrsThursday}
-                    </tbody>
-                </Table>
+                <div id="trainingtemplate-bar">
+                    <div id="trainingtemplate-export-excel">
+                        <ReactToExcel 
+                        table="my-trainingtemplate-table" 
+                        filename="exporttrainingtemplateInfo" 
+                        sheet="exporttrainingtemplateInfo"
+                        id="export-excel-btn"
+                        buttonText="Export"/>
+                    </div>
+                    <div id="trainingtemplate-add">
+                        <Button variant="primary" id="player-add-btn" onClick={()=>this.handleModalShow2()}>New Training</Button>
+                    </div>
+                    <div id="totalNumberOfTrainingTrips">
+                        <li>{this.state.trainingTemplateInfo.length} trips in total</li>
+                    </div>
+                </div>
+                <div id="trainingtemplate-table">
+                    <Table striped bordered hover id="my-trainingtemplate-table">
+                        <thead>
+                            <tr><th>Monday</th></tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Player Id</th>
+                                <th>Player</th>
+                                <th>Driver Id</th>
+                                <th>Driver</th>
+                                <th>Club</th>
+                                <th>PlayerAddress</th>
+                                <th>TrainingAddress</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trainingTemTrsMonday}
+                        </tbody>
+                        <thead>
+                            <tr><th>Tuesday</th></tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Player Id</th>
+                                <th>Player</th>
+                                <th>Driver Id</th>
+                                <th>Driver</th>
+                                <th>Club</th>
+                                <th>PlayerAddress</th>
+                                <th>TrainingAddress</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trainingTemTrsTuesday}
+                        </tbody>
+                        <thead>
+                            <tr><th>Wednesday</th></tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Player Id</th>
+                                <th>Player</th>
+                                <th>Driver Id</th>
+                                <th>Driver</th>
+                                <th>Club</th>
+                                <th>PlayerAddress</th>
+                                <th>TrainingAddress</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trainingTemTrsWednesday}
+                        </tbody>
+                        <thead>
+                            <tr><th>Thursday</th></tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Player Id</th>
+                                <th>Player</th>
+                                <th>Driver Id</th>
+                                <th>Driver</th>
+                                <th>Club</th>
+                                <th>PlayerAddress</th>
+                                <th>TrainingAddress</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trainingTemTrsThursday}
+                        </tbody>
+                        <thead>
+                            <tr><th>Friday</th></tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Time</th>
+                                <th>Player Id</th>
+                                <th>Player</th>
+                                <th>Driver Id</th>
+                                <th>Driver</th>
+                                <th>Club</th>
+                                <th>PlayerAddress</th>
+                                <th>TrainingAddress</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trainingTemTrsFriday}
+                        </tbody>
+                    </Table>
+                    <TrainingtemplateModal 
+                    allPlayers={this.state.allPlayers}
+                    allDrivers={this.state.allDrivers}
+                    trainingTemplate={this.state.trainingTemplateInfo} 
+                    onRef={this.onRefForTrainingTemplateModal} 
+                    onSubmited={this.onChangeState.bind(this)}
+                    />
+
+                    <AddNewTrainingModal
+                    onRef={this.onRefForAddNewTrainingModal}
+                    allPlayers={this.state.allPlayers}
+                    allDrivers={this.state.allDrivers}
+                    onSubmited={this.getTrainingTemplate.bind(this)}
+                    />
+
+                    <DeleteTrainingModal
+                    onRef={this.onRefForDeleteTrainingModal}
+                    onDeleted={this.getTrainingTemplate.bind(this)}
+                    />
+                </div>
             </div>
         );
     }

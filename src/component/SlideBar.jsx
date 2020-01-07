@@ -20,8 +20,8 @@ class SlideBar extends React.Component{
                         <Card.Body>
                             <ListGroup variant="flush">
                                 <ListGroup.Item><NavLink className="menu-item" to='/Game'>Game</NavLink></ListGroup.Item>
-                                <ListGroup.Item><NavLink className="menu-item" to='/Training'>Training</NavLink></ListGroup.Item>
-                                <ListGroup.Item><NavLink className="menu-item" to='/Trainingtemplate'>Update Training</NavLink></ListGroup.Item>
+                                <ListGroup.Item><NavLink className="menu-item" to='/Training'>Training Status</NavLink></ListGroup.Item>
+                                <ListGroup.Item><NavLink className="menu-item" to='/Trainingtemplate'>Manage Training</NavLink></ListGroup.Item>
                             </ListGroup>
                         </Card.Body>
                         </Accordion.Collapse>

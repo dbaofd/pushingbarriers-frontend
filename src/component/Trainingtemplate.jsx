@@ -19,6 +19,7 @@ class Trainingtemplate extends React.Component{
             trainingTemplateInfo: "",
             allPlayers:"",
             allDrivers:"",
+            allTeams:"",
         }
     }
     getTrainingTemplate(){
@@ -78,10 +79,30 @@ class Trainingtemplate extends React.Component{
         });
     }
 
+    getAllTeamsInfo(){
+        let url=global.constants.api+"/findAllTeams";
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        fetch(url,{
+            method:"get", 
+            headers:headers,
+        }).then(res => res.json()
+        ).then(data => {
+            if(data.code===401){
+                alert(data.message+" wrong token!");
+                data=[];
+            }
+            this.setState({
+                allTeams:data,
+            });
+        });
+    }
+
     componentWillMount(){
         this.getTrainingTemplate();
         this.getAllDriversInfo();
         this.getAllPlayersInfo();
+        this.getAllTeamsInfo();
     }
 
     onRefForTrainingTemplateModal = (ref) => {//get "this" returned by child component
@@ -296,6 +317,7 @@ class Trainingtemplate extends React.Component{
                     <TrainingtemplateModal 
                     allPlayers={this.state.allPlayers}
                     allDrivers={this.state.allDrivers}
+                    allTeams={this.state.allTeams}
                     trainingTemplate={this.state.trainingTemplateInfo} 
                     onRef={this.onRefForTrainingTemplateModal} 
                     onSubmited={this.onChangeState.bind(this)}
@@ -305,6 +327,7 @@ class Trainingtemplate extends React.Component{
                     onRef={this.onRefForAddNewTrainingModal}
                     allPlayers={this.state.allPlayers}
                     allDrivers={this.state.allDrivers}
+                    allTeams={this.state.allTeams}
                     onSubmited={this.getTrainingTemplate.bind(this)}
                     />
 

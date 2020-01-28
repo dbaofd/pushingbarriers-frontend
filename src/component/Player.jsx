@@ -5,6 +5,7 @@ import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import Moment from 'moment';
 import PlayerModal from "./PlayerModal";
 import AddNewPlayerModal from "./AddNewPlayerModal";
+import ImageModal from "./ImageModal";
 import ReactToExcel from 'react-html-table-to-excel';
 
 var players=[];
@@ -15,6 +16,7 @@ class Player extends React.Component{
         this.state={
             playerInfo:"",
             teamInfo:"",
+            img:"",
         }
     }
 
@@ -61,6 +63,7 @@ class Player extends React.Component{
         this.getAllTeams();
     }
 
+    
     playerTemplate(playerIndex){
         let tdStyle={};
         //here need to use "==" rather than "===", because playerStatus will be set to string type
@@ -75,6 +78,7 @@ class Player extends React.Component{
         return(
             <tr key={this.state.playerInfo[playerIndex].playerId}>
                 <td>{this.state.playerInfo[playerIndex].playerId}</td>
+                <td><Button variant="info" onClick={()=>this.handleModalShow3(this.state.playerInfo[playerIndex].playerId)}>Show</Button></td>
                 <td>{this.state.playerInfo[playerIndex].playerName}</td>
                 <td>{this.state.playerInfo[playerIndex].playerGender}</td>
                 <td>{this.state.playerInfo[playerIndex].playerPhoneNum}</td>
@@ -93,6 +97,7 @@ class Player extends React.Component{
         // for(let player of this.state.playerInfo){
         //     players.push(this.playerTemplate(player));
         // }
+        
         for(let i=0;i<this.state.playerInfo.length;i++){
             players.push(this.playerTemplate(i));
         }
@@ -106,6 +111,10 @@ class Player extends React.Component{
         this.child2=ref;
     }
 
+    onRefForImageModal=(ref)=>{
+        this.child3=ref;
+    }
+
     handleModalShow(playerIndex){//call child component function 
         this.child.handleShow(playerIndex);
     }
@@ -114,8 +123,12 @@ class Player extends React.Component{
         this.child2.handleShow();
     }
 
+    handleModalShow3(id){
+        this.child3.handleShow(id);
+    }
+
     //once child component update player info, child component will call this function to update this component state
-    onChangeState(playerIndex,name,gender,phoneNum,birthday,parentName,parentPhoneNum,address,status){
+    onChangeState(playerIndex,name,gender,phoneNum,birthday,parentName,parentPhoneNum,address,status,photo){
         let data=this.state.playerInfo;
         data[playerIndex].playerName=name;
         data[playerIndex].playerGender=gender;
@@ -125,6 +138,7 @@ class Player extends React.Component{
         data[playerIndex].playerParentPhoneNum=parentPhoneNum;
         data[playerIndex].playerAddress=address;
         data[playerIndex].playerStatus=status;
+        data[playerIndex].playerPhoto=photo;
         this.setState({
             playerInfo: data,
         });
@@ -184,6 +198,7 @@ class Player extends React.Component{
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Photo</th>
                                 <th>Name</th>
                                 <th>Gender</th>
                                 <th>PhoneNum</th>
@@ -201,6 +216,7 @@ class Player extends React.Component{
                     </Table>
                     <PlayerModal allplayer={this.state.playerInfo}  allteam={this.state.teamInfo} onRef={this.onRefForPlayerModal} onSubmited={this.onChangeState.bind(this)}/>
                     <AddNewPlayerModal onRef={this.onRefForAddNewPlayerModal} allteam={this.state.teamInfo} onSubmited={this.searchPlayerByName.bind(this)}/>
+                    <ImageModal onRef={this.onRefForImageModal} image={this.state.img}/>
                 </div>
             </div>);
     }

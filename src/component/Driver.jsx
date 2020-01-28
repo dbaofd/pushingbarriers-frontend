@@ -97,7 +97,7 @@ class Driver extends React.Component{
         if(this.driverNameInput.value.length!==0){
             url=global.constants.api+"/findDriversByName/"+this.driverNameInput.value;
         }else{
-            url=global.constants.api+"/alldrivers";
+            url=global.constants.api+"/allDrivers";
         }
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));

@@ -12,6 +12,8 @@ class PlayerTeam extends React.Component{
         this.state={
             playerTeamMapping:"",
             allTeams:"",
+            allClubs:"",
+            searchByTeam:true,
         }
     }
 
@@ -29,12 +31,15 @@ class PlayerTeam extends React.Component{
                 data=[];
             }
             let teams=[];
+            let clubs=new Set();
             for(let i=0;i<data.length;i++){
                 teams.push(data[i].teamName);
+                clubs.add(data[i].clubName);
             }
             this.setState({
                 playerTeamMapping:data,
                 allTeams:teams,
+                allClubs:Array.from(clubs),
             });
 
         });
@@ -52,6 +57,7 @@ class PlayerTeam extends React.Component{
                 <td>{this.state.playerTeamMapping[teamIndex].playerList[playerListIndex].playerName}</td>
                 <td>{this.state.playerTeamMapping[teamIndex].teamId}</td>
                 <td>{this.state.playerTeamMapping[teamIndex].teamName}</td>
+                <td>{this.state.playerTeamMapping[teamIndex].clubName}</td>
             </tr>
         );
     }
@@ -81,26 +87,76 @@ class PlayerTeam extends React.Component{
         return teamOptions;
     }
 
+    setClubOptions(){
+        let clubOptions=[];//set team options, using info graped from database.
+        clubOptions.push(
+            <option key="AllClubs">AllClubs</option>
+        );
+        for(let i=0;i< this.state.allClubs.length;i++){
+            clubOptions.push(
+                <option key={this.state.allClubs[i]}>{this.state.allClubs[i]}</option>
+            )
+        };
+        return clubOptions;
+    }
+
     getMappingByTeamName(){
-        if(this.selectedTeam.value!=="AllTeams"){
-            let url=global.constants.api+"/findTeamByName/"+this.selectedTeam.value;
-            let headers=new Headers();
-            headers.append("token",localStorage.getItem("token"));
-            fetch(url,{
-                method:"get", 
-                headers:headers,
-            }).then(res => res.json()
-            ).then(data => {
-                if(data.code===401){
-                    alert(data.message+" wrong token!");
-                    data=[];
-                }
-                this.setState({
-                    playerTeamMapping:data,
+        if(this.state.searchByTeam){
+            if(this.selectedTeamClub.value!=="AllTeams"){
+                let url=global.constants.api+"/findTeamByName/"+this.selectedTeamClub.value;
+                let headers=new Headers();
+                headers.append("token",localStorage.getItem("token"));
+                fetch(url,{
+                    method:"get", 
+                    headers:headers,
+                }).then(res => res.json()
+                ).then(data => {
+                    if(data.code===401){
+                        alert(data.message+" wrong token!");
+                        data=[];
+                    }
+                    this.setState({
+                        playerTeamMapping:data,
+                    });
                 });
-            });
+            }else{
+                this.getPlayerTeamMapping()
+            }
         }else{
-            this.getPlayerTeamMapping()
+            if(this.selectedTeamClub.value!=="AllClubs"){
+                let url=global.constants.api+"/findTeamsByClubName/"+this.selectedTeamClub.value;
+                let headers=new Headers();
+                headers.append("token",localStorage.getItem("token"));
+                fetch(url,{
+                    method:"get", 
+                    headers:headers,
+                }).then(res => res.json()
+                ).then(data => {
+                    if(data.code===401){
+                        alert(data.message+" wrong token!");
+                        data=[];
+                    }
+                    this.setState({
+                        playerTeamMapping:data,
+                    });
+                });
+            }else{
+                this.getPlayerTeamMapping()
+            }
+        }
+    }
+
+    searchByOnChange(){
+        if(this.selectedSearchBy.value==="team"){
+            //alert("team");
+            this.setState({
+                searchByTeam:true,
+            });
+        }else if(this.selectedSearchBy.value==="club"){
+            //alert("club");
+            this.setState({
+                searchByTeam:false,
+            });
         }
     }
     render(){
@@ -120,8 +176,14 @@ class PlayerTeam extends React.Component{
                         <Button variant="danger" id="player-search-btn" onClick={()=>this.getMappingByTeamName()}>Search</Button>
                     </div>
                     <div id="playerteam-select-box">
-                        <select id="playerteam-select" ref = {(input)=> this.selectedTeam = input}>
-                            {this.setTeamOptions()}
+                        <select id="playerteam-select" ref = {(input)=> this.selectedTeamClub = input}>
+                            {this.state.searchByTeam?this.setTeamOptions():this.setClubOptions()}
+                        </select>
+                    </div>
+                    <div id="searchby-select-box">
+                        <select id="searchby-select" ref = {(input)=> this.selectedSearchBy = input} onChange={()=>this.searchByOnChange()}>
+                            <option value="team">Search by team</option>
+                            <option value="club">Search by club</option>
                         </select>
                     </div>
                     <div id="totalNumberOfPlayers">
@@ -137,6 +199,7 @@ class PlayerTeam extends React.Component{
                                     <th>PlayerName</th>
                                     <th>TeamId</th>
                                     <th>TeamName</th>
+                                    <th>Club</th>
                                 </tr>
                             </thead>
                             <tbody>

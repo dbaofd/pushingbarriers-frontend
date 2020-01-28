@@ -1,0 +1,16 @@
+#img_div{
+    width:600px;
+    height:450px;
+    text-align: center;
+    display:table-cell;
+    vertical-align: middle;
+}
+
+#img_div img{
+    max-height:100%;
+    max-width:100%;
+}
+
+.modal-content{
+    width: 600px;
+}

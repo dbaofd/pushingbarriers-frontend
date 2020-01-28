@@ -167,7 +167,7 @@ class AddNewTrainingModal extends React.Component{
                                 <td><label>Player:</label></td>
                                 <td>
                                     <Autocomplete
-                                    id="combo-box-demo3"
+                                    id="combo-box-demo4"
                                     defaultValue={this.state.trainingPlayer}
                                     options={this.props.allPlayers}
                                     getOptionLabel={option => option.playerName}
@@ -200,7 +200,7 @@ class AddNewTrainingModal extends React.Component{
                                 <td><label>Driver:</label></td>
                                 <td>
                                     <Autocomplete
-                                    id="combo-box-demo4"
+                                    id="combo-box-demo5"
                                     defaultValue={this.state.trainingDriver}
                                     options={this.props.allDrivers}
                                     getOptionLabel={option => option.driverName}
@@ -226,7 +226,25 @@ class AddNewTrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>Club:</label></td>
-                                <td><input type="text" name="trainingClub" onChange={this.handleChange} maxLength="150"/></td>
+                                <td>
+                                <Autocomplete
+                                    id="combo-box-demo6"
+                                    defaultValue={this.state.trainingClub}
+                                    options={this.props.allTeams}
+                                    getOptionLabel={option => option.teamName}
+                                    style={{ width: 200 }}
+                                    renderInput={params => (
+                                        <TextField {...params}   fullWidth />
+                                    )}
+                                    onChange={(event, value) =>{
+                                        if(value!=null){
+                                            this.setState({
+                                                trainingClub:value.teamName,
+                                            });
+                                        }
+                                    }}
+                                    />
+                                </td>
                             </tr>
                             <tr>
                                 <td><label>PlayerAddress:</label></td>

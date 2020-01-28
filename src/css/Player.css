@@ -16,6 +16,11 @@
     overflow-x:auto;
 }
 
+#player-table img{
+    height:50px;
+    width:50px;
+}
+
 #player-bar div{
     height:100%;
     float:right;

@@ -2,25 +2,43 @@ import React from "react";
 import {Button,Modal} from "react-bootstrap"
 import '../css/TrainingModal.css';
 import '../config.js';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
 class TrainingModal extends React.Component{
     constructor(props){
         super(props);
         this.state={
             show:false,
-            trainingData:"",
+            trainingId:"",
+            trainingPlayer:"",
+            trainingDriver:"",
+            trainingDriverId:"",
+            trainingDriverGender:"",
+            trainingTime:"",
+            trainingNote:"",
+            trainingStatus:"",
         }
     }
+
     componentDidMount(){
         //pass "this" to parent component in order to 
         //let parent component can execute child functions
         this.props.onRef(this)
     }
 
-    handleShow=(training)=>{
+    handleShow=(index)=>{
         this.setState({
             show:true,
-            trainingData:training,
+            trainingIndex:index,
+            trainingId:this.props.allTrainings[index].trainingId,
+            trainingPlayer:this.props.allTrainings[index].trainingPlayer,
+            trainingDriver:this.props.allTrainings[index].trainingDriver,
+            trainingDriverId:this.props.allTrainings[index].trainingDriverId,
+            trainingDriverGender:this.props.allTrainings[index].trainingDriverGender,
+            trainingTime:this.props.allTrainings[index].trainingTime,
+            trainingNote:this.props.allTrainings[index].trainingNote,
+            trainingStatus:this.props.allTrainings[index].trainingStatus,
         })
     }
 
@@ -30,72 +48,134 @@ class TrainingModal extends React.Component{
         })
     }
 
-    setSelect(){
-        if(this.state.trainingData.trainingConfirmation===1){
+    handleChange=(event)=>{
+        const target = event.target;
+        const name=target.name;
+        let newValue=target.value;
+        if(name==="trainingStatus"){
+            newValue=Number(target.value);
+        }
+        this.setState({
+            [name]:newValue,
+        });
+    }
+
+    setOptions(){
+        if(this.state.trainingStatus===0){
             return (
-                <select ref = {(input)=> this.selectedStatus = input}>
-                    <option value="1">Confirmed</option>
-                    <option value="0">Unconfirmed</option>
-                    <option value="2">Cancelled</option>
-                </select>
+                <>
+                <option>Select</option>
+                <option value="0">Unconfirmed</option>
+                <option value="3">Cancelled</option>
+                </>
             );
-        }else if(this.state.trainingData.trainingConfirmation===0){
+        }else if(this.state.trainingStatus===1){
             return (
-                <select ref = {(input)=> this.selectedStatus = input}>
-                    <option value="0">Unconfirmed</option>
-                    <option value="1">Confirmed</option>
-                    <option value="2">Cancelled</option>
-                </select>
+                <>
+                    <option>Select</option>
+                    <option value="3">Cancelled</option>
+                </>
             );
-        }else if(this.state.trainingData.trainingConfirmation===2){
+        }else if(this.state.trainingStatus===2){
             return (
-                <select ref = {(input)=> this.selectedStatus = input}>
-                    <option value="2">Cancelled</option>
+                <>
+                    <option>Select</option>
                     <option value="0">Unconfirmed</option>
-                    <option value="1">Confirmed</option>
-                </select>
+                    <option value="3">Cancelled</option>
+                </>
+            );
+        }else if(this.state.trainingStatus===3){
+            return (
+                <>
+                    <option>Select</option>
+                    <option value="3">Cancelled</option>
+                    <option value="0">Unconfirmed</option>
+                </>
             );
         }
     }
-
-    updateTrainingDetail(){
-        if(this.note.value.length<=500){
-            let url=global.constants.api+"/updateTrainingDetail";
-            let headers=new Headers();
-            headers.append("token",localStorage.getItem("token"));
-            let formData=new FormData();
-            formData.append('driver',this.driver.value);
-            formData.append('time',this.time.value);
-            formData.append('status',this.selectedStatus.value);
-            formData.append("note",this.note.value)
-            formData.append('id',this.state.trainingData.trainingId);
-            fetch(url,{
-                method:"post",
-                body:formData,
-                headers:headers,//we need to put correct token to send the request
-            }).then(res => res.json()
-            ).then(data => {
-                console.log(data.msg);
-            });
-            this.updateConfirmButton();
-            this.handleClose();
-        }else{
-            alert("Please ensure the note is less than 500 characters!")
+    setTime(){
+        let timeOptions=[];
+        let a,b;
+        let count=0;
+        for(let i=0;i<12;i++){
+            for(let j=0;j<60;j=j+15){
+                count++;
+                if(i<10){
+                    a='0'+i;
+                }else{
+                    a=i;
+                }
+                if(j<10){
+                    b='0'+j
+                }else{
+                    b=j;
+                }
+                timeOptions.push(<option key={count}>{a+":"+b+"am"}</option>);
+            }
         }
+        for(let j=0;j<60;j=j+15){
+            count++;
+            if(j<10){
+                b='0'+j
+            }else{
+                b=j;
+            }
+            timeOptions.push(<option key={count}>{12+":"+b+"pm"}</option>);
+        }
+        for(let i=1;i<12;i++){
+            for(let j=0;j<60;j=j+15){
+                count++;
+                if(i<10){
+                    a='0'+i;
+                }else{
+                    a=i;
+                }
+                if(j<10){
+                    b='0'+j
+                }else{
+                    b=j;
+                }
+                timeOptions.push(<option key={count}>{a+":"+b+"pm"}</option>);
+            }
+        }
+        return timeOptions;
+    }
+    updateTrainingDetail(){
+        let url=global.constants.api+"/updateTrainingDetail";
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        let formData=new FormData();
+        formData.append('driver',this.state.trainingDriver);
+        formData.append('driverId',this.state.trainingDriverId);
+        formData.append('driverGender',this.state.trainingDriverGender);
+        formData.append('time',this.state.trainingTime);
+        formData.append('status',this.state.trainingStatus);
+        formData.append("note",this.state.trainingNote)
+        formData.append('id',this.state.trainingId);
+        fetch(url,{
+            method:"post",
+            body:formData,
+            headers:headers,//we need to put correct token to send the request
+        }).then(res => res.json()
+        ).then(data => {
+            console.log(data.msg);
+        });
+        this.props.onSubmited(this.state.trainingIndex,this.state.trainingDriver,this.state.trainingDriverId,
+            this.state.trainingDriverGender,this.state.trainingTime,this.state.trainingStatus,this.state.trainingNote);
+        this.handleClose();
     }
     
     updateConfirmButton(){
-        let confirmBtn=document.getElementById(this.state.trainingData.trainingId);
-        if(this.selectedStatus.value==="0"){
+        let confirmBtn=document.getElementById(this.state.trainingId);
+        if(this.state.trainingStatus==="0"){
             confirmBtn.setAttribute("class","btn btn-success");
-        }else if(this.selectedStatus.value==="1"){
-            confirmBtn.setAttribute("class","btn btn-secondary");
-        }else if(this.selectedStatus.value==="2"){
+        }else if(this.state.trainingStatus==="3"){
             confirmBtn.setAttribute("class","btn btn-danger");
         }
-        let time=document.getElementById('training_time'+this.state.trainingData.trainingId);
-        let driver=document.getElementById('training_driver'+this.state.trainingData.trainingId);
-        let note=document.getElementById('training_note'+this.state.trainingData.trainingId);
+        let time=document.getElementById('training_time'+this.state.trainingId);
+        let driver=document.getElementById('training_driver'+this.state.trainingId);
+        let note=document.getElementById('training_note'+this.state.trainingId);
         time.innerText=this.time.value;
         driver.innerText=this.driver.value;
         console.log(this.note.value);
@@ -112,23 +192,52 @@ class TrainingModal extends React.Component{
                         <tbody>
                             <tr>
                                 <td><label>Player:</label></td>
-                                <td>{this.state.trainingData.trainingPlayer}</td>
+                                <td>{this.state.trainingPlayer}</td>
                             </tr>
                             <tr>
                                 <td><label>Driver:</label></td>
-                                <td><input type="text" ref = {(input)=> this.driver = input} defaultValue={this.state.trainingData.trainingDriver}/></td>
+                                <td>
+                                    <Autocomplete
+                                        id="combo-box-demo1"
+                                        defaultValue={this.state.trainingDriver}
+                                        options={this.props.allDrivers}
+                                        getOptionLabel={option => option.driverName}
+                                        style={{ width: 200 }}
+                                        renderInput={params => (
+                                            <TextField {...params}   fullWidth />
+                                        )}
+                                        onChange={(event, value) =>{
+                                            if(value!=null){
+                                                alert(value.driverName+value.driverId+value.driverGender)
+                                                this.setState({
+                                                    trainingDriver:value.driverName,
+                                                    trainingDriverId:value.driverId,
+                                                    trainingDriverGender:value.driverGender,
+                                                });
+                                            }
+                                        }}
+                                        />
+                                </td>
                             </tr>
                             <tr>
                                 <td><label>Time:</label></td>
-                                <td><input type="text" ref = {(input)=> this.time = input} defaultValue={this.state.trainingData.trainingTime}/></td>
+                                <td>
+                                    <select name="trainingTime" value={this.state.trainingTime} onChange={this.handleChange}>
+                                        {this.setTime()}
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td><label>Note:</label></td>
-                                <td><textarea  placeholder="No more than 500 characters" ref = {(input)=> this.note = input} defaultValue={this.state.trainingData.trainingNote}/></td>
+                                <td><textarea  name="trainingNote" placeholder="No more than 500 characters" maxLength="500" onChange={this.handleChange} defaultValue={this.state.trainingNote}/></td>
                             </tr>
                             <tr>
                                 <td><label>Status:</label></td>
-                                <td>{this.setSelect()}</td>
+                                <td>
+                                    <select name="trainingStatus" value={this.state.trainingStatus} onChange={this.handleChange}>
+                                        {this.setOptions()}
+                                    </select>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

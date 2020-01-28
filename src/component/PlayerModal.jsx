@@ -24,6 +24,7 @@ class PlayerModal extends React.Component{
             playerParentPhoneNum:"",
             playerAddress:"",
             playerStatus:"",
+            selectedImage:null,
         }
         this.handleChange=this.handleChange.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
@@ -44,6 +45,7 @@ class PlayerModal extends React.Component{
             playerParentPhoneNum:this.props.allplayer[playerIndex].playerParentPhoneNum,
             playerAddress:this.props.allplayer[playerIndex].playerAddress,
             playerStatus:this.props.allplayer[playerIndex].playerStatus,
+            selectedImage:null,
         });
     }
 
@@ -58,10 +60,16 @@ class PlayerModal extends React.Component{
 
     handleSubmit(event){
         event.preventDefault();
-        let url=global.constants.api+"/updatePlayerInfo";
+        let url;
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         let formData=new FormData();
+        if(this.state.selectedImage!==null){
+            url=global.constants.api+"/updatePlayerInfo";
+            formData.append('photo',this.state.selectedImage);
+        }else{
+            url=global.constants.api+"/updatePlayerInfoWithoutPhoto";
+        }
         formData.append('name',this.state.playerName);
         formData.append('gender',this.state.playerGender);
         formData.append('phoneNum',this.state.playerPhoneNum);
@@ -87,7 +95,7 @@ class PlayerModal extends React.Component{
         ).then(data => {
             let birthday=this.state.playerBirthYear+"/"+this.state.playerBirthMonth+"/"+this.state.playerBirthDay;
             this.props.onSubmited(this.state.playerIndex, this.state.playerName, this.state.playerGender,this.state.playerPhoneNum,
-                birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus);
+                birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus, "okokok");
             console.log(data.msg);
         });
         this.handleClose();
@@ -140,10 +148,27 @@ class PlayerModal extends React.Component{
             </>
         );
     }
+
+    fileSize=event=>{
+        //console.log(typeof event.target.files[0]);
+        if(typeof event.target.files[0]!=="undefined"){
+            if(event.target.files[0].size>=(5*1024*1024)){
+                alert("The photo size should be smaller than 5M!");
+            }else{
+                //alert("all good")
+                this.setState({
+                    selectedImage:event.target.files[0]
+                });
+            }
+        }else{
+            
+        }
+
+    }
     render(){
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} encType="multipart/form-data">
                 <Modal.Header>
                 <Modal.Title>Player Detail</Modal.Title>
                 </Modal.Header>
@@ -185,6 +210,10 @@ class PlayerModal extends React.Component{
                             <tr>
                                 <td><label>Address:</label></td>
                                 <td><textarea name="playerAddress" required="required" value={this.state.playerAddress} onChange={this.handleChange} maxLength="170"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Player Photo:</label></td>
+                                <td><input type="file" name="player_photo" style={{height:30}} accept=".jpg,.png,.jpeg" onChange={this.fileSize}/></td>
                             </tr>
                             <tr>
                                 <td><label>Status:</label></td>

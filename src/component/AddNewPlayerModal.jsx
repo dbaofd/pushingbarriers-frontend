@@ -13,6 +13,7 @@ class AddNewPlayerModal extends React.Component{
         super(props);
         this.state={
             show:false,
+            selectedImage:"",
         }
     }
 
@@ -73,7 +74,24 @@ class AddNewPlayerModal extends React.Component{
         );
     }
 
-    handleSubmit=()=>{
+    fileSize=event=>{
+        //console.log(typeof event.target.files[0]);
+        if(typeof event.target.files[0]!=="undefined"){
+            if(event.target.files[0].size>=(5*1024*1024)){
+                alert("The photo size should be smaller than 5M!");
+            }else{
+                //alert("all good")
+                this.setState({
+                    selectedImage:event.target.files[0]
+                });
+            }
+        }else{
+            
+        }
+
+    }
+    handleSubmit=(event)=>{
+        event.preventDefault();
         if(selectedTeams!=null&&selectedTeams!=""){
             let url=global.constants.api+"/insertNewPlayer";
             let headers=new Headers();
@@ -86,6 +104,7 @@ class AddNewPlayerModal extends React.Component{
             document.getElementById("newPlayerBirthMonth").value+"-"+document.getElementById("newPlayerBirthDay").value));
             formData.append('playerParentName',this.newPlayerParentName.value);
             formData.append('playerParentPhoneNum',this.newPlayerParentPhoneNum.value);
+            formData.append('playerPhoto', this.state.selectedImage);
             formData.append('playerAddress',this.newPlayerAddress.value);
             let teamList=[];
             for(let i=0;i<selectedTeams.length;i++){
@@ -98,7 +117,11 @@ class AddNewPlayerModal extends React.Component{
                 headers:headers,//we need to put correct token to send the request
             }).then(res => res.json()
             ).then(data => {
+                console.log(data.msg);
                 this.props.onSubmited();
+            }).catch(
+                (error)=>{
+                    console.error('Error:', error);
             });
             this.handleClose();
         }else{
@@ -108,8 +131,8 @@ class AddNewPlayerModal extends React.Component{
 
     render(){
         return(
-            <Modal show={this.state.show} onHide={this.handleClose}>
-                <form onSubmit={this.handleSubmit}>
+            <Modal show={this.state.show} onHide={this.handleClose} >
+                <form onSubmit={this.handleSubmit} encType="multipart/form-data">
                 <Modal.Header>
                 <Modal.Title>New Player</Modal.Title>
                 </Modal.Header>
@@ -151,6 +174,10 @@ class AddNewPlayerModal extends React.Component{
                             <tr>
                                 <td><label>Address:</label></td>
                                 <td><textarea maxLength="170" required="required" ref = {(input)=> this.newPlayerAddress = input}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Player Photo:</label></td>
+                                <td><input type="file" name="player_photo" required="required"  style={{height:30}} ref={imageInput=>this.imageInput=imageInput} accept=".jpg,.png,.jpeg" onChange={this.fileSize}/></td>
                             </tr>
                             <tr>
                                 <td><label>Team:</label></td>

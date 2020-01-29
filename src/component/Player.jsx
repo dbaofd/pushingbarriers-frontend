@@ -16,7 +16,6 @@ class Player extends React.Component{
         this.state={
             playerInfo:"",
             teamInfo:"",
-            img:"",
         }
     }
 
@@ -124,7 +123,7 @@ class Player extends React.Component{
     }
 
     handleModalShow3(id){
-        this.child3.handleShow(id);
+        this.child3.handleShow(id,"playerPhoto","");
     }
 
     //once child component update player info, child component will call this function to update this component state
@@ -216,7 +215,7 @@ class Player extends React.Component{
                     </Table>
                     <PlayerModal allplayer={this.state.playerInfo}  allteam={this.state.teamInfo} onRef={this.onRefForPlayerModal} onSubmited={this.onChangeState.bind(this)}/>
                     <AddNewPlayerModal onRef={this.onRefForAddNewPlayerModal} allteam={this.state.teamInfo} onSubmited={this.searchPlayerByName.bind(this)}/>
-                    <ImageModal onRef={this.onRefForImageModal} image={this.state.img}/>
+                    <ImageModal onRef={this.onRefForImageModal} />
                 </div>
             </div>);
     }

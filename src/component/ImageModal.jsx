@@ -9,13 +9,20 @@ class ImageModal extends React.Component{
         this.state={
             show:false,
             img:"",
+            flag:"",
+            driverId:"",
+            driverUserName:""
         }
+        this.handleSubmit=this.handleSubmit.bind(this);
     }
 
-    handleShow=(id)=>{
-        this.getImg(id)
+    handleShow=(id, flag, name)=>{
+        this.getImg(id, flag)
         this.setState({
             show:true,
+            flag:flag,
+            driverId:id,
+            driverUserName:name,
         });
     }
 
@@ -25,8 +32,15 @@ class ImageModal extends React.Component{
         })
     }
 
-    getImg(id){
-        let url=global.constants.api+"/download/"+id;
+    getImg(id, flag){
+        let url;
+        if(flag==="playerPhoto"){
+            url=global.constants.api+"/downloadPlayerPhoto/"+id;
+        }else if(flag==="driverLicense"){
+            url=global.constants.api+"/downloadDriverLicense/"+id;
+        }else if(flag==="driverBluecard"){
+            url=global.constants.api+"/downloadDriverBluecard/"+id;
+        }
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -39,6 +53,50 @@ class ImageModal extends React.Component{
                 img:objectURL,
             });
         });
+    }
+
+    fileSize=event=>{
+        //console.log(typeof event.target.files[0]);
+        if(typeof event.target.files[0]!=="undefined"){
+            if(event.target.files[0].size>=(5*1024*1024)){
+                alert("The photo size should be smaller than 5M!");
+            }else{
+                //alert("all good")
+                this.setState({
+                    selectedImage:event.target.files[0]
+                });
+            }
+        }else{
+            
+        }
+
+    }
+
+    handleSubmit(event){
+        event.preventDefault();
+        let url;
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        let formData=new FormData();
+        if(this.state.flag==="driverLicense"){
+            url=global.constants.api+"/uploadDriverLicense";
+            formData.append("driverLicense", this.state.selectedImage);
+        }else if(this.state.flag==="driverBluecard"){
+            url=global.constants.api+"/uploadDriverBluecard";
+            formData.append("driverBluecard", this.state.selectedImage);
+        }
+        formData.append("driverLicense", this.state.selectedImage);
+        formData.append('driverId',this.state.driverId);
+        formData.append('driverUserName',this.state.driverUserName);
+        fetch(url,{
+            method:"post",
+            body:formData,
+            headers:headers,//we need to put correct token to send the request
+        }).then(res => res.json()
+        ).then(data => {
+            console.log(data.msg);
+        });
+        this.handleClose();
     }
 
     componentDidMount(){
@@ -55,6 +113,34 @@ class ImageModal extends React.Component{
                         <img src={this.state.img}/>
                     </div>
                 </Modal.Body>
+                {this.state.flag==="playerPhoto" ? 
+                <></> 
+                : 
+                <Modal.Footer>
+                    <form onSubmit={this.handleSubmit} encType="multipart/form-data">
+                    <table id="upload"> 
+                        <tbody>
+                            {this.state.flag==="driverLicense"?
+                            <tr>
+                                <td><label>Driver License:</label></td>
+                                <td><input type="file" name="driver_license" required="required" style={{height:30}} accept=".jpg,.png,.jpeg" onChange={this.fileSize}/></td>
+                            </tr>
+                            :
+                            <tr>
+                                <td><label>Driver Bluecard:</label></td>
+                                <td><input type="file" name="driver_bluecard" required="required" style={{height:30}} accept=".jpg,.png,.jpeg" onChange={this.fileSize}/></td>
+                            </tr>}
+                            <tr>
+                                <td colSpan="2" style={{height:65}}>
+                                    <Button variant="primary" type="submit" >
+                                        Upload
+                                    </Button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </form>
+                </Modal.Footer>}
             </Modal>
         );
     }

@@ -5,7 +5,7 @@ import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import Moment from 'moment';
 import ResetDriverPasswordModal from './ResetDriverPasswordModal';
 import ReactToExcel from 'react-html-table-to-excel';
-
+import ImageModal from './ImageModal';
 var drivers;
 class Driver extends React.Component{
     constructor(props){
@@ -38,12 +38,20 @@ class Driver extends React.Component{
         this.getAllDriversInfo();
     }
 
-    onRef = (ref) => {//get "this" returned by child component
+    onRefForResetPassword = (ref) => {//get "this" returned by child component
         this.child = ref;
+    }
+
+    onRefForImageModal = (ref) =>{
+        this.child2=ref;
     }
 
     handleModalShow(driverId){
         this.child.handleShow(driverId);
+    }
+    
+    handleModalShow2(driverId, flag, driverUserName){
+        this.child2.handleShow(driverId, flag, driverUserName);
     }
     availabilityTransformation(availability){
         if(availability===0){
@@ -77,6 +85,8 @@ class Driver extends React.Component{
                 <td>{Moment(this.state.driverInfo[driverIndex].driverBirthday).format('YYYY/MM/DD')}</td>
                 <td>{this.state.driverInfo[driverIndex].driverAddress}</td>
                 <td style={tdStyle}>{this.availabilityTransformation(this.state.driverInfo[driverIndex].driverAvailability)}</td>
+                <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverLicense",this.state.driverInfo[driverIndex].driverUserName)}>License</Button></td>
+                <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverBluecard",this.state.driverInfo[driverIndex].driverUserName)}>Bluecard</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow(this.state.driverInfo[driverIndex].driverId)}>Reset</Button></td>
             </tr>
         );
@@ -152,6 +162,8 @@ class Driver extends React.Component{
                                 <th>Birthday</th>
                                 <th>Address</th>
                                 <th>Availability</th>
+                                <th>License</th>
+                                <th>Bluecard</th>
                                 <th>Reset</th>
                             </tr>
                         </thead>
@@ -159,7 +171,8 @@ class Driver extends React.Component{
                             {drivers}
                         </tbody>
                     </Table>
-                    <ResetDriverPasswordModal onRef={this.onRef}/>
+                    <ResetDriverPasswordModal onRef={this.onRefForResetPassword}/>
+                    <ImageModal onRef={this.onRefForImageModal}/>
                 </div>
             </div>);
     }

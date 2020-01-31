@@ -45,6 +45,14 @@
     width:9%;
 }
 
+#playe-status-select{
+    height:100%;
+    width:8%;
+}
+
+#playe-status-select select{
+    outline:none;
+}
 #player-search{
     height:100%;
     width:9%;

@@ -50,11 +50,25 @@ class PlayerTeam extends React.Component{
     }
     
     playerTeamMappingTemplate(teamIndex, playerListIndex,count){
+        let tdStyle={};
+        if(this.state.playerTeamMapping[teamIndex].playerList[playerListIndex].playerStatus===0){
+            tdStyle={
+                color:"red"
+            };
+        }else if(this.state.playerTeamMapping[teamIndex].playerList[playerListIndex].playerStatus===1){
+            tdStyle={
+                color:"green"
+            };
+        }else if(this.state.playerTeamMapping[teamIndex].playerList[playerListIndex].playerStatus===2){
+            tdStyle={
+                color:"orange"
+            };
+        }
         return(
             <tr key={count}>
                 <td>{count}</td>
                 <td>{this.state.playerTeamMapping[teamIndex].playerList[playerListIndex].playerId}</td>
-                <td>{this.state.playerTeamMapping[teamIndex].playerList[playerListIndex].playerName}</td>
+                <td style={tdStyle}>{this.state.playerTeamMapping[teamIndex].playerList[playerListIndex].playerName}</td>
                 <td>{this.state.playerTeamMapping[teamIndex].teamId}</td>
                 <td>{this.state.playerTeamMapping[teamIndex].teamName}</td>
                 <td>{this.state.playerTeamMapping[teamIndex].clubName}</td>

@@ -65,6 +65,7 @@ class Player extends React.Component{
     
     playerTemplate(playerIndex){
         let tdStyle={};
+        let status="";
         //here need to use "==" rather than "===", because playerStatus will be set to string type
         //when innitially get playerStatus from database, it is integer, when update player info
         //playerStatus will be char, when compare char with 0 by using "===", they don't equal.
@@ -73,6 +74,17 @@ class Player extends React.Component{
             tdStyle={
                 color:"red"
             };
+            status="Inactive";
+        }else if(this.state.playerInfo[playerIndex].playerStatus==1){
+            tdStyle={
+                color:"green"
+            };
+            status="Active";
+        }else if(this.state.playerInfo[playerIndex].playerStatus==2){
+            tdStyle={
+                color:"orange"
+            };
+            status="Waiting"
         }
         return(
             <tr key={this.state.playerInfo[playerIndex].playerId}>
@@ -85,7 +97,7 @@ class Player extends React.Component{
                 <td>{this.state.playerInfo[playerIndex].playerAddress}</td>
                 <td>{this.state.playerInfo[playerIndex].playerParentName}</td>
                 <td>{this.state.playerInfo[playerIndex].playerParentPhoneNum}</td>
-                <td style={tdStyle}>{this.state.playerInfo[playerIndex].playerStatus}</td>
+                <td style={tdStyle}>{status}</td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow(playerIndex)}>Edit</Button></td>
             </tr>
         );
@@ -93,10 +105,6 @@ class Player extends React.Component{
 
     setPlayers(){
         players=[];
-        // for(let player of this.state.playerInfo){
-        //     players.push(this.playerTemplate(player));
-        // }
-        
         for(let i=0;i<this.state.playerInfo.length;i++){
             players.push(this.playerTemplate(i));
         }
@@ -146,8 +154,11 @@ class Player extends React.Component{
     searchPlayerByName(){
         let url;
         if(this.playerNameInput.value.length!==0){
-            url=global.constants.api+"/findPlayersByPlayerName/"+this.playerNameInput.value;
-        }else{
+            url=global.constants.api+"/findPlayersByPlayerName/"+this.playerNameInput.value+"/"+this.selectedStatus.value;
+        }else if(this.playerNameInput.value.length===0&&this.selectedStatus.value!=="3"){
+            url=global.constants.api+"/findPlayersByPlayerStatus/"+this.selectedStatus.value;
+            //this.selectedStatus.value is string
+        }else if(this.playerNameInput.value.length===0&&this.selectedStatus.value==="3"){
             url=global.constants.api+"/allPlayers";
         }
         let headers=new Headers();
@@ -184,6 +195,14 @@ class Player extends React.Component{
                     </div>
                     <div id="playerteam-search">
                         <Button variant="danger" id="playerteam-search-btn" onClick={()=>this.searchPlayerByName()}>Search</Button>
+                    </div>
+                    <div id="playe-status-select">
+                        <select ref = {(input)=> this.selectedStatus = input}>
+                            <option value="3">All</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                            <option value="2">Waiting</option>
+                        </select>
                     </div>
                     <div id="player-name-textbox">
                         <input type="text" id="player-name-input" placeholder="Search by player name" ref = {(input)=> this.playerNameInput = input}/>

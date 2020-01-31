@@ -166,21 +166,6 @@ class TrainingModal extends React.Component{
         this.handleClose();
     }
     
-    updateConfirmButton(){
-        let confirmBtn=document.getElementById(this.state.trainingId);
-        if(this.state.trainingStatus==="0"){
-            confirmBtn.setAttribute("class","btn btn-success");
-        }else if(this.state.trainingStatus==="3"){
-            confirmBtn.setAttribute("class","btn btn-danger");
-        }
-        let time=document.getElementById('training_time'+this.state.trainingId);
-        let driver=document.getElementById('training_driver'+this.state.trainingId);
-        let note=document.getElementById('training_note'+this.state.trainingId);
-        time.innerText=this.time.value;
-        driver.innerText=this.driver.value;
-        console.log(this.note.value);
-        note.innerText=this.note.value;
-    }
     render(){
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>

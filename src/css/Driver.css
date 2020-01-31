@@ -30,6 +30,11 @@
     height:100%;
     width:15%;
 }
+
+#driver-status-select{
+    height:100%;
+    width: 20%;
+}
 #driver-name-input{
     outline: none;
     border-radius: 5px;

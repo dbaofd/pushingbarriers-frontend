@@ -7,7 +7,7 @@ import reactHtmlTableToExcel from "react-html-table-to-excel";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
-var selectedTeams;
+var selectedTeams=[];
 class AddNewPlayerModal extends React.Component{
     constructor(props){
         super(props);
@@ -92,41 +92,42 @@ class AddNewPlayerModal extends React.Component{
     }
     handleSubmit=(event)=>{
         event.preventDefault();
-        if(selectedTeams!=null&&selectedTeams!=""){
-            let url=global.constants.api+"/insertNewPlayer";
-            let headers=new Headers();
-            headers.append("token",localStorage.getItem("token"));
-            let formData=new FormData();
-            formData.append('playerName',this.newPlayerName.value);
-            formData.append('playerGender',this.newPlayerGender.value);
-            formData.append('playerPhoneNum',this.newPlayerPhoneNum.value);
-            formData.append("playerBirthDay",new Date(document.getElementById("newPlayerBirthYear").value+"-"+
-            document.getElementById("newPlayerBirthMonth").value+"-"+document.getElementById("newPlayerBirthDay").value));
-            formData.append('playerParentName',this.newPlayerParentName.value);
-            formData.append('playerParentPhoneNum',this.newPlayerParentPhoneNum.value);
-            formData.append('playerPhoto', this.state.selectedImage);
-            formData.append('playerAddress',this.newPlayerAddress.value);
-            let teamList=[];
-            for(let i=0;i<selectedTeams.length;i++){
-                teamList.push(selectedTeams[i].teamId);
-            }
-            formData.append('teamList',teamList);
-            fetch(url,{
-                method:"post",
-                body:formData,
-                headers:headers,//we need to put correct token to send the request
-            }).then(res => res.json()
-            ).then(data => {
-                console.log(data.msg);
-                this.props.onSubmited();
-            }).catch(
-                (error)=>{
-                    console.error('Error:', error);
-            });
-            this.handleClose();
-        }else{
-            alert("Please fill all the infomation!");
+        //if(selectedTeams!=null&&selectedTeams!=""){
+        let url=global.constants.api+"/insertNewPlayer";
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        let formData=new FormData();
+        formData.append('playerName',this.newPlayerName.value);
+        formData.append('playerGender',this.newPlayerGender.value);
+        formData.append('playerPhoneNum',this.newPlayerPhoneNum.value);
+        formData.append("playerBirthDay",new Date(document.getElementById("newPlayerBirthYear").value+"-"+
+        document.getElementById("newPlayerBirthMonth").value+"-"+document.getElementById("newPlayerBirthDay").value));
+        formData.append('playerParentName',this.newPlayerParentName.value);
+        formData.append('playerParentPhoneNum',this.newPlayerParentPhoneNum.value);
+        formData.append('playerPhoto', this.state.selectedImage);
+        formData.append('playerAddress',this.newPlayerAddress.value);
+        formData.append('playerStatus', this.selectedStatus.value);
+        let teamList=[];
+        for(let i=0;i<selectedTeams.length;i++){
+            teamList.push(selectedTeams[i].teamId);
         }
+        formData.append('teamList',teamList);
+        fetch(url,{
+            method:"post",
+            body:formData,
+            headers:headers,//we need to put correct token to send the request
+        }).then(res => res.json()
+        ).then(data => {
+            console.log(data.msg);
+            this.props.onSubmited();
+        }).catch(
+            (error)=>{
+                console.error('Error:', error);
+        });
+        this.handleClose();
+        // }else{
+        //     alert("Please fill all the infomation!");
+        // }
     }
 
     render(){
@@ -178,6 +179,15 @@ class AddNewPlayerModal extends React.Component{
                             <tr>
                                 <td><label>Player Photo:</label></td>
                                 <td><input type="file" name="player_photo" required="required"  style={{height:30}} ref={imageInput=>this.imageInput=imageInput} accept=".jpg,.png,.jpeg" onChange={this.fileSize}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Player Status</label></td>
+                                <td>
+                                <select ref = {(input)=> this.selectedStatus = input}>
+                                    <option value="1">Active</option>
+                                    <option value="2">Waiting</option>
+                                </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td><label>Team:</label></td>

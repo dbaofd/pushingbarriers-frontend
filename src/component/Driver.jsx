@@ -73,6 +73,10 @@ class Driver extends React.Component{
             tdStyle={
                 color:"orange"
             };
+        }else if(this.state.driverInfo[driverIndex].driverAvailability===1){
+            tdStyle={
+                color:"green"
+            };
         }
         return(
             <tr key={this.state.driverInfo[driverIndex].driverId}>
@@ -105,8 +109,10 @@ class Driver extends React.Component{
     searchDriverByName(){
         let url;
         if(this.driverNameInput.value.length!==0){
-            url=global.constants.api+"/findDriversByName/"+this.driverNameInput.value;
-        }else{
+            url=global.constants.api+"/findDriversByName/"+this.driverNameInput.value+"/"+this.selectedStatus.value;
+        }else if(this.driverNameInput.value.length===0&&this.selectedStatus.value!=="3"){
+            url=global.constants.api+"/findDriversByDriverAvailability/"+this.selectedStatus.value;
+        }else if(this.driverNameInput.value.length===0&&this.selectedStatus.value==="3"){
             url=global.constants.api+"/allDrivers";
         }
         let headers=new Headers();
@@ -141,6 +147,14 @@ class Driver extends React.Component{
                     </div>
                     <div id="driver-search">
                         <Button variant="danger" id="driver-search-btn" onClick={()=>this.searchDriverByName()}>Search</Button>
+                    </div>
+                    <div id="driver-status-select">
+                        <select ref = {(input)=> this.selectedStatus = input}>
+                            <option value="3">All</option>
+                            <option value="0">Temporarily Unavailable</option>
+                            <option value="1">Available</option>
+                            <option value="-1">Permanently Unavailable</option>
+                        </select>
                     </div>
                     <div id="driver-name-textbox">
                         <input type="text" id="driver-name-input" placeholder="Search by driver name" ref = {(input)=> this.driverNameInput = input}/>

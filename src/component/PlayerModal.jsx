@@ -48,6 +48,18 @@ class PlayerModal extends React.Component{
             selectedImage:null,
         });
     }
+    
+    componentDidMount(){
+        //pass "this" to parent component in order to 
+        //let parent component can execute child functions
+        this.props.onRef(this)
+    }
+
+    handleClose=()=>{
+        this.setState({
+            show:false,
+        })
+    }
 
     handleChange(event){
         const target = event.target;
@@ -99,17 +111,6 @@ class PlayerModal extends React.Component{
             console.log(data.msg);
         });
         this.handleClose();
-    }
-    componentDidMount(){
-        //pass "this" to parent component in order to 
-        //let parent component can execute child functions
-        this.props.onRef(this)
-    }
-
-    handleClose=()=>{
-        this.setState({
-            show:false,
-        })
     }
 
     setBirthday(){
@@ -219,8 +220,9 @@ class PlayerModal extends React.Component{
                                 <td><label>Status:</label></td>
                                 <td>
                                     <select  name="playerStatus" value={this.state.playerStatus} onChange={this.handleChange}>
-                                        <option>1</option>
-                                        <option>0</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                        <option value="2">Waiting</option>
                                     </select>
                                 </td>
                             </tr>

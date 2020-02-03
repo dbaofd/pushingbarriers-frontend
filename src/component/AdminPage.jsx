@@ -9,6 +9,8 @@ import Player from "./Player";
 import Driver from "./Driver";
 import Team from "./Team";
 import PlayerTeam from "./PlayerTeam";
+import GameTrip from './GameTrip';
+import Trip from './Trip';
 import '../config.js';
 import '../css/AdminPage.css'
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
@@ -72,6 +74,8 @@ class AdminPage extends React.Component{
                     <Route path="/Driver" component={Driver}/>
                     <Route path="/Team" component={Team}/>
                     <Route path="/PlayerTeam" component={PlayerTeam}/>
+                    <Route path="/GameTrip" component={GameTrip}/>
+                    <Route path="/Trip" component={Trip}/>
                     <Route component={Error}/>
                 </Switch>
                 </div>

@@ -41,7 +41,7 @@ class Game extends React.Component{
     }
 
     getUpdateTime(){
-        let url=global.constants.api+"/get-update-time";
+        let url=global.constants.api+"/get-update-time/1";
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -202,7 +202,7 @@ class Game extends React.Component{
                     totalElements={this.state.totalElements} 
                     updateTime={this.state.updateTime} 
                     currentPage={currentPage} 
-                    fromParentGetGameByPage={this.getGameByPage}/>
+                    loadNewPage={this.getGameByPage}/>
                 </div>
             </div>
         );//here we don't need to write "this.getGameByPage.bind(this)"

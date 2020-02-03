@@ -56,7 +56,7 @@ class Driver extends React.Component{
     availabilityTransformation(availability){
         if(availability===0){
             return "Temporarily Unavailable"
-        }else if(availability===-1){
+        }else if(availability===2){
             return "Permanently Unavailable"
         }else if(availability===1){
             return "Available"
@@ -65,7 +65,7 @@ class Driver extends React.Component{
 
     driverTemplate(driverIndex){
         let tdStyle={};
-        if(this.state.driverInfo[driverIndex].driverAvailability===-1){
+        if(this.state.driverInfo[driverIndex].driverAvailability===2){
             tdStyle={
                 color:"red"
             };

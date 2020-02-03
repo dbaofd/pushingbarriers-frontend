@@ -218,6 +218,8 @@ class Trainingtemplate extends React.Component{
                 </div>
                 <div id="trainingtemplate-table">
                     <Table striped bordered hover id="my-trainingtemplate-table">
+                        {trainingTemTrsMonday.length!==0?
+                        <>
                         <thead>
                             <tr><th>Monday</th></tr>
                             <tr>
@@ -237,6 +239,11 @@ class Trainingtemplate extends React.Component{
                         <tbody>
                             {trainingTemTrsMonday}
                         </tbody>
+                        </>
+                        :<></>}
+
+                        {trainingTemTrsTuesday.length!==0?
+                        <>
                         <thead>
                             <tr><th>Tuesday</th></tr>
                             <tr>
@@ -256,6 +263,11 @@ class Trainingtemplate extends React.Component{
                         <tbody>
                             {trainingTemTrsTuesday}
                         </tbody>
+                        </>
+                        :<></>}
+                        
+                        {trainingTemTrsWednesday.length!==0?
+                        <>
                         <thead>
                             <tr><th>Wednesday</th></tr>
                             <tr>
@@ -275,6 +287,11 @@ class Trainingtemplate extends React.Component{
                         <tbody>
                             {trainingTemTrsWednesday}
                         </tbody>
+                        </>
+                        :<></>}
+
+                        {trainingTemTrsThursday.length!==0?
+                        <>
                         <thead>
                             <tr><th>Thursday</th></tr>
                             <tr>
@@ -294,6 +311,11 @@ class Trainingtemplate extends React.Component{
                         <tbody>
                             {trainingTemTrsThursday}
                         </tbody>
+                        </>
+                        :<></>}
+
+                        {trainingTemTrsFriday.length!==0?
+                        <>
                         <thead>
                             <tr><th>Friday</th></tr>
                             <tr>
@@ -313,6 +335,8 @@ class Trainingtemplate extends React.Component{
                         <tbody>
                             {trainingTemTrsFriday}
                         </tbody>
+                        </>
+                        :<></>}
                     </Table>
                     <TrainingtemplateModal 
                     allPlayers={this.state.allPlayers}

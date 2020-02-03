@@ -31,7 +31,7 @@ class MyPagination extends React.Component{
                     <Pagination.Item onClick={()=>this.pageClick(totalPages)}>{totalPages}</Pagination.Item>
                     <Pagination.Next onClick={()=>this.pageClick(active+1)}/>
                     <Pagination.Last onClick={()=>this.pageClick(totalPages)}/>
-                    <li className="page-li">{this.props.totalElements}&nbsp;items in total</li>
+                    <li className="page-li">{this.props.totalElements}&nbsp;records in total</li>
                 </Pagination>);
         }else if(active<5&&active<=(totalPages-4)){
             for (let number = 1; number <= active; number++) {
@@ -62,7 +62,7 @@ class MyPagination extends React.Component{
                     <Pagination.Item onClick={()=>this.pageClick(totalPages)}>{totalPages}</Pagination.Item>
                     <Pagination.Next onClick={()=>this.pageClick(active+1)}/>
                     <Pagination.Last onClick={()=>this.pageClick(totalPages)}/>
-                    <li className="page-li">{this.props.totalElements}&nbsp;items in total</li>
+                    <li className="page-li">{this.props.totalElements}&nbsp;records in total</li>
                 </Pagination>);
         }else if(active<5&&active>(totalPages-4)){
             for (let number = 1; number <= totalPages; number++) {
@@ -88,7 +88,7 @@ class MyPagination extends React.Component{
                     {items}
                     <Pagination.Next onClick={()=>this.pageClick(active+1)}/>
                     <Pagination.Last onClick={()=>this.pageClick(totalPages)}/>
-                    <li className="page-li">{this.props.totalElements}&nbsp;items in total</li>
+                    <li className="page-li">{this.props.totalElements}&nbsp;records in total</li>
                 </Pagination>);
         }else if(active>=5&&active>(totalPages-4)){
             items.push(
@@ -116,20 +116,16 @@ class MyPagination extends React.Component{
                     {items}
                     <Pagination.Next onClick={()=>this.pageClick(active+1)}/>
                     <Pagination.Last onClick={()=>this.pageClick(totalPages)}/>
-                    <li className="page-li">{this.props.totalElements}&nbsp;items in total</li>
+                    <li className="page-li">{this.props.totalElements}&nbsp;records in total</li>
                 </Pagination>);
         }
         return paginationBasic;
     }
 
-    studyGetGameByPage(){
-        this.props.fromParentGetGameByPage(active);
-    }
-
     pageClick(page){
         if(page<=this.props.totalPages&&page>0){
             active=page;
-            this.studyGetGameByPage();
+            this.props.loadNewPage(active);
         }else{
 
         }

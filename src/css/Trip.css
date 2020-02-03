@@ -1,0 +1,124 @@
+#trip{
+    height:100%;
+    width:100%;
+}
+#trip-bar{
+    height:7%;
+    width:100%;
+    background-color: #35527b;
+}
+/*the datepicker won't working if set style for all the divs in #trip-bar, so set these styles one by one
+there are many divs in datepicker, some styles like 'display' 'align-items' may cause it to not work */
+/*#trip-bar div{
+    height:100%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari 
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}*/
+
+#trip-export-excel{
+    height:100%;
+    width:7%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+#trip-search{
+    height:100%;
+    width:9%;
+    height:100%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+#trip-pagesize{
+    height: 100%;
+    width: 6%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+#trip-pagesize-label{
+    height: 100%;
+    width: 7%;
+    color:white;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+#trip-searchby{
+    height: 100%;
+    width: 10%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+#trip-name-input{
+    width: 90%;
+    outline: none;
+    border-radius: 5px;
+}
+#trip-status-select{
+    width: 90%;
+}
+
+#trip-date-range{
+    width:35%;
+    height:100%;
+    color: white;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+#trip-searchby-select-box{
+    height: 100%;
+    width: 22%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+#searchby-select{
+    width:90%;
+}
+
+#trip-table{
+    overflow-y: auto;
+    overflow-x:auto;
+    height:86%;
+    width:100%;
+}
+
+.trip_note_div{
+    overflow-y: auto;
+    height:60px;
+}
+
+#trip-footer{
+    height:7%;
+    width:70%;
+}

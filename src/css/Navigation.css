@@ -5,7 +5,7 @@
     font-size: 1rem;
     color: white;
 }
-#column1{
+#NavigationBar-column1{
     width:40%;
     height:100%;
     float:left;
@@ -16,8 +16,8 @@
     padding-left: 2%;
     font-size: 1.3rem;
 }
-#column2{
-    width:20%;
+#NavigationBar-column2{
+    width:15%;
     height:100%;
     float:left;
     display: flex;/*make contents in vertical center position*/
@@ -25,8 +25,8 @@
     justify-content: center;
     align-items: center;
 }
-#column3{
-    width:20%;
+#NavigationBar-column3{
+    width:15%;
     height:100%;
     float:left;
     display: flex;/*make contents in vertical center position*/
@@ -34,8 +34,8 @@
     justify-content: center;
     align-items: center;
 }
-#column4{
-    width:20%;
+#NavigationBar-column4{
+    width:15%;
     height:100%;
     float:left;
     display: flex;/*make contents in vertical center position*/
@@ -43,8 +43,8 @@
     justify-content: center;
     align-items: center;
 }
-#column5{
-    width:20%;
+#NavigationBar-column5{
+    width:15%;
     height:100%;
     float:left;
     display: flex;/*make contents in vertical center position*/

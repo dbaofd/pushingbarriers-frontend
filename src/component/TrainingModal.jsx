@@ -64,22 +64,19 @@ class TrainingModal extends React.Component{
         if(this.state.trainingStatus===0){
             return (
                 <>
-                <option>Select</option>
-                <option value="0">Unconfirmed</option>
-                <option value="3">Cancelled</option>
+                    <option value="0">Unconfirmed</option>
+                    <option value="3">Cancelled</option>
                 </>
             );
         }else if(this.state.trainingStatus===1){
             return (
                 <>
-                    <option>Select</option>
                     <option value="3">Cancelled</option>
                 </>
             );
         }else if(this.state.trainingStatus===2){
             return (
                 <>
-                    <option>Select</option>
                     <option value="0">Unconfirmed</option>
                     <option value="3">Cancelled</option>
                 </>
@@ -87,7 +84,6 @@ class TrainingModal extends React.Component{
         }else if(this.state.trainingStatus===3){
             return (
                 <>
-                    <option>Select</option>
                     <option value="3">Cancelled</option>
                     <option value="0">Unconfirmed</option>
                 </>
@@ -150,7 +146,7 @@ class TrainingModal extends React.Component{
         formData.append('driverId',this.state.trainingDriverId);
         formData.append('driverGender',this.state.trainingDriverGender);
         formData.append('time',this.state.trainingTime);
-        formData.append('status',this.state.trainingStatus);
+        formData.append('status',Number(this.selectedStatus.value));
         formData.append("note",this.state.trainingNote)
         formData.append('id',this.state.trainingId);
         fetch(url,{
@@ -162,7 +158,7 @@ class TrainingModal extends React.Component{
             console.log(data.msg);
         });
         this.props.onSubmited(this.state.trainingIndex,this.state.trainingDriver,this.state.trainingDriverId,
-            this.state.trainingDriverGender,this.state.trainingTime,this.state.trainingStatus,this.state.trainingNote);
+            this.state.trainingDriverGender,this.state.trainingTime,Number(this.selectedStatus.value),this.state.trainingNote);
         this.handleClose();
     }
     
@@ -193,7 +189,7 @@ class TrainingModal extends React.Component{
                                         )}
                                         onChange={(event, value) =>{
                                             if(value!=null){
-                                                alert(value.driverName+value.driverId+value.driverGender)
+                                                //alert(value.driverName+value.driverId+value.driverGender)
                                                 this.setState({
                                                     trainingDriver:value.driverName,
                                                     trainingDriverId:value.driverId,
@@ -203,6 +199,10 @@ class TrainingModal extends React.Component{
                                         }}
                                         />
                                 </td>
+                            </tr>
+                            <tr>
+                                <td><label>Driver Id:</label></td>
+                                <td><input type="text" disabled="disabled" value={this.state.trainingDriverId}/></td>
                             </tr>
                             <tr>
                                 <td><label>Time:</label></td>
@@ -219,7 +219,7 @@ class TrainingModal extends React.Component{
                             <tr>
                                 <td><label>Status:</label></td>
                                 <td>
-                                    <select name="trainingStatus" value={this.state.trainingStatus} onChange={this.handleChange}>
+                                    <select name="trainingStatus" ref = {(input)=> this.selectedStatus = input}>
                                         {this.setOptions()}
                                     </select>
                                 </td>

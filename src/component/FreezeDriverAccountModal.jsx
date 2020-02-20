@@ -1,21 +1,24 @@
 import React from 'react';
 import {Button,Modal} from "react-bootstrap"
-import '../css/ResetDriverPasswordModal.css';
+import '../css/FreezeDriverAccountModal.css';
 import '../config.js';
 import md5 from 'md5';
-class ResetDriverPasswordModal extends React.Component{
+class FreezeDriverAccountModal extends React.Component{
     constructor(props){
         super(props)
         this.state={
             show:false,
             driverId:"",
+            driverName:""
         }
     }
 
-    handleShow=(driverId)=>{
+    handleShow=(driverId, driverName, driverAvailability)=>{
         this.setState({
             show:true,
             driverId:driverId,
+            driverName:driverName,
+            driverAvailability:driverAvailability,
         })
     }
 
@@ -31,21 +34,21 @@ class ResetDriverPasswordModal extends React.Component{
         this.props.onRef(this)
     }
 
-    resetPassword(){
-        let url=global.constants.api+"/resetDriverPassword";
+    freezeDriver(){
+        let url=global.constants.api+"/updateDriverStatus";
         let headers=new Headers();
+        let newAvailability=(this.state.driverAvailability===2?1:2);
         headers.append("token",localStorage.getItem("token"));
         let formData=new FormData();
-        let newPassword=md5(md5(global.constants.resetPassword+global.constants.salt));
-        //console.log(newPassword);
-        formData.append('password',newPassword);
-        formData.append('id', this.state.driverId);
+        formData.append('driverId',this.state.driverId);
+        formData.append('status', newAvailability);
         fetch(url,{
             method:"post",
             body:formData,
             headers:headers,
         }).then(res=>res.json()
         ).then(data=>{
+            this.props.onSubmited();
             console.log(data.msg);
         });
         this.handleClose();
@@ -54,13 +57,13 @@ class ResetDriverPasswordModal extends React.Component{
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header>
-                    <Modal.Title>Are you sure to reset the password({global.constants.resetPassword})?</Modal.Title>
+                    <Modal.Title>{this.state.driverAvailability===2?"Are you sure to unfreeze":"Are you sure to freeze"} {this.state.driverName}?</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                 <Button variant="primary" onClick={this.handleClose}>
                     No
                 </Button>
-                <Button variant="danger" onClick={()=>this.resetPassword()}>
+                <Button variant="danger" onClick={()=>this.freezeDriver()}>
                     Yes
                 </Button>
                 </Modal.Footer>
@@ -69,4 +72,4 @@ class ResetDriverPasswordModal extends React.Component{
     }
 }
 
-export default ResetDriverPasswordModal;
+export default FreezeDriverAccountModal;

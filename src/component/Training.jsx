@@ -83,28 +83,31 @@ class Training extends React.Component{
     //         });
     //     }
     // }
-    getConfirmButtonType(status){
-        if(status===0){
-            return "success";
-        }else if(status===1){
-            return "secondary";
-        }else if(status===2){
-            return "warning";
-        }else if(status===3){
-            return "danger";
-        }
-    }
 
-    trainingTrTemplate(index,buttonType){
+    trainingTrTemplate(index){
         let status="";
-        if(buttonType==="success"){
+        let buttonType=""
+        let type="";
+        if(this.state.trainingsInfo[index].trainingStatus===0){
             status="Unconfirmed";
-        }else if(buttonType==="secondary"){
+            buttonType="success";
+        }else if(this.state.trainingsInfo[index].trainingStatus===1){
             status="Confirmed";
-        }else if(buttonType==="warning"){
+            buttonType="secondary";
+        }else if(this.state.trainingsInfo[index].trainingStatus===2){
             status="Refused";
-        }else if(buttonType==="danger"){
+            buttonType="warning";
+        }else if(this.state.trainingsInfo[index].trainingStatus===3){
             status="Cancelled";
+            buttonType="danger";
+        }
+
+        if(this.state.trainingsInfo[index].trainingType===1){
+            type="return";
+        }else if(this.state.trainingsInfo[index].trainingType===2){
+            type="player address to training address";
+        }else if(this.state.trainingsInfo[index].trainingType===3){
+            type="training address to player address";
         }
         return(
             <tr key={this.state.trainingsInfo[index].trainingId}>
@@ -117,6 +120,7 @@ class Training extends React.Component{
                 <td>{this.state.trainingsInfo[index].trainingPlayerAddress}</td>
                 <td>{this.state.trainingsInfo[index].trainingAddress}</td>
                 <td><div className="training_note_div">{this.state.trainingsInfo[index].trainingNote}</div></td>
+                <td>{type}</td>
                 <td><Button variant={buttonType} id={this.state.trainingsInfo[index].trainingId}>{status}</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow(index)}>Edit</Button></td>
             </tr>
@@ -131,34 +135,24 @@ class Training extends React.Component{
         trainingTrsFriday=[];
         for(let i=0;i<this.state.trainingsInfo.length;i++){
             if(this.state.trainingsInfo[i].trainingDay==="Monday"){
-                let buttonType;
-                buttonType=this.getConfirmButtonType(this.state.trainingsInfo[i].trainingStatus)
                 trainingTrsMonday.push(
-                    this.trainingTrTemplate(i,buttonType)
+                    this.trainingTrTemplate(i)
                 );
             }else if(this.state.trainingsInfo[i].trainingDay==="Tuesday"){
-                let buttonType;
-                buttonType=this.getConfirmButtonType(this.state.trainingsInfo[i].trainingStatus)
                 trainingTrsTuesday.push(
-                    this.trainingTrTemplate(i,buttonType)
+                    this.trainingTrTemplate(i)
                 );
             }else if(this.state.trainingsInfo[i].trainingDay==="Wednesday"){
-                let buttonType;
-                buttonType=this.getConfirmButtonType(this.state.trainingsInfo[i].trainingStatus)
                 trainingTrsWednesday.push(
-                    this.trainingTrTemplate(i,buttonType)
+                    this.trainingTrTemplate(i)
                 );
             }else if(this.state.trainingsInfo[i].trainingDay==="Thursday"){
-                let buttonType;
-                buttonType=this.getConfirmButtonType(this.state.trainingsInfo[i].trainingStatus)
                 trainingTrsThursday.push(
-                    this.trainingTrTemplate(i,buttonType)
+                    this.trainingTrTemplate(i)
                 );
             }else if(this.state.trainingsInfo[i].trainingDay==="Friday"){
-                let buttonType;
-                buttonType=this.getConfirmButtonType(this.state.trainingsInfo[i].trainingStatus)
                 trainingTrsFriday.push(
-                    this.trainingTrTemplate(i,buttonType)
+                    this.trainingTrTemplate(i)
                 );
             }
         }
@@ -255,6 +249,7 @@ class Training extends React.Component{
                                     <th>PlayerAddress</th>
                                     <th>TrainingAddress</th>
                                     <th>Note</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
@@ -280,6 +275,7 @@ class Training extends React.Component{
                                     <th>PlayerAddress</th>
                                     <th>TrainingAddress</th>
                                     <th>Note</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
@@ -305,6 +301,7 @@ class Training extends React.Component{
                                     <th>PlayerAddress</th>
                                     <th>TrainingAddress</th>
                                     <th>Note</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
@@ -330,6 +327,7 @@ class Training extends React.Component{
                                     <th>PlayerAddress</th>
                                     <th>TrainingAddress</th>
                                     <th>Note</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
@@ -355,6 +353,7 @@ class Training extends React.Component{
                                     <th>PlayerAddress</th>
                                     <th>TrainingAddress</th>
                                     <th>Note</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>

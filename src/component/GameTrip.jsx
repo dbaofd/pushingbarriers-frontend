@@ -40,6 +40,7 @@ class GameTrip extends React.Component{
     gameTripTrTemplate(index){
         let statusText="";
         let buttonType="";
+        let tripType="";
         if(this.state.gameTrips[index].tripStatus===0){
             statusText="Waiting";
             buttonType="success";
@@ -49,6 +50,14 @@ class GameTrip extends React.Component{
         }else if(this.state.gameTrips[index].tripStatus===3){
             statusText="Cancelled";
             buttonType="danger";
+        }
+
+        if(this.state.gameTrips[index].tripType===1){
+            tripType="return";
+        }else if(this.state.gameTrips[index].tripType===2){
+            tripType="player address to game address";
+        }else if(this.state.gameTrips[index].tripType===3){
+            tripType="game address to player address";
         }
         
 
@@ -64,6 +73,7 @@ class GameTrip extends React.Component{
                 <td>{this.state.gameTrips[index].tripPlayerAddress}</td>
                 <td>{this.state.gameTrips[index].tripAddress}</td>
                 <td><div className="gametrip_note_div">{this.state.gameTrips[index].tripNote}</div></td>
+                <td>{tripType}</td>
                 <td><Button variant={buttonType} id={this.state.gameTrips[index].trainingId}>{statusText}</Button></td>
                 <td><Button variant="info" >Edit</Button></td>
             </tr>
@@ -155,6 +165,7 @@ class GameTrip extends React.Component{
                                     <th>PlayerAddress</th>
                                     <th>GameAddress</th>
                                     <th>Note</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
@@ -180,6 +191,7 @@ class GameTrip extends React.Component{
                                     <th>PlayerAddress</th>
                                     <th>GameAddress</th>
                                     <th>Note</th>
+                                    <th>Type</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>

@@ -129,9 +129,11 @@ class PlayerModal extends React.Component{
             optionMonth.push(<option value={j} key={j}>{j}</option>);
         }
 
-        let maxiumDayOfMonth=Moment(this.state.playerBirthYear+"-"+this.state.playerBirthMonth).endOf('month').format('D');
+        let maxiumDayOfMonth=Moment(this.state.playerBirthYear+"-"+this.state.playerBirthMonth+"-01").endOf('month').format('D');
+        let lastDay=new Date(this.state.playerBirthYear,this.state.playerBirthMonth,0);
+        //alert(lastDay.getDate())
         //console.log(document.getElementsByName("playerBirthDay")[0]);
-        for(let k=1;k<=maxiumDayOfMonth;k++){
+        for(let k=1;k<=lastDay.getDate();k++){
             optionDay.push(<option value={k} key={k}>{k}</option>);
         }
         //alert(Moment(this.state.playerData.playerBirthday).endOf('month').format('D'));

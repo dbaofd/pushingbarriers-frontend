@@ -49,32 +49,37 @@ class AddNewTrainingModal extends React.Component{
         this.props.onRef(this)
     }
     handleSubmit=(event)=>{
-        event.preventDefault();
-        let url=global.constants.api+"/insertNewTraining";
-        let headers=new Headers();
-        headers.append("token",localStorage.getItem("token"));
-        let formData=new FormData();
-        formData.append('day',document.getElementById("newTrainingDay").value);
-        formData.append('time',document.getElementById("newTrainingTime").value);
-        formData.append('playerId',this.state.trainingPlayerId);
-        formData.append("playerName",this.state.trainingPlayer);
-        formData.append('playerGender',this.state.trainingPlayerGender);
-        formData.append('driverId',this.state.trainingDriverId);
-        formData.append('driverName',this.state.trainingDriver);
-        formData.append('driverGender',this.state.trainingDriverGender);
-        formData.append('club',this.state.trainingClub);
-        formData.append('playerAddress',this.state.trainingPlayerAddress);
-        formData.append('trainingAddress',this.state.trainingAddress);
-        fetch(url,{
-            method:"post",
-            body:formData,
-            headers:headers,//we need to put correct token to send the request
-        }).then(res => res.json()
-        ).then(data => {
-            this.props.onSubmited();
-            console.log(data.msg);
-        });
-        this.handleClose();
+        event.preventDefault();//this one is necessary
+        if(this.state.trainingPlayerId!==""&&this.state.trainingDriverId!==""&&
+            this.state.trainingClub!==""){
+            let url=global.constants.api+"/insertNewTraining";
+            let headers=new Headers();
+            headers.append("token",localStorage.getItem("token"));
+            let formData=new FormData();
+            formData.append('day',document.getElementById("newTrainingDay").value);
+            formData.append('time',document.getElementById("newTrainingTime").value);
+            formData.append('playerId',this.state.trainingPlayerId);
+            formData.append("playerName",this.state.trainingPlayer);
+            formData.append('playerGender',this.state.trainingPlayerGender);
+            formData.append('driverId',this.state.trainingDriverId);
+            formData.append('driverName',this.state.trainingDriver);
+            formData.append('driverGender',this.state.trainingDriverGender);
+            formData.append('club',this.state.trainingClub);
+            formData.append('playerAddress',this.state.trainingPlayerAddress);
+            formData.append('trainingAddress',this.state.trainingAddress);
+            fetch(url,{
+                method:"post",
+                body:formData,
+                headers:headers,//we need to put correct token to send the request
+            }).then(res => res.json()
+            ).then(data => {
+                this.props.onSubmited();
+                console.log(data.msg);
+            });
+            this.handleClose();
+        }else{
+            alert("Please fill all the empty fields!")
+        }
     }
 
     componentDidMount(){
@@ -161,7 +166,7 @@ class AddNewTrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PlayerId:</label></td>
-                                <td><input type="text" disabled="disabled" name="trainingPlayerId" value={this.state.trainingPlayerId} onChange={this.handleChange}/></td>
+                                <td><input type="text" required disabled="disabled" name="trainingPlayerId" value={this.state.trainingPlayerId} onChange={this.handleChange}/></td>
                             </tr>
                             <tr>
                                 <td><label>Player:</label></td>
@@ -252,7 +257,7 @@ class AddNewTrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>TrainingAddress</label></td>
-                                <td><input type="text" name="trainingAddress" onChange={this.handleChange} maxLength="170"/></td>
+                                <td><input type="text" required name="trainingAddress" onChange={this.handleChange} maxLength="170"/></td>
                             </tr>
                         </tbody>
                     </table>

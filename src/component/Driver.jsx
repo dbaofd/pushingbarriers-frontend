@@ -4,6 +4,7 @@ import '../config.js';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import Moment from 'moment';
 import ResetDriverPasswordModal from './ResetDriverPasswordModal';
+import FreezeDriverAccountModal from './FreezeDriverAccountModal';
 import ReactToExcel from 'react-html-table-to-excel';
 import ImageModal from './ImageModal';
 var drivers;
@@ -46,12 +47,20 @@ class Driver extends React.Component{
         this.child2=ref;
     }
 
+    onRefForFreezeDriverAccount = (ref) =>{
+        this.child3=ref;
+    }
+
     handleModalShow(driverId){
         this.child.handleShow(driverId);
     }
     
     handleModalShow2(driverId, flag, driverUserName){
         this.child2.handleShow(driverId, flag, driverUserName);
+    }
+
+    handleModalShow3(driverId, driverName, driverAvailability){
+        this.child3.handleShow(driverId, driverName, driverAvailability);
     }
     availabilityTransformation(availability){
         if(availability===0){
@@ -92,6 +101,11 @@ class Driver extends React.Component{
                 <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverLicense",this.state.driverInfo[driverIndex].driverUserName)}>License</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverBluecard",this.state.driverInfo[driverIndex].driverUserName)}>Bluecard</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow(this.state.driverInfo[driverIndex].driverId)}>Reset</Button></td>
+                <td>
+                    <Button variant="info" onClick={()=>this.handleModalShow3(this.state.driverInfo[driverIndex].driverId, this.state.driverInfo[driverIndex].driverName, this.state.driverInfo[driverIndex].driverAvailability)}>
+                        {this.state.driverInfo[driverIndex].driverAvailability===2?"Unfreeze":"Freeze"}
+                    </Button>
+                </td>
             </tr>
         );
     }
@@ -153,7 +167,7 @@ class Driver extends React.Component{
                             <option value="3">All</option>
                             <option value="0">Temporarily Unavailable</option>
                             <option value="1">Available</option>
-                            <option value="-1">Permanently Unavailable</option>
+                            <option value="2">Permanently Unavailable</option>
                         </select>
                     </div>
                     <div id="driver-name-textbox">
@@ -179,6 +193,7 @@ class Driver extends React.Component{
                                 <th>License</th>
                                 <th>Bluecard</th>
                                 <th>Reset</th>
+                                <th>Freeze</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -187,6 +202,7 @@ class Driver extends React.Component{
                     </Table>
                     <ResetDriverPasswordModal onRef={this.onRefForResetPassword}/>
                     <ImageModal onRef={this.onRefForImageModal}/>
+                    <FreezeDriverAccountModal onRef={this.onRefForFreezeDriverAccount} onSubmited={this.searchDriverByName.bind(this)}/>
                 </div>
             </div>);
     }

@@ -1,4 +1,5 @@
 global.constants={
-    api:"",
+    api:"",//"api",
     salt:"fjeiojgoeigjgokwao",
+    resetPassword:"123456",
 };

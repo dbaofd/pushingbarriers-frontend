@@ -46,12 +46,14 @@ class Login extends React.Component{
                 })
             }else if(data.msg==="fail_to_connect_radis"){
                 alert("fail_to_connect_radis");
-            }else{
+            }else if(data.msg==="already_logged_in"){
+                alert("already_logged_in");
+            }else if(data.msg==="success"){
                 this.setState({
                     namebordercolor:"#fff",
                     pswbordercolor:"#fff"
                 });
-                localStorage.setItem("token",data.msg);
+                localStorage.setItem("token",data.token);
                 localStorage.setItem("adminName",this.state.adminname);
                 this.props.history.push('/');
             }

@@ -28,6 +28,7 @@ class AdminPage extends React.Component{
         this.state={
             token:localStorage.getItem("token"),
             adminName:localStorage.getItem("adminName"),
+            isValid:false,
         };
     }
     //check login
@@ -42,6 +43,9 @@ class AdminPage extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.msg==="success"){
+                this.setState({
+                    isValid:true,
+                });
                 console.log("check login status successfully")
             }else if(data.msg==="unmarched_adminname"){
                 this.props.history.push('/Login');
@@ -50,7 +54,10 @@ class AdminPage extends React.Component{
             }else{
                 this.props.history.push('/Login');
             }
-        })
+        }).catch(
+            (error)=>{
+                this.props.history.push('/Login');
+        });
     }
     componentWillMount(){//before rendering the component, we need to check the admin authtication
         this.checkLoginStatus();
@@ -58,6 +65,9 @@ class AdminPage extends React.Component{
     
     render(){
         return(
+            <>
+            {this.state.isValid?
+            <>
             <BrowserRouter>
             <Navigation/>
             <div id="mycontainer">
@@ -81,6 +91,14 @@ class AdminPage extends React.Component{
                 </div>
             </div>
             </BrowserRouter>
+            </>
+            :
+            <>
+            <div>
+                Checking
+            </div>
+            </>}
+            </>
         );
 
     }

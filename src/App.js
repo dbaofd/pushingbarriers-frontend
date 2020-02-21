@@ -3,13 +3,8 @@ import Login from './component/Login';
 import AdminPage from './component/AdminPage';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import './App.css';
-
-const newroute=()=>{
-  return(
-    <div>hello world</div>
-  );
-}
-
+import {ToastContainer,toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 class App extends Component{
   constructor(props){
     super(props);
@@ -21,6 +16,7 @@ class App extends Component{
           <Route path="/Login" component={Login}/>
           <Route path="/" component={AdminPage}/>
         </Switch>
+        <ToastContainer />
       </BrowserRouter>
     );
   }

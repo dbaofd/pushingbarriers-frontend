@@ -4,6 +4,7 @@ import "../css/PlayerTeam.css";
 import '../config.js';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import Moment from 'moment';
+import * as MyToast from '../tools/MyToast';
 
 var playerTeamMapping;
 class PlayerTeam extends React.Component{
@@ -27,21 +28,26 @@ class PlayerTeam extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
+            }else{
+                let teams=[];
+                let clubs=new Set();
+                for(let i=0;i<data.length;i++){
+                    teams.push(data[i].teamName);
+                    clubs.add(data[i].clubName);
+                }
+                this.setState({
+                    playerTeamMapping:data,
+                    allTeams:teams,
+                    allClubs:Array.from(clubs),
+                });
             }
-            let teams=[];
-            let clubs=new Set();
-            for(let i=0;i<data.length;i++){
-                teams.push(data[i].teamName);
-                clubs.add(data[i].clubName);
-            }
-            this.setState({
-                playerTeamMapping:data,
-                allTeams:teams,
-                allClubs:Array.from(clubs),
-            });
 
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -126,12 +132,16 @@ class PlayerTeam extends React.Component{
                 }).then(res => res.json()
                 ).then(data => {
                     if(data.code===401){
-                        alert(data.message+" wrong token!");
+                        MyToast.notify(data.message+" wrong token!", "error");
                         data=[];
                     }
                     this.setState({
                         playerTeamMapping:data,
                     });
+                }).catch(
+                    (error)=>{
+                        MyToast.notify("Network request failed", "error");
+                        console.error('Error:', error);
                 });
             }else{
                 this.getPlayerTeamMapping()
@@ -147,12 +157,16 @@ class PlayerTeam extends React.Component{
                 }).then(res => res.json()
                 ).then(data => {
                     if(data.code===401){
-                        alert(data.message+" wrong token!");
+                        MyToast.notify(data.message+" wrong token!", "error");
                         data=[];
                     }
                     this.setState({
                         playerTeamMapping:data,
                     });
+                }).catch(
+                    (error)=>{
+                        MyToast.notify("Network request failed", "error");
+                        console.error('Error:', error);
                 });
             }else{
                 this.getPlayerTeamMapping()

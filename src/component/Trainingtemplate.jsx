@@ -1,11 +1,13 @@
 import React from "react";
+import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap"
+import ReactToExcel from 'react-html-table-to-excel';
+
 import "../css/Trainingtemplate.css";
 import '../config.js';
 import TrainingtemplateModal from './TrainingtemplateModal';
 import AddNewTrainingModal from './AddNewTrainingModal';
 import DeleteTrainingModal from './DeleteTrainingModal';
-import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap"
-import ReactToExcel from 'react-html-table-to-excel';
+import * as MyToast from '../tools/MyToast';
 
 var trainingTemTrsMonday;
 var trainingTemTrsTuesday;
@@ -32,12 +34,16 @@ class Trainingtemplate extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 trainingTemplateInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -51,12 +57,16 @@ class Trainingtemplate extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 allPlayers:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -70,12 +80,16 @@ class Trainingtemplate extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 allDrivers:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -89,12 +103,16 @@ class Trainingtemplate extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 allTeams:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 

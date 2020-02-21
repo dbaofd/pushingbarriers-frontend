@@ -17,6 +17,7 @@
     "react-html-table-to-excel": "^2.0.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-toastify": "^5.5.0",
     "redux": "^4.0.3",
     "xlsx": "^0.14.3"
   },

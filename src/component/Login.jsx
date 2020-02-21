@@ -1,7 +1,9 @@
 import React from "react";
+import md5 from 'md5';
+
 import '../css/Login.css';
 import '../config.js';
-import md5 from 'md5'
+import * as MyToast from '../tools/MyToast';
 
 class Login extends React.Component{
     constructor(props){
@@ -45,9 +47,10 @@ class Login extends React.Component{
                     pswbordercolor:"#fff"
                 })
             }else if(data.msg==="fail_to_connect_radis"){
-                alert("fail_to_connect_radis");
+                MyToast.notify(data.msg, "error");
             }else if(data.msg==="already_logged_in"){
-                alert("already_logged_in");
+                MyToast.notify(data.msg, "error");
+                //alert("already_logged_in");
             }else if(data.msg==="success"){
                 this.setState({
                     namebordercolor:"#fff",
@@ -57,6 +60,10 @@ class Login extends React.Component{
                 localStorage.setItem("adminName",this.state.adminname);
                 this.props.history.push('/');
             }
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
     render(){

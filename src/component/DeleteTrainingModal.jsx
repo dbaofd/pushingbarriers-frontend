@@ -1,8 +1,10 @@
 import React from 'react';
 import {Button,Modal} from "react-bootstrap"
+import md5 from 'md5';
+
+import * as MyToast from '../tools/MyToast';
 import '../css/ResetDriverPasswordModal.css';
 import '../config.js';
-import md5 from 'md5';
 
 class DeleteTrainingModal extends React.Component{
     constructor(props){
@@ -44,8 +46,17 @@ class DeleteTrainingModal extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            this.props.onDeleted();
-            console.log(data.msg);
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+            }else{
+                MyToast.notify(data.msg, "success");
+                this.props.onDeleted();
+                console.log(data.msg);
+            }
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
         this.handleClose();
     }

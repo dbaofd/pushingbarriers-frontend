@@ -1,9 +1,11 @@
 import React from "react";
 import {Button,Modal} from "react-bootstrap"
-import '../css/TrainingModal.css';
-import '../config.js';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+
+import '../css/TrainingModal.css';
+import '../config.js';
+import * as MyToast from '../tools/MyToast';
 
 class TrainingModal extends React.Component{
     constructor(props){
@@ -18,6 +20,7 @@ class TrainingModal extends React.Component{
             trainingTime:"",
             trainingNote:"",
             trainingStatus:"",
+            trainingIndex:"",
         }
     }
 
@@ -71,6 +74,7 @@ class TrainingModal extends React.Component{
         }else if(this.state.trainingStatus===1){
             return (
                 <>
+                    <option value="1">Confirmed</option>
                     <option value="3">Cancelled</option>
                 </>
             );
@@ -146,7 +150,7 @@ class TrainingModal extends React.Component{
         formData.append('driverId',this.state.trainingDriverId);
         formData.append('driverGender',this.state.trainingDriverGender);
         formData.append('time',this.state.trainingTime);
-        formData.append('status',Number(this.selectedStatus.value));
+        formData.append('status',this.state.trainingStatus);
         formData.append("note",this.state.trainingNote)
         formData.append('id',this.state.trainingId);
         fetch(url,{
@@ -155,13 +159,30 @@ class TrainingModal extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            console.log(data.msg);
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+            }else{
+                MyToast.notify(data.msg, "success");
+                console.log(data.msg);
+            }
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
         this.props.onSubmited(this.state.trainingIndex,this.state.trainingDriver,this.state.trainingDriverId,
-            this.state.trainingDriverGender,this.state.trainingTime,Number(this.selectedStatus.value),this.state.trainingNote);
+            this.state.trainingDriverGender,this.state.trainingTime,this.state.trainingStatus,this.state.trainingNote);
         this.handleClose();
     }
     
+    findDriverIndex(){
+        for(let i=0;i<this.props.allDrivers.length;i++){
+            if(this.props.allDrivers[i].driverId===this.state.trainingDriverId){
+                return i;
+            }
+        }
+        return 0;
+    }
     render(){
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>
@@ -180,7 +201,7 @@ class TrainingModal extends React.Component{
                                 <td>
                                     <Autocomplete
                                         id="combo-box-demo1"
-                                        defaultValue={this.state.trainingDriver}
+                                        defaultValue={this.props.allDrivers[this.findDriverIndex()]}
                                         options={this.props.allDrivers}
                                         getOptionLabel={option => option.driverName}
                                         style={{ width: 200 }}
@@ -219,7 +240,7 @@ class TrainingModal extends React.Component{
                             <tr>
                                 <td><label>Status:</label></td>
                                 <td>
-                                    <select name="trainingStatus" ref = {(input)=> this.selectedStatus = input}>
+                                    <select name="trainingStatus" onChange={this.handleChange}>
                                         {this.setOptions()}
                                     </select>
                                 </td>

@@ -1,7 +1,9 @@
 import React from 'react';
-import '../config.js';
+
 import {Button,Table} from "react-bootstrap";
 
+import '../config.js';
+import * as MyToast from '../tools/MyToast';
 var teams;
 class Team extends React.Component{
     constructor(props){
@@ -21,12 +23,16 @@ class Team extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 teamInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 

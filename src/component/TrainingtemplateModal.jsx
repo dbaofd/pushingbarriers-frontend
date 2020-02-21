@@ -1,9 +1,11 @@
 import React from 'react';
-import {Button,Modal} from "react-bootstrap"
-import '../css/TrainingtemplateModal.css';
-import '../config.js';
+import {Button,Modal} from "react-bootstrap";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+
+import '../css/TrainingtemplateModal.css';
+import '../config.js';
+import * as MyToast from '../tools/MyToast';
 
 class TrainingtemplateModal extends React.Component{
     constructor(props){
@@ -92,11 +94,20 @@ class TrainingtemplateModal extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            this.props.onSubmited(this.state.trainingIndex,this.state.trainingDay,this.state.trainingTime,
-                this.state.trainingPlayerId,this.state.trainingPlayer,this.state.trainingDriverId,
-                this.state.trainingDriver,this.state.trainingClub,this.state.trainingPlayerAddress,
-                this.state.trainingAddress);
-            console.log(data.msg);
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+            }else{
+                MyToast.notify(data.msg, "success");
+                this.props.onSubmited(this.state.trainingIndex,this.state.trainingDay,this.state.trainingTime,
+                    this.state.trainingPlayerId,this.state.trainingPlayer,this.state.trainingDriverId,
+                    this.state.trainingDriver,this.state.trainingClub,this.state.trainingPlayerAddress,
+                    this.state.trainingAddress);
+                console.log(data.msg);
+            }
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
         this.handleClose();
     }
@@ -148,6 +159,33 @@ class TrainingtemplateModal extends React.Component{
         }
         return timeOptions;
     }
+
+    findDriverIndex(){
+        for(let i=0;i<this.props.allDrivers.length;i++){
+            if(this.props.allDrivers[i].driverId===this.state.trainingDriverId){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    findPlayerIndex(){
+        for(let i=0;i<this.props.allPlayers.length;i++){
+            if(this.props.allPlayers[i].driverId===this.state.trainingPlayerId){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    findTeamIndex(){
+        for(let i=0;i<this.props.allTeams.length;i++){
+            if(this.props.allTeams[i].teamName===this.state.trainingClub){
+                return i;
+            }
+        }
+        return 0;
+    }
     render(){
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>
@@ -187,7 +225,7 @@ class TrainingtemplateModal extends React.Component{
                                 <td>
                                     <Autocomplete
                                     id="combo-box-demo1"
-                                    defaultValue={this.state.trainingPlayer}
+                                    defaultValue={this.props.allPlayers[this.findPlayerIndex()]}
                                     options={this.props.allPlayers}
                                     getOptionLabel={option => option.playerName}
                                     style={{ width: 200 }}
@@ -220,7 +258,7 @@ class TrainingtemplateModal extends React.Component{
                                 <td>
                                     <Autocomplete
                                     id="combo-box-demo2"
-                                    defaultValue={this.state.trainingDriver}
+                                    defaultValue={this.props.allDrivers[this.findDriverIndex()]}
                                     options={this.props.allDrivers}
                                     getOptionLabel={option => option.driverName}
                                     style={{ width: 200 }}
@@ -248,7 +286,7 @@ class TrainingtemplateModal extends React.Component{
                                 <td>
                                     <Autocomplete
                                         id="combo-box-demo3"
-                                        defaultValue={this.state.trainingClub}
+                                        defaultValue={this.props.allTeams[this.findTeamIndex()]}
                                         options={this.props.allTeams}
                                         getOptionLabel={option => option.teamName}
                                         style={{ width: 200 }}

@@ -1,9 +1,13 @@
 import React from 'react';
-import '../css/GameTrip.css';
 import Moment from 'moment';
-import '../config.js';
 import ReactToExcel from 'react-html-table-to-excel';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
+
+import GameTripModal from './GameTripModal';
+import '../config.js';
+import '../css/GameTrip.css';
+import * as MyToast from '../tools/MyToast';
+
 var gameTrsSaturday=[];
 var gameTrsSunday=[];
 class GameTrip extends React.Component{
@@ -24,13 +28,25 @@ class GameTrip extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 gameTrips:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify(error, "error");
+                console.error('Error:', error);
         });
+    }
+
+    onRefForGameTripModal=(ref)=>{
+        this.child=ref;
+    }
+
+    handleModalShow(tripIndex){//call child component function 
+        this.child.handleShow(tripIndex);
     }
 
     componentWillMount(){
@@ -75,9 +91,18 @@ class GameTrip extends React.Component{
                 <td><div className="gametrip_note_div">{this.state.gameTrips[index].tripNote}</div></td>
                 <td>{tripType}</td>
                 <td><Button variant={buttonType} id={this.state.gameTrips[index].trainingId}>{statusText}</Button></td>
-                <td><Button variant="info" >Edit</Button></td>
+                <td><Button variant="info" onClick={()=>this.handleModalShow(index)}>Edit</Button></td>
             </tr>
         );
+    }
+
+    onChangeState(index,tripStatus,tripNote){
+        let data=this.state.gameTrips;
+        data[index].tripStatus=tripStatus;
+        data[index].tripNote=tripNote;
+        this.setState({
+            gameTrips:data,
+        });
     }
 
     setGameTrips(){
@@ -112,12 +137,16 @@ class GameTrip extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 gameTrips:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify(error, "error");
+                console.error('Error:', error);
         });
     }
     render(){
@@ -202,6 +231,10 @@ class GameTrip extends React.Component{
                         </>
                         :<></>}
                     </Table>
+                    <GameTripModal 
+                     allGameTrips={this.state.gameTrips} 
+                     onRef={this.onRefForGameTripModal}
+                     onSubmited={this.onChangeState.bind(this)}/>
                 </div>
             </div>
         );

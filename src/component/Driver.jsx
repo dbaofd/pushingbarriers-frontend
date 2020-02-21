@@ -1,12 +1,15 @@
 import React from 'react';
-import "../css/Driver.css";
-import '../config.js';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import Moment from 'moment';
+import ReactToExcel from 'react-html-table-to-excel';
+
+import "../css/Driver.css";
+import '../config.js';
 import ResetDriverPasswordModal from './ResetDriverPasswordModal';
 import FreezeDriverAccountModal from './FreezeDriverAccountModal';
-import ReactToExcel from 'react-html-table-to-excel';
 import ImageModal from './ImageModal';
+import * as MyToast from '../tools/MyToast';
+
 var drivers;
 class Driver extends React.Component{
     constructor(props){
@@ -26,12 +29,16 @@ class Driver extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 driverInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify(error, "error");
+                console.error('Error:', error);
         });
     }
 
@@ -137,12 +144,16 @@ class Driver extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 driverInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify(error, "error");
+                console.error('Error:', error);
         });
     }
 

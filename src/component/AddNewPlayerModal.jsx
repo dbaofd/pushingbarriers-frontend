@@ -1,11 +1,13 @@
 import React from "react";
 import {Button,Modal} from "react-bootstrap"
-import '../css/AddNewPlayerModal.css';
-import '../config.js';
 import Moment from 'moment';
 import reactHtmlTableToExcel from "react-html-table-to-excel";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+
+import * as MyToast from '../tools/MyToast';
+import '../css/AddNewPlayerModal.css';
+import '../config.js';
 
 var selectedTeams=[];
 class AddNewPlayerModal extends React.Component{
@@ -78,7 +80,7 @@ class AddNewPlayerModal extends React.Component{
         //console.log(typeof event.target.files[0]);
         if(typeof event.target.files[0]!=="undefined"){
             if(event.target.files[0].size>=(5*1024*1024)){
-                alert("The photo size should be smaller than 5M!");
+                MyToast.notify("The photo size should be smaller than 5M!", "error");
             }else{
                 //alert("all good")
                 this.setState({
@@ -118,10 +120,16 @@ class AddNewPlayerModal extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            console.log(data.msg);
-            this.props.onSubmited();
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+            }else{
+                console.log(data.msg);
+                MyToast.notify(data.msg, "success");
+                this.props.onSubmited();
+            }
         }).catch(
             (error)=>{
+                MyToast.notify("Network request failed", "error");
                 console.error('Error:', error);
         });
         this.handleClose();

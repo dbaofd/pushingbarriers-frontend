@@ -1,10 +1,12 @@
 import React from "react";
-import '../css/Training.css';
-import '../config.js';
 import Moment from 'moment';
 import ReactToExcel from 'react-html-table-to-excel';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
+
+import '../css/Training.css';
+import '../config.js';
 import TrainingModal from "./TrainingModal";
+import * as MyToast from '../tools/MyToast';
 
 var trainingTrsMonday=[];
 var trainingTrsTuesday=[];
@@ -31,12 +33,16 @@ class Training extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 trainingsInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -50,12 +56,16 @@ class Training extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 allDrivers:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -194,12 +204,16 @@ class Training extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 trainingsInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
     

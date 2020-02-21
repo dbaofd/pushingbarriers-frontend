@@ -1,7 +1,9 @@
 import React from "react";
 import {Button,Modal} from "react-bootstrap"
+
 import '../css/ImageModal.css';
 import '../config.js';
+import * as MyToast from '../tools/MyToast';
 
 class ImageModal extends React.Component{
     constructor(props){
@@ -52,6 +54,10 @@ class ImageModal extends React.Component{
             this.setState({
                 img:objectURL,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -59,7 +65,7 @@ class ImageModal extends React.Component{
         //console.log(typeof event.target.files[0]);
         if(typeof event.target.files[0]!=="undefined"){
             if(event.target.files[0].size>=(5*1024*1024)){
-                alert("The photo size should be smaller than 5M!");
+                MyToast.notify("The photo size should be smaller than 5M!", "error");
             }else{
                 //alert("all good")
                 this.setState({
@@ -94,7 +100,16 @@ class ImageModal extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            console.log(data.msg);
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+            }else{
+                MyToast.notify(data.msg, "success");
+                console.log(data.msg);
+            }
+        }).catch(
+            (error)=>{
+                MyToast.notify(error, "error");
+                console.error('Error:', error);
         });
         this.handleClose();
     }

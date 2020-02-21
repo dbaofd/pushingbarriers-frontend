@@ -1,8 +1,11 @@
 import React from 'react';
-import {Button,Modal} from "react-bootstrap"
+import {Button,Modal} from "react-bootstrap";
+import md5 from 'md5';
+
 import '../css/ResetDriverPasswordModal.css';
 import '../config.js';
-import md5 from 'md5';
+import * as MyToast from '../tools/MyToast';
+
 class ResetDriverPasswordModal extends React.Component{
     constructor(props){
         super(props)
@@ -46,7 +49,16 @@ class ResetDriverPasswordModal extends React.Component{
             headers:headers,
         }).then(res=>res.json()
         ).then(data=>{
-            console.log(data.msg);
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+            }else{
+                MyToast.notify(data.msg, "success");
+                console.log(data.msg);
+            }
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
         this.handleClose();
     }

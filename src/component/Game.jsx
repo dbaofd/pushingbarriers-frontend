@@ -1,14 +1,19 @@
 import React from 'react';
 import {Button,Table} from "react-bootstrap"
+import moment from 'moment';
+import ReactToExcel from 'react-html-table-to-excel';
+
 import '../css/Game.css';
 import '../config.js';
 import MyPagination from './MyPagination';
-import moment from 'moment';
-import ReactToExcel from 'react-html-table-to-excel';
+import * as MyToast from '../tools/MyToast';
+
 var currentPage=1;//initialize current page, this global variable makes sense
 //when we put "currentPage" in state, every time when we try to update it, 
 //setState just can't immediately update its value, which may 
 //cause problem in requesting data of different pages
+
+
 class Game extends React.Component{
     constructor(props){
         super(props);
@@ -20,6 +25,7 @@ class Game extends React.Component{
             updateTime:"",
         }
     }
+    
 
     getAllTeams(){
         let url=global.constants.api+"/allteams";
@@ -31,12 +37,16 @@ class Game extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 allTeams:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -50,7 +60,7 @@ class Game extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
@@ -58,6 +68,10 @@ class Game extends React.Component{
             });
             //console.log(data.gameupdatetimeDate);
             //console.log(moment(data.gameupdatetimeDate).format('YYYY/MM/DD'))
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -93,7 +107,7 @@ class Game extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data.content=[];
                 data.totalPages=null;
                 data.totalElements=null;
@@ -103,6 +117,10 @@ class Game extends React.Component{
                 totalPages:data.totalPages,
                 totalElements:data.totalElements,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 

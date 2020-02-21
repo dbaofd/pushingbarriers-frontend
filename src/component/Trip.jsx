@@ -1,12 +1,14 @@
 import React from 'react';
-import '../config.js';
-import '../css/Trip.css';
-import MyPagination from './MyPagination';
 import Moment from 'moment';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import ReactToExcel from 'react-html-table-to-excel';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
+
+import '../config.js';
+import '../css/Trip.css';
+import MyPagination from './MyPagination';
+import * as MyToast from '../tools/MyToast';
 
 var currentTripPage=1;
 class Trip extends React.Component{
@@ -71,7 +73,7 @@ class Trip extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data.content=[];
                 data.totalPages=null;
                 data.totalElements=null;
@@ -81,6 +83,10 @@ class Trip extends React.Component{
                 totalPages:data.totalPages,
                 totalElements:data.totalElements,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -99,12 +105,17 @@ class Trip extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
+            }else{
+                this.setState({
+                    updateTime:Moment(data.gameupdatetimeDate).format('YYYY/MM/DD'),
+                });
             }
-            this.setState({
-                updateTime:Moment(data.gameupdatetimeDate).format('YYYY/MM/DD'),
-            });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 

@@ -1,9 +1,12 @@
 import React from 'react';
 import {Button,Modal} from "react-bootstrap"
-import '../css/AddNewTrainingModal.css';
-import '../config.js';
+
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+
+import '../css/AddNewTrainingModal.css';
+import '../config.js';
+import * as MyToast from '../tools/MyToast';
 
 class AddNewTrainingModal extends React.Component{
     constructor(props){
@@ -73,8 +76,17 @@ class AddNewTrainingModal extends React.Component{
                 headers:headers,//we need to put correct token to send the request
             }).then(res => res.json()
             ).then(data => {
-                this.props.onSubmited();
-                console.log(data.msg);
+                if(data.code===401){
+                    MyToast.notify(data.message+" wrong token!", "error");
+                }else{
+                    MyToast.notify(data.msg, "success");
+                    this.props.onSubmited();
+                    console.log(data.msg);
+                }
+            }).catch(
+                (error)=>{
+                    MyToast.notify(error, "error");
+                    console.error('Error:', error);
             });
             this.handleClose();
         }else{

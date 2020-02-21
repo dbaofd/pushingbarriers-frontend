@@ -1,13 +1,14 @@
 import React from "react";
-import "../css/Player.css";
-import '../config.js';
 import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import Moment from 'moment';
+import ReactToExcel from 'react-html-table-to-excel';
+
+import "../css/Player.css";
+import '../config.js';
+import * as MyToast from '../tools/MyToast';
 import PlayerModal from "./PlayerModal";
 import AddNewPlayerModal from "./AddNewPlayerModal";
 import ImageModal from "./ImageModal";
-import ReactToExcel from 'react-html-table-to-excel';
-
 var players=[];
 class Player extends React.Component{
     constructor(props){
@@ -29,12 +30,16 @@ class Player extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 playerInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -48,12 +53,16 @@ class Player extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 teamInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -169,12 +178,16 @@ class Player extends React.Component{
         }).then(res => res.json()
         ).then(data => {
             if(data.code===401){
-                alert(data.message+" wrong token!");
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 playerInfo:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
     render(){

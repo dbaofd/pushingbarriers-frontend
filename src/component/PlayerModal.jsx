@@ -1,10 +1,12 @@
 import React from "react";
 import {Button,Modal} from "react-bootstrap"
-import '../css/PlayerModal.css';
-import '../config.js';
 import Moment from 'moment';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+
+import '../css/PlayerModal.css';
+import '../config.js';
+import * as MyToast from '../tools/MyToast';
 
 var updatedTeams;
 class PlayerModal extends React.Component{
@@ -105,10 +107,20 @@ class PlayerModal extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            let birthday=this.state.playerBirthYear+"/"+this.state.playerBirthMonth+"/"+this.state.playerBirthDay;
-            this.props.onSubmited(this.state.playerIndex, this.state.playerName, this.state.playerGender,this.state.playerPhoneNum,
-                birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus, "okokok");
-            console.log(data.msg);
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+                data=[];
+            }else{
+                MyToast.notify(data.msg, "success");
+                let birthday=this.state.playerBirthYear+"/"+this.state.playerBirthMonth+"/"+this.state.playerBirthDay;
+                this.props.onSubmited(this.state.playerIndex, this.state.playerName, this.state.playerGender,this.state.playerPhoneNum,
+                    birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus, "okokok");
+                console.log(data.msg);
+            }
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
         this.handleClose();
     }
@@ -128,8 +140,6 @@ class PlayerModal extends React.Component{
         for(let j=1;j<=12;j++){
             optionMonth.push(<option value={j} key={j}>{j}</option>);
         }
-
-        let maxiumDayOfMonth=Moment(this.state.playerBirthYear+"-"+this.state.playerBirthMonth+"-01").endOf('month').format('D');
         let lastDay=new Date(this.state.playerBirthYear,this.state.playerBirthMonth,0);
         //alert(lastDay.getDate())
         //console.log(document.getElementsByName("playerBirthDay")[0]);
@@ -156,7 +166,7 @@ class PlayerModal extends React.Component{
         //console.log(typeof event.target.files[0]);
         if(typeof event.target.files[0]!=="undefined"){
             if(event.target.files[0].size>=(5*1024*1024)){
-                alert("The photo size should be smaller than 5M!");
+                MyToast.notify("The photo size should be smaller than 5M!", "error");
             }else{
                 //alert("all good")
                 this.setState({

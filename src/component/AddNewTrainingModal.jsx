@@ -85,7 +85,7 @@ class AddNewTrainingModal extends React.Component{
                 }
             }).catch(
                 (error)=>{
-                    MyToast.notify(error, "error");
+                    MyToast.notify("Network request failed", "error");
                     console.error('Error:', error);
             });
             this.handleClose();

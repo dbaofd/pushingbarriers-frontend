@@ -11,6 +11,8 @@ import Team from "./Team";
 import PlayerTeam from "./PlayerTeam";
 import GameTrip from './GameTrip';
 import Trip from './Trip';
+import InvitationCode from './InvitationCode';
+import FreeDriver from './FreeDriver';
 import '../config.js';
 import '../css/AdminPage.css'
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
@@ -86,6 +88,8 @@ class AdminPage extends React.Component{
                     <Route path="/PlayerTeam" component={PlayerTeam}/>
                     <Route path="/GameTrip" component={GameTrip}/>
                     <Route path="/Trip" component={Trip}/>
+                    <Route path="/InvitationCode" component={InvitationCode}/>
+                    <Route path="/FreeDriver" component={FreeDriver}/>
                     <Route component={Error}/>
                 </Switch>
                 </div>

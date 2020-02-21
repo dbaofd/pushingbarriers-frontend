@@ -7,17 +7,17 @@
     right: 0;
     bottom: 0;
     position: absolute;
+
 }
 #logocontainer{
     background:url(../img/logo-dark.png);
     width:100%;
     height:42%;
+    background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-repeat:no-repeat;
     border: none;
     margin-bottom: 3%;
 }
-
 #login{
     display: block;
     width:100%;

@@ -36,7 +36,7 @@ class GameTrip extends React.Component{
             });
         }).catch(
             (error)=>{
-                MyToast.notify(error, "error");
+                MyToast.notify("Network request failed", "error");
                 console.error('Error:', error);
         });
     }
@@ -145,7 +145,7 @@ class GameTrip extends React.Component{
             });
         }).catch(
             (error)=>{
-                MyToast.notify(error, "error");
+                MyToast.notify("Network request failed", "error");
                 console.error('Error:', error);
         });
     }

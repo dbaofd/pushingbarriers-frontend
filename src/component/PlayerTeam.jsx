@@ -210,11 +210,11 @@ class PlayerTeam extends React.Component{
                     </div>
                     <div id="searchby-select-box">
                         <select id="searchby-select" ref = {(input)=> this.selectedSearchBy = input} onChange={()=>this.searchByOnChange()}>
-                            <option value="team">Search by team</option>
-                            <option value="club">Search by club</option>
+                            <option value="team">Team</option>
+                            <option value="club">Club</option>
                         </select>
                     </div>
-                    <div id="totalNumberOfPlayers">
+                    <div id="totalNumberOfMappings">
                         <li>{playerTeamMapping.length} items in total</li>
                     </div>
                 </div>

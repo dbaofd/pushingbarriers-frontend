@@ -12,13 +12,15 @@ class ResetDriverPasswordModal extends React.Component{
         this.state={
             show:false,
             driverId:"",
+            driverName:"",
         }
     }
 
-    handleShow=(driverId)=>{
+    handleShow=(driverId, driverName)=>{
         this.setState({
             show:true,
             driverId:driverId,
+            driverName:driverName
         })
     }
 
@@ -66,7 +68,7 @@ class ResetDriverPasswordModal extends React.Component{
         return(
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header>
-                    <Modal.Title>Are you sure to reset the password({global.constants.resetPassword})?</Modal.Title>
+                    <Modal.Title>Are you sure to reset {this.state.driverName}'s password({global.constants.resetPassword})?</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                 <Button variant="primary" onClick={this.handleClose}>

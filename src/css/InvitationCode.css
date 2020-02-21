@@ -1,0 +1,53 @@
+#invitationcode{
+    height:100%;
+    width:100%;
+}
+
+#invitationcode-bar{
+    height:7%;
+    width:100%;
+    background-color: #35527b;
+}
+
+#invitationcode-table{
+    height:93%;
+    width:100%;
+    overflow-y: auto;
+    overflow-x:auto;
+}
+
+
+#invitationcode-bar div{
+    height:100%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+#invitationcode-name-textbox{
+    height:100%;
+    width:15%;
+}
+#invitationcode-name-input{
+    outline: none;
+    border-radius: 5px;
+}
+#newInvitationcode{
+    height:100%;
+    width:9%;
+    margin-right: 7px;
+}
+
+#invitationcode-search{
+    height:100%;
+    width:8%;
+}
+
+#totalNumberOfCodes{
+    height:100%;
+    width:10%;
+    color: white;
+}

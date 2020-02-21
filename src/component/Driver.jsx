@@ -37,7 +37,7 @@ class Driver extends React.Component{
             });
         }).catch(
             (error)=>{
-                MyToast.notify(error, "error");
+                MyToast.notify("Network request failed", "error");
                 console.error('Error:', error);
         });
     }
@@ -58,8 +58,8 @@ class Driver extends React.Component{
         this.child3=ref;
     }
 
-    handleModalShow(driverId){
-        this.child.handleShow(driverId);
+    handleModalShow(driverId, driverName){
+        this.child.handleShow(driverId, driverName);
     }
     
     handleModalShow2(driverId, flag, driverUserName){
@@ -107,7 +107,7 @@ class Driver extends React.Component{
                 <td style={tdStyle}>{this.availabilityTransformation(this.state.driverInfo[driverIndex].driverAvailability)}</td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverLicense",this.state.driverInfo[driverIndex].driverUserName)}>License</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverBluecard",this.state.driverInfo[driverIndex].driverUserName)}>Bluecard</Button></td>
-                <td><Button variant="info" onClick={()=>this.handleModalShow(this.state.driverInfo[driverIndex].driverId)}>Reset</Button></td>
+                <td><Button variant="info" onClick={()=>this.handleModalShow(this.state.driverInfo[driverIndex].driverId,this.state.driverInfo[driverIndex].driverName)}>Reset</Button></td>
                 <td>
                     <Button variant="info" onClick={()=>this.handleModalShow3(this.state.driverInfo[driverIndex].driverId, this.state.driverInfo[driverIndex].driverName, this.state.driverInfo[driverIndex].driverAvailability)}>
                         {this.state.driverInfo[driverIndex].driverAvailability===2?"Unfreeze":"Freeze"}
@@ -152,7 +152,7 @@ class Driver extends React.Component{
             });
         }).catch(
             (error)=>{
-                MyToast.notify(error, "error");
+                MyToast.notify("Network request failed", "error");
                 console.error('Error:', error);
         });
     }

@@ -40,7 +40,9 @@ class SlideBar extends React.Component{
                         <Card.Body>
                             <ListGroup variant="flush">
                                 <ListGroup.Item><NavLink className="menu-item" onClick={()=>this.changeCurrentPath("User/Players")} to='/Player'>Players</NavLink></ListGroup.Item>
-                                <ListGroup.Item><NavLink className="menu-item" onClick={()=>this.changeCurrentPath("User/Drivers")} to='/Driver'>Drivers</NavLink></ListGroup.Item>                          
+                                <ListGroup.Item><NavLink className="menu-item" onClick={()=>this.changeCurrentPath("User/Drivers")} to='/Driver'>Drivers</NavLink></ListGroup.Item>
+                                <ListGroup.Item><NavLink className="menu-item" onClick={()=>this.changeCurrentPath("User/Free Drivers")} to='/FreeDriver'>Free Drivers</NavLink></ListGroup.Item>  
+                                <ListGroup.Item><NavLink className="menu-item" onClick={()=>this.changeCurrentPath("User/Invitation Code")} to='/InvitationCode'>Invitation Code</NavLink></ListGroup.Item>                         
                             </ListGroup>
                         </Card.Body>
                         </Accordion.Collapse>

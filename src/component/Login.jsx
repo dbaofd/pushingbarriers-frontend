@@ -81,7 +81,7 @@ class Login extends React.Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <input className="mytext" id="btnlogin" type="button" value="Login" onClick={()=>this.loginRequest()}/>
+                                    <input className="mytext" id="btnlogin" style={{backgroundColor:"white"}} type="button" value="Login" onClick={()=>this.loginRequest()}/>
                                 </td>
                             </tr>
                         </tbody>

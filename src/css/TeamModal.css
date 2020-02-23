@@ -1,0 +1,48 @@
+#teamDetail tr{
+    height:100%;
+    width:100%;
+    text-align: center;
+}
+#teamDetail label{
+    display:block;
+    text-align: right;
+    height:20px;
+    width:150px;
+    margin-right:15px;
+}
+
+#teamDetail input{
+    text-align: left;
+    outline: none;
+    height:20px;
+    width:280px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(218, 222, 216);
+    
+}
+
+#teamDetail select{
+    border: 0px;
+    width: 85px;
+    height:20px;
+    text-align: left;
+}
+
+#teamDetail textarea{
+    text-align: left;
+    outline: none;
+    height:50px;
+    width:280px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(218, 222, 216);
+}
+
+.modal-content{
+    width: 550px;
+}
+
+.modal-footer button{
+    margin: 0 auto;
+}

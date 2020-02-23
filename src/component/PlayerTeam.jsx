@@ -121,57 +121,40 @@ class PlayerTeam extends React.Component{
     }
 
     getMappingByTeamName(){
+        let url;
         if(this.state.searchByTeam){
             if(this.selectedTeamClub.value!=="AllTeams"){
-                let url=global.constants.api+"/findTeamByName/"+this.selectedTeamClub.value;
-                let headers=new Headers();
-                headers.append("token",localStorage.getItem("token"));
-                fetch(url,{
-                    method:"get", 
-                    headers:headers,
-                }).then(res => res.json()
-                ).then(data => {
-                    if(data.code===401){
-                        MyToast.notify(data.message+" wrong token!", "error");
-                        data=[];
-                    }
-                    this.setState({
-                        playerTeamMapping:data,
-                    });
-                }).catch(
-                    (error)=>{
-                        MyToast.notify("Network request failed", "error");
-                        console.error('Error:', error);
-                });
+                url=global.constants.api+"/findTeamByName/"+this.selectedTeamClub.value;
+                
             }else{
-                this.getPlayerTeamMapping()
+                url=global.constants.api+"/getAllPlayerTeamMapping";
             }
         }else{
             if(this.selectedTeamClub.value!=="AllClubs"){
-                let url=global.constants.api+"/findTeamsByClubName/"+this.selectedTeamClub.value;
-                let headers=new Headers();
-                headers.append("token",localStorage.getItem("token"));
-                fetch(url,{
-                    method:"get", 
-                    headers:headers,
-                }).then(res => res.json()
-                ).then(data => {
-                    if(data.code===401){
-                        MyToast.notify(data.message+" wrong token!", "error");
-                        data=[];
-                    }
-                    this.setState({
-                        playerTeamMapping:data,
-                    });
-                }).catch(
-                    (error)=>{
-                        MyToast.notify("Network request failed", "error");
-                        console.error('Error:', error);
-                });
+                url=global.constants.api+"/findTeamsByClubName/"+this.selectedTeamClub.value;
             }else{
-                this.getPlayerTeamMapping()
+                url=global.constants.api+"/getAllPlayerTeamMapping";
             }
         }
+        let headers=new Headers();
+        headers.append("token",localStorage.getItem("token"));
+        fetch(url,{
+            method:"get", 
+            headers:headers,
+        }).then(res => res.json()
+        ).then(data => {
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
+                data=[];
+            }
+            this.setState({
+                playerTeamMapping:data,
+            });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
+        });
     }
 
     searchByOnChange(){

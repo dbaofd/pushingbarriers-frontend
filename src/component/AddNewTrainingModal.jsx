@@ -28,6 +28,15 @@ class AddNewTrainingModal extends React.Component{
     handleShow=()=>{
         this.setState({
             show:true,
+            trainingPlayerId:"",
+            trainingPlayer:"",
+            trainingPlayerGender:"",
+            trainingDriverId:"",
+            trainingDriver:"",
+            trainingDriverGender:"",
+            trainingClub:"",
+            trainingPlayerAddress:"",
+            trainingAddress:"",
         });
     }
 
@@ -37,15 +46,6 @@ class AddNewTrainingModal extends React.Component{
         })
     }
 
-    handleChange=(event)=>{
-        const target = event.target;
-        const name=target.name;
-        const newValue=target.value;
-        this.setState({
-            [name]:newValue,
-        });
-    }
-
     componentDidMount(){
         //pass "this" to parent component in order to 
         //let parent component can execute child functions
@@ -53,8 +53,7 @@ class AddNewTrainingModal extends React.Component{
     }
     handleSubmit=(event)=>{
         event.preventDefault();//this one is necessary
-        if(this.state.trainingPlayerId!==""&&this.state.trainingDriverId!==""&&
-            this.state.trainingClub!==""){
+        if(this.state.trainingDriverId!==""){
             let url=global.constants.api+"/insertNewTraining";
             let headers=new Headers();
             headers.append("token",localStorage.getItem("token"));
@@ -90,7 +89,7 @@ class AddNewTrainingModal extends React.Component{
             });
             this.handleClose();
         }else{
-            alert("Please fill all the empty fields!")
+            MyToast.notify("Please fill all the empty fields!", "error");
         }
     }
 
@@ -178,14 +177,13 @@ class AddNewTrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PlayerId:</label></td>
-                                <td><input type="text" required disabled="disabled" name="trainingPlayerId" value={this.state.trainingPlayerId} onChange={this.handleChange}/></td>
+                                <td><input type="text" required disabled="disabled" value={this.state.trainingPlayerId}/></td>
                             </tr>
                             <tr>
                                 <td><label>Player:</label></td>
                                 <td>
                                     <Autocomplete
                                     id="combo-box-demo4"
-                                    defaultValue={this.state.trainingPlayer}
                                     options={this.props.allPlayers}
                                     getOptionLabel={option => option.playerName}
                                     style={{ width: 200 }}
@@ -207,18 +205,17 @@ class AddNewTrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PlayerGender</label></td>
-                                <td><input type="text" disabled="disabled" name="trainingPlayerGender" value={this.state.trainingPlayerGender} onChange={this.handleChange}/></td>
+                                <td><input type="text" required disabled="disabled" value={this.state.trainingPlayerGender}/></td>
                             </tr>
                             <tr>
                                 <td><label>DriverId:</label></td>
-                                <td><input type="text" disabled="disabled" name="trainingDriverId" value={this.state.trainingDriverId} onChange={this.handleChange}/></td>
+                                <td><input type="text" disabled="disabled" value={this.state.trainingDriverId}/></td>
                             </tr>
                             <tr>
                                 <td><label>Driver:</label></td>
                                 <td>
                                     <Autocomplete
                                     id="combo-box-demo5"
-                                    defaultValue={this.state.trainingDriver}
                                     options={this.props.allDrivers}
                                     getOptionLabel={option => option.driverName}
                                     style={{ width: 200 }}
@@ -239,14 +236,13 @@ class AddNewTrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>DriverGender</label></td>
-                                <td><input type="text" disabled="disabled" name="trainingDriverGender"  value={this.state.trainingDriverGender} onChange={this.handleChange}/></td>
+                                <td><input type="text" disabled="disabled" value={this.state.trainingDriverGender}/></td>
                             </tr>
                             <tr>
                                 <td><label>Club:</label></td>
                                 <td>
                                 <Autocomplete
                                     id="combo-box-demo6"
-                                    defaultValue={this.state.trainingClub}
                                     options={this.props.allTeams}
                                     getOptionLabel={option => option.teamName}
                                     style={{ width: 200 }}
@@ -257,6 +253,7 @@ class AddNewTrainingModal extends React.Component{
                                         if(value!=null){
                                             this.setState({
                                                 trainingClub:value.teamName,
+                                                trainingAddress:value.teamAddress,
                                             });
                                         }
                                     }}
@@ -265,11 +262,11 @@ class AddNewTrainingModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PlayerAddress:</label></td>
-                                <td><input type="text" disabled="disabled" name="trainingPlayerAddress" value={this.state.trainingPlayerAddress} onChange={this.handleChange} maxLength="170"/></td>
+                                <td><input type="text" required value={this.state.trainingPlayerAddress} maxLength="170"/></td>
                             </tr>
                             <tr>
                                 <td><label>TrainingAddress</label></td>
-                                <td><input type="text" required name="trainingAddress" onChange={this.handleChange} maxLength="170"/></td>
+                                <td><input type="text" required value={this.state.trainingAddress} maxLength="170"/></td>
                             </tr>
                         </tbody>
                     </table>

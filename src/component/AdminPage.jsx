@@ -98,7 +98,7 @@ class AdminPage extends React.Component{
             </>
             :
             <>
-            <div>
+            <div style={{color:"white"}}>
                 Checking
             </div>
             </>}

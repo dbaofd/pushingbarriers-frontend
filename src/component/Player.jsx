@@ -104,8 +104,15 @@ class Player extends React.Component{
                 <td>{this.state.playerInfo[playerIndex].playerPhoneNum}</td>
                 <td>{Moment(this.state.playerInfo[playerIndex].playerBirthday).format('YYYY/MM/DD')}</td>
                 <td>{this.state.playerInfo[playerIndex].playerAddress}</td>
+                <td>{this.state.playerInfo[playerIndex].playerReferralPerspon}</td>
                 <td>{this.state.playerInfo[playerIndex].playerParentName}</td>
                 <td>{this.state.playerInfo[playerIndex].playerParentPhoneNum}</td>
+                <td>{this.state.playerInfo[playerIndex].playerSport}</td>
+                <td>{this.state.playerInfo[playerIndex].playerSchool}</td>
+                <td>{this.state.playerInfo[playerIndex].playerConsent}</td>
+                <td>{this.state.playerInfo[playerIndex].playerCoachManager}</td>
+                <td>{this.state.playerInfo[playerIndex].playerVisa}</td>
+                <td><div className="player_note_div">{this.state.playerInfo[playerIndex].playerNote}</div></td>
                 <td style={tdStyle}>{status}</td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow(playerIndex)}>Edit</Button></td>
             </tr>
@@ -144,7 +151,9 @@ class Player extends React.Component{
     }
 
     //once child component update player info, child component will call this function to update this component state
-    onChangeState(playerIndex,name,gender,phoneNum,birthday,parentName,parentPhoneNum,address,status,photo){
+    onChangeState(playerIndex,name,gender,phoneNum,birthday,
+        parentName,parentPhoneNum,address,status,photo,referralPerspon,
+        school, consent, coachManager, visa, note, sport){
         let data=this.state.playerInfo;
         data[playerIndex].playerName=name;
         data[playerIndex].playerGender=gender;
@@ -155,6 +164,13 @@ class Player extends React.Component{
         data[playerIndex].playerAddress=address;
         data[playerIndex].playerStatus=status;
         data[playerIndex].playerPhoto=photo;
+        data[playerIndex].playerReferralPerspon=referralPerspon;
+        data[playerIndex].playerSport=sport;
+        data[playerIndex].playerSchool=school;
+        data[playerIndex].playerConsent=consent;
+        data[playerIndex].playerCoachManager=coachManager;
+        data[playerIndex].playerVisa=visa;
+        data[playerIndex].playerNote=note;
         this.setState({
             playerInfo: data,
         });
@@ -235,8 +251,15 @@ class Player extends React.Component{
                                 <th>PhoneNum</th>
                                 <th>Birthday</th>
                                 <th>Address</th>
+                                <th>Referral Perspon</th>
                                 <th>Parent Name</th>
                                 <th>Parent PhoneNum</th>
+                                <th>Sport</th>
+                                <th>School</th>
+                                <th>Consent</th>
+                                <th>Coach Manager</th>
+                                <th>Visa</th>
+                                <th>Note</th>
                                 <th>Status</th>
                                 <th>Edit</th>
                             </tr>

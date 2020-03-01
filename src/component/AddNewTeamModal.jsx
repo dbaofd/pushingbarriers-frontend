@@ -25,6 +25,10 @@ class AddNewTeamModal extends React.Component{
             teamName:"",
             teamClub:"",
             teamClubAddress:"",
+            teamCoachName:"",
+            teamCoachPhoneNum:"",
+            teamManagerName:"",
+            teamManagerPhoneNum:"",
         });
     }
 
@@ -57,6 +61,10 @@ class AddNewTeamModal extends React.Component{
         formData.append('teamName',this.state.teamName);
         formData.append('teamClub',this.state.teamClub);
         formData.append('teamClubAddress',this.state.teamClubAddress);
+        formData.append('teamCoachName',this.state.teamCoachName);
+        formData.append('teamCoachPhoneNum',this.state.teamCoachPhoneNum);
+        formData.append('teamManagerName',this.state.teamManagerName);
+        formData.append('teamManagerPhoneNum', this.state.teamManagerPhoneNum);
         
         fetch(url,{
             method:"post",
@@ -93,7 +101,7 @@ class AddNewTeamModal extends React.Component{
                 </Modal.Header>
                 <Modal.Body>
                     <table id="newTeamDetail"> 
-                    <tbody>
+                        <tbody>
                             <tr>
                                 <td><label>Name:</label></td>
                                 <td><input type="text" required name="teamName" value={this.state.teamName} onChange={this.handleChange}/></td>
@@ -105,6 +113,22 @@ class AddNewTeamModal extends React.Component{
                             <tr>
                                 <td><label>Club Address:</label></td>
                                 <td><input type="text" required name="teamClubAddress" value={this.state.teamClubAddress} onChange={this.handleChange}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Coach:</label></td>
+                                <td><input type="text" name="teamCoachName" value={this.state.teamCoachName} onChange={this.handleChange}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Coach Phone:</label></td>
+                                <td><input type="text" name="teamCoachPhoneNum" value={this.state.teamCoachPhoneNum} onChange={this.handleChange}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Manager:</label></td>
+                                <td><input type="text" name="teamManagerName" value={this.state.teamManagerName} onChange={this.handleChange}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Manager Phone:</label></td>
+                                <td><input type="text" name="teamManagerPhoneNum" value={this.state.teamManagerPhoneNum} onChange={this.handleChange}/></td>
                             </tr>
                         </tbody>
                     </table>

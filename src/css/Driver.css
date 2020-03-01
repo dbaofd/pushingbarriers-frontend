@@ -55,3 +55,8 @@
     width:10%;
     color: white;
 }
+
+.driver_note_div{
+    overflow-y: auto;
+    height:120px;
+}

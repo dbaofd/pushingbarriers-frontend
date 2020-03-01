@@ -24,8 +24,15 @@ class PlayerModal extends React.Component{
             playerBirthDay:"",
             playerParentName:"",
             playerParentPhoneNum:"",
+            playerReferralPerspon:"",
             playerAddress:"",
             playerStatus:"",
+            playerSchool:"",
+            playerConsent:"",
+            playerCoachManager:"",
+            playerVisa:"",
+            playerNote:"",
+            playerSport:"",
             selectedImage:null,
         }
         this.handleChange=this.handleChange.bind(this);
@@ -45,8 +52,15 @@ class PlayerModal extends React.Component{
             playerBirthDay:Moment(this.props.allplayer[playerIndex].playerBirthday).format('D'),
             playerParentName:this.props.allplayer[playerIndex].playerParentName,
             playerParentPhoneNum:this.props.allplayer[playerIndex].playerParentPhoneNum,
+            playerReferralPerspon:this.props.allplayer[playerIndex].playerReferralPerspon,
             playerAddress:this.props.allplayer[playerIndex].playerAddress,
             playerStatus:this.props.allplayer[playerIndex].playerStatus,
+            playerSchool:this.props.allplayer[playerIndex].playerSchool,
+            playerConsent:this.props.allplayer[playerIndex].playerConsent,
+            playerCoachManager:this.props.allplayer[playerIndex].playerCoachManager,
+            playerVisa:this.props.allplayer[playerIndex].playerVisa,
+            playerNote:this.props.allplayer[playerIndex].playerNote,
+            playerSport:this.props.allplayer[playerIndex].playerSport,
             selectedImage:null,
         });
     }
@@ -94,6 +108,14 @@ class PlayerModal extends React.Component{
         formData.append('address',this.state.playerAddress);
         formData.append('status',this.state.playerStatus);
         formData.append('id',this.state.playerId);
+        formData.append('referralPerspon', this.state.playerReferralPerspon);
+        formData.append('school',this.state.playerSchool);
+        formData.append('consent',this.state.playerConsent);
+        formData.append('coachManager',this.state.playerCoachManager);
+        formData.append('visa',this.state.playerVisa);
+        formData.append('note', this.state.playerNote);
+        formData.append('sport', this.state.playerSport);
+
         let teamList=[];
         if(updatedTeams!=null){
             for(let i=0;i<updatedTeams.length;i++){
@@ -114,7 +136,9 @@ class PlayerModal extends React.Component{
                 MyToast.notify(data.msg, "success");
                 let birthday=this.state.playerBirthYear+"/"+this.state.playerBirthMonth+"/"+this.state.playerBirthDay;
                 this.props.onSubmited(this.state.playerIndex, this.state.playerName, this.state.playerGender,this.state.playerPhoneNum,
-                    birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress, this.state.playerStatus, "okokok");
+                    birthday,this.state.playerParentName,this.state.playerParentPhoneNum,this.state.playerAddress,
+                     this.state.playerStatus, "okokok", this.state.playerReferralPerspon, this.state.playerSchool,
+                     this.state.playerConsent, this.state.playerCoachManager, this.state.playerVisa, this.state.playerNote);
                 console.log(data.msg);
             }
         }).catch(
@@ -198,7 +222,6 @@ class PlayerModal extends React.Component{
                                     <select  name="playerGender" value={this.state.playerGender} onChange={this.handleChange}>
                                         <option>Female</option>
                                         <option>Male</option>
-                                        <option>Other</option>
                                     </select>
                                 </td>
                             </tr>
@@ -210,19 +233,47 @@ class PlayerModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PhoneNum:</label></td>
-                                <td><input type="text" name="playerPhoneNum" required="required"value={this.state.playerPhoneNum} onChange={this.handleChange} maxLength="15"/></td>
+                                <td><input type="text" name="playerPhoneNum" value={this.state.playerPhoneNum} onChange={this.handleChange} maxLength="15"/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent Name:</label></td>
-                                <td><input type="text" name="playerParentName" required="required" value={this.state.playerParentName} onChange={this.handleChange} maxLength="100"/></td>
+                                <td><input type="text" name="playerParentName" value={this.state.playerParentName} onChange={this.handleChange} maxLength="100"/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent PhoneNum:</label></td>
-                                <td><input type="text" name="playerParentPhoneNum" required="required" value={this.state.playerParentPhoneNum} onChange={this.handleChange} maxLength="15"/></td>
+                                <td><input type="text" name="playerParentPhoneNum"  value={this.state.playerParentPhoneNum} onChange={this.handleChange} maxLength="15"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Referral Perspon:</label></td>
+                                <td><input type="text" name="playerReferralPerspon"  value={this.state.playerReferralPerspon} onChange={this.handleChange} maxLength="100"/></td>
                             </tr>
                             <tr>
                                 <td><label>Address:</label></td>
                                 <td><textarea name="playerAddress" required="required" value={this.state.playerAddress} onChange={this.handleChange} maxLength="170"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Sport:</label></td>
+                                <td><input type="text" name="playerSport"  value={this.state.playerSport} onChange={this.handleChange} maxLength="60"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>School:</label></td>
+                                <td><input type="text" name="playerSchool"  value={this.state.playerSchool} onChange={this.handleChange} maxLength="60"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Consent:</label></td>
+                                <td><input type="text" name="playerConsent"  value={this.state.playerConsent} onChange={this.handleChange} maxLength="30"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Coach Manager:</label></td>
+                                <td><input type="text" name="playerCoachManager"  value={this.state.playerCoachManager} onChange={this.handleChange} maxLength="100"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Visa:</label></td>
+                                <td><input type="text" name="playerVisa" value={this.state.playerVisa} onChange={this.handleChange} maxLength="100"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Note:</label></td>
+                                <td><textarea name="playerNote" value={this.state.playerNote} onChange={this.handleChange} maxLength="500"/></td>
                             </tr>
                             <tr>
                                 <td><label>Player Photo:</label></td>

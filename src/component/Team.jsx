@@ -96,6 +96,10 @@ class Team extends React.Component{
                 <td>{this.state.teamInfo[teamIndex].teamName}</td>
                 <td>{this.state.teamInfo[teamIndex].teamClub}</td>
                 <td>{this.state.teamInfo[teamIndex].teamAddress}</td>
+                <td>{this.state.teamInfo[teamIndex].teamCoachName}</td>
+                <td>{this.state.teamInfo[teamIndex].teamCoachPhoneNum}</td>
+                <td>{this.state.teamInfo[teamIndex].teamManagerName}</td>
+                <td>{this.state.teamInfo[teamIndex].teamManagerPhoneNum}</td>
                 <td style={mystyle}>{status}</td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow2(teamIndex)}>Edit</Button></td>
             </tr>
@@ -190,6 +194,10 @@ class Team extends React.Component{
                                 <th>Name</th>
                                 <th>Club</th>
                                 <th>Address</th>
+                                <th>Coach</th>
+                                <th>Coach Phone</th>
+                                <th>Manager</th>
+                                <th>Manager Phone</th>
                                 <th>Status</th>
                                 <th>Edit</th>
                             </tr>

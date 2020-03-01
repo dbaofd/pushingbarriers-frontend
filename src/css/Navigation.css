@@ -1,12 +1,12 @@
 #NavigationBar{
     width:100%;
-    height:5%;
+    height: 7%;
     background: #35527b;
     font-size: 1rem;
     color: white;
 }
 #NavigationBar-column1{
-    width:40%;
+    width:7%;
     height:100%;
     float:left;
     display: flex;/*make contents in vertical center position*/
@@ -14,16 +14,17 @@
     align-items: center;
     text-align: left;
     padding-left: 2%;
-    font-size: 1.3rem;
+    
 }
 #NavigationBar-column2{
-    width:15%;
+    width:48%;
     height:100%;
     float:left;
     display: flex;/*make contents in vertical center position*/
     display: -webkit-flex; /* Safari */
-    justify-content: center;
     align-items: center;
+    text-align: left;
+    font-size: 1.3rem;
 }
 #NavigationBar-column3{
     width:15%;

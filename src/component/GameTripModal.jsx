@@ -60,6 +60,7 @@ class GameTripModal extends React.Component{
             return (
                 <>
                     <option value="0">Unconfirmed</option>
+                    <option name="shouldremove" value="1">Confirmed</option>
                     <option value="3">Cancelled</option>
                 </>
             );
@@ -67,6 +68,7 @@ class GameTripModal extends React.Component{
             return (
                 <>
                     <option value="1">Confirmed</option>
+                    <option name="shouldremove" value="0">Unconfirmed</option>
                     <option value="3">Cancelled</option>
                 </>
             );
@@ -74,6 +76,7 @@ class GameTripModal extends React.Component{
             return (
                 <>
                     <option value="3">Cancelled</option>
+                    <option name="shouldremove" value="1">Confirmed</option>
                     <option value="0">Unconfirmed</option>
                 </>
             );
@@ -129,7 +132,7 @@ class GameTripModal extends React.Component{
                             <tr>
                                 <td><label>Status:</label></td>
                                 <td>
-                                    <select name="tripStatus" onChange={this.handleChange}>
+                                    <select name="tripStatus" value={this.state.tripStatus} onChange={this.handleChange}>
                                         {this.setOptions()}
                                     </select>
                                 </td>

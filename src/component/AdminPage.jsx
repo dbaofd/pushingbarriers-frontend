@@ -13,14 +13,15 @@ import GameTrip from './GameTrip';
 import Trip from './Trip';
 import InvitationCode from './InvitationCode';
 import FreeDriver from './FreeDriver';
+import BurgerSideBar from './BurgerSideBar';
 import '../config.js';
-import '../css/AdminPage.css'
+import '../css/AdminPage.css';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
 
 
 const brewing=()=>{
     return(
-        <div><h1>Brewing soon</h1></div>
+        <div><h1>This is home</h1></div>
     );
 }
 
@@ -70,30 +71,29 @@ class AdminPage extends React.Component{
             <>
             {this.state.isValid?
             <>
-            <BrowserRouter>
-            <Navigation/>
-            <div id="mycontainer">
-                <div id="myside">
-                <SlideBar/>
+            
+            <BrowserRouter id="outcontainer">
+                <BurgerSideBar pageWrapId={ "mycontainer "} outerContainerId={"outcontainer"}/>
+                <Navigation/>
+                <div id="mycontainer">
+                    <div id="router-switch"> 
+                        <Switch>
+                            <Route path="/" component={brewing} exact/>
+                            <Route path="/Game" component={Game}/>
+                            <Route path="/Training" component={Training}/>
+                            <Route path="/Trainingtemplate" component={Trainingtemplate}/>
+                            <Route path="/Player" component={Player}/>
+                            <Route path="/Driver" component={Driver}/>
+                            <Route path="/Team" component={Team}/>
+                            <Route path="/PlayerTeam" component={PlayerTeam}/>
+                            <Route path="/GameTrip" component={GameTrip}/>
+                            <Route path="/Trip" component={Trip}/>
+                            <Route path="/InvitationCode" component={InvitationCode}/>
+                            <Route path="/FreeDriver" component={FreeDriver}/>
+                            <Route component={Error}/>
+                        </Switch>
+                    </div>
                 </div>
-                <div id="router-switch"> 
-                <Switch>
-                    <Route path="/" component={brewing} exact/>
-                    <Route path="/Game" component={Game}/>
-                    <Route path="/Training" component={Training}/>
-                    <Route path="/Trainingtemplate" component={Trainingtemplate}/>
-                    <Route path="/Player" component={Player}/>
-                    <Route path="/Driver" component={Driver}/>
-                    <Route path="/Team" component={Team}/>
-                    <Route path="/PlayerTeam" component={PlayerTeam}/>
-                    <Route path="/GameTrip" component={GameTrip}/>
-                    <Route path="/Trip" component={Trip}/>
-                    <Route path="/InvitationCode" component={InvitationCode}/>
-                    <Route path="/FreeDriver" component={FreeDriver}/>
-                    <Route component={Error}/>
-                </Switch>
-                </div>
-            </div>
             </BrowserRouter>
             </>
             :

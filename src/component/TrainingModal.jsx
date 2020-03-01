@@ -68,6 +68,7 @@ class TrainingModal extends React.Component{
             return (
                 <>
                     <option value="0">Unconfirmed</option>
+                    <option name="shouldremove" value="1">Confirmed</option>
                     <option value="3">Cancelled</option>
                 </>
             );
@@ -75,6 +76,7 @@ class TrainingModal extends React.Component{
             return (
                 <>
                     <option value="1">Confirmed</option>
+                    <option name="shouldremove" value="0">Unconfirmed</option>
                     <option value="3">Cancelled</option>
                 </>
             );
@@ -82,6 +84,7 @@ class TrainingModal extends React.Component{
             return (
                 <>
                     <option value="0">Unconfirmed</option>
+                    <option name="shouldremove" value="1">Confirmed</option>
                     <option value="3">Cancelled</option>
                 </>
             );
@@ -89,6 +92,7 @@ class TrainingModal extends React.Component{
             return (
                 <>
                     <option value="3">Cancelled</option>
+                    <option name="shouldremove" value="1">Confirmed</option>
                     <option value="0">Unconfirmed</option>
                 </>
             );
@@ -240,7 +244,7 @@ class TrainingModal extends React.Component{
                             <tr>
                                 <td><label>Status:</label></td>
                                 <td>
-                                    <select name="trainingStatus" onChange={this.handleChange}>
+                                    <select name="trainingStatus" value={this.state.trainingStatus} onChange={this.handleChange}>
                                         {this.setOptions()}
                                     </select>
                                 </td>

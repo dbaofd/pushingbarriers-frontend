@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button,Table, Modal, ModalBody, ModalFooter} from "react-bootstrap";
+import {Button,Table, Modal, ModalBody, ModalFooter, Dropdown, DropdownButton} from "react-bootstrap";
 import Moment from 'moment';
 import ReactToExcel from 'react-html-table-to-excel';
 
@@ -8,6 +8,7 @@ import '../config.js';
 import ResetDriverPasswordModal from './ResetDriverPasswordModal';
 import FreezeDriverAccountModal from './FreezeDriverAccountModal';
 import ImageModal from './ImageModal';
+import DriverModal from './DriverModal';
 import * as MyToast from '../tools/MyToast';
 
 var drivers;
@@ -58,6 +59,10 @@ class Driver extends React.Component{
         this.child3=ref;
     }
 
+    onRefForDriverModal = (ref) =>{
+        this.child4=ref;
+    }
+
     handleModalShow(driverId, driverName){
         this.child.handleShow(driverId, driverName);
     }
@@ -68,6 +73,10 @@ class Driver extends React.Component{
 
     handleModalShow3(driverId, driverName, driverAvailability){
         this.child3.handleShow(driverId, driverName, driverAvailability);
+    }
+
+    handleModalShow4(driverIndex){
+        this.child4.handleShow(driverIndex);
     }
     availabilityTransformation(availability){
         if(availability===0){
@@ -104,14 +113,26 @@ class Driver extends React.Component{
                 <td>{this.state.driverInfo[driverIndex].driverPlateNum}</td>
                 <td>{Moment(this.state.driverInfo[driverIndex].driverBirthday).format('YYYY/MM/DD')}</td>
                 <td>{this.state.driverInfo[driverIndex].driverAddress}</td>
+                <td>{this.state.driverInfo[driverIndex].driverEmail}</td>
+                <td>{this.state.driverInfo[driverIndex].driverStartDate===null?"NA":Moment(this.state.driverInfo[driverIndex].driverStartDate).format('YYYY/MM/DD')}</td>
+                <td>{this.state.driverInfo[driverIndex].driverEndDate===null?"NA":Moment(this.state.driverInfo[driverIndex].driverEndDate).format('YYYY/MM/DD')}</td>
+                <td>{this.state.driverInfo[driverIndex].driverSeatCapacity}</td>
                 <td style={tdStyle}>{this.availabilityTransformation(this.state.driverInfo[driverIndex].driverAvailability)}</td>
+                <td><div className="driver_note_div">{this.state.driverInfo[driverIndex].driverNote}</div></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverLicense",this.state.driverInfo[driverIndex].driverUserName)}>License</Button></td>
                 <td><Button variant="info" onClick={()=>this.handleModalShow2(this.state.driverInfo[driverIndex].driverId,"driverBluecard",this.state.driverInfo[driverIndex].driverUserName)}>Bluecard</Button></td>
-                <td><Button variant="info" onClick={()=>this.handleModalShow(this.state.driverInfo[driverIndex].driverId,this.state.driverInfo[driverIndex].driverName)}>Reset</Button></td>
                 <td>
-                    <Button variant="info" onClick={()=>this.handleModalShow3(this.state.driverInfo[driverIndex].driverId, this.state.driverInfo[driverIndex].driverName, this.state.driverInfo[driverIndex].driverAvailability)}>
-                        {this.state.driverInfo[driverIndex].driverAvailability===2?"Unfreeze":"Freeze"}
-                    </Button>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        Operations
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                        <Dropdown.Item onClick={()=>this.handleModalShow(this.state.driverInfo[driverIndex].driverId,this.state.driverInfo[driverIndex].driverName)}>Reset</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>this.handleModalShow3(this.state.driverInfo[driverIndex].driverId, this.state.driverInfo[driverIndex].driverName, this.state.driverInfo[driverIndex].driverAvailability)}>{this.state.driverInfo[driverIndex].driverAvailability===2?"Unfreeze":"Freeze"}</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>this.handleModalShow4(driverIndex)}>Edit</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </td>
             </tr>
         );
@@ -200,11 +221,15 @@ class Driver extends React.Component{
                                 <th>PlateNum</th>
                                 <th>Birthday</th>
                                 <th>Address</th>
+                                <th>Email</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Seat Capacity</th>
                                 <th>Availability</th>
+                                <th>Note</th>
                                 <th>License</th>
                                 <th>Bluecard</th>
-                                <th>Reset</th>
-                                <th>Freeze</th>
+                                <th>Operations</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -214,6 +239,10 @@ class Driver extends React.Component{
                     <ResetDriverPasswordModal onRef={this.onRefForResetPassword}/>
                     <ImageModal onRef={this.onRefForImageModal}/>
                     <FreezeDriverAccountModal onRef={this.onRefForFreezeDriverAccount} onSubmited={this.searchDriverByName.bind(this)}/>
+                    <DriverModal 
+                    onRef={this.onRefForDriverModal}
+                    allDrivers={this.state.driverInfo}
+                    onSubmited={this.searchDriverByName.bind(this)}/>
                 </div>
             </div>);
     }

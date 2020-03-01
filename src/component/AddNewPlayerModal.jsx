@@ -109,6 +109,13 @@ class AddNewPlayerModal extends React.Component{
         formData.append('playerPhoto', this.state.selectedImage);
         formData.append('playerAddress',this.newPlayerAddress.value);
         formData.append('playerStatus', this.selectedStatus.value);
+        formData.append('playerReferralPerspon', this.newPlayerReferralPerspon.value);
+        formData.append('playerSchool',this.newPlayerSchool.value);
+        formData.append('playerConsent',this.newPlayerConsent.value);
+        formData.append('playerCoachManager',this.newPlayerCoachManager.value);
+        formData.append('playerVisa',this.newPlayerVisa.value);
+        formData.append('playerNote', this.newPlayerNote.value);
+        formData.append('playerSport', this.newPlayerSport.value);
         let teamList=[];
         for(let i=0;i<selectedTeams.length;i++){
             teamList.push(selectedTeams[i].teamId);
@@ -158,7 +165,6 @@ class AddNewPlayerModal extends React.Component{
                                     <select  ref = {(input)=> this.newPlayerGender = input}>
                                         <option>Female</option>
                                         <option>Male</option>
-                                        <option>Other</option>
                                     </select>
                                 </td>
                             </tr>
@@ -170,19 +176,47 @@ class AddNewPlayerModal extends React.Component{
                             </tr>
                             <tr>
                                 <td><label>PhoneNum:</label></td>
-                                <td><input type="text" maxLength="15" required="required" ref = {(input)=> this.newPlayerPhoneNum = input}/></td>
+                                <td><input type="text" maxLength="15" ref = {(input)=> this.newPlayerPhoneNum = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent Name:</label></td>
-                                <td><input type="text" maxLength="100" required="required" ref = {(input)=> this.newPlayerParentName = input}/></td>
+                                <td><input type="text" maxLength="100" ref = {(input)=> this.newPlayerParentName = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Parent PhoneNum:</label></td>
-                                <td><input type="text"  maxLength="15" required="required" ref = {(input)=> this.newPlayerParentPhoneNum = input}/></td>
+                                <td><input type="text"  maxLength="15" ref = {(input)=> this.newPlayerParentPhoneNum = input}/></td>
                             </tr>
                             <tr>
                                 <td><label>Address:</label></td>
                                 <td><textarea maxLength="170" required="required" ref = {(input)=> this.newPlayerAddress = input}/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Sport:</label></td>
+                                <td><input type="text" ref = {(input)=> this.newPlayerSport = input} maxLength="60"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>School:</label></td>
+                                <td><input type="text" ref = {(input)=> this.newPlayerSchool = input} maxLength="60"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Consent:</label></td>
+                                <td><input type="text" ref = {(input)=> this.newPlayerConsent = input} maxLength="30"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Coach Manager:</label></td>
+                                <td><input type="text" ref = {(input)=> this.newPlayerCoachManager = input}maxLength="100"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Visa:</label></td>
+                                <td><input type="text" ref = {(input)=> this.newPlayerVisa = input} maxLength="100"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Referral Perspon:</label></td>
+                                <td><input type="text" ref = {(input)=> this.newPlayerReferralPerspon = input} maxLength="100"/></td>
+                            </tr>
+                            <tr>
+                                <td><label>Note:</label></td>
+                                <td><textarea ref = {(input)=> this.newPlayerNote = input} maxLength="500"/></td>
                             </tr>
                             <tr>
                                 <td><label>Player Photo:</label></td>

@@ -1,0 +1,51 @@
+#freedriver{
+    height: 100%;
+    width:100%;
+}
+
+#freedriver-bar{
+    height:7%;
+    width:100%;
+    background-color: #35527b;
+}
+
+#freedriver-bar div{
+    height:100%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+#freedriver-export-excel{
+    height:100%;
+    width:7%;
+}
+
+#freedriver-search{
+    height:100%;
+    width:9%;
+}
+
+#freedriver-select-box{
+    height:100%;
+    width:10%;
+}
+
+#freedriver-select{
+    width:80%;
+}
+
+#freedriver-table{
+    height:93%;
+    width:100%;
+    overflow-y: auto;
+    overflow-x:auto;
+}
+
+#totalNumberOfFreeDrivers{
+    height:100%;
+    width:10%;
+    color: white;
+}

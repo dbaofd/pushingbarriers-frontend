@@ -1,0 +1,40 @@
+#img_div{
+    width:600px;
+    height:450px;
+    text-align: center;
+    display:table-cell;
+    vertical-align: middle;
+}
+
+#img_div img{
+    max-height:100%;
+    max-width:100%;
+}
+
+#upload tr{
+    height:100%;
+    width:100%;
+    text-align: center;
+}
+#upload label{
+    display:block;
+    text-align: right;
+    height:20px;
+    width:150px;
+    margin-right:15px;
+}
+
+#upload input{
+    text-align: left;
+    outline: none;
+    height:20px;
+    width:200px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(218, 222, 216);
+    
+}
+
+.modal-content{
+    width: 600px;
+}

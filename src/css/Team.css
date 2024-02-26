@@ -1,0 +1,74 @@
+#team{
+    height:100%;
+    width:100%;
+}
+
+#team-bar{
+    height:7%;
+    width:100%;
+    background-color: #35527b;
+}
+
+#team-table{
+    height:93%;
+    width:100%;
+    overflow-y: auto;
+    overflow-x:auto;
+}
+
+
+#team-bar div{
+    height:100%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+#team-name-textbox{
+    height:100%;
+    width:15%;
+}
+#team-name-input{
+    outline: none;
+    border-radius: 5px;
+}
+
+#team-add{
+    height:100%;
+    width:9%;
+}
+#team-select-box{
+    height:100%;
+    width:8%;
+}
+
+#team-select-box select{
+    outline:none;
+}
+
+#searchby-select-box{
+    height:100%;
+    width:10%;
+}
+
+#searchby-select{
+    width:100%;
+}
+#team-search{
+    height:100%;
+    width:9%;
+}
+
+#team-export-excel{
+    height:100%;
+    width:7%;
+}
+
+#totalNumberOfTeams{
+    height:100%;
+    width:10%;
+    color: white;
+}

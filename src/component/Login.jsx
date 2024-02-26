@@ -1,7 +1,10 @@
 import React from "react";
+import md5 from 'md5';
+
 import '../css/Login.css';
-import md5 from 'md5'
-var api=""
+import '../config.js';
+import * as MyToast from '../tools/MyToast';
+
 class Login extends React.Component{
     constructor(props){
         super(props);
@@ -18,14 +21,13 @@ class Login extends React.Component{
     }
     inputChangeForAdminPassword(){
         let val=this.refs.adminpassword.value;
-        const salt="fjeiojgoeigjgokwao";
-        let md5Pwd=md5(md5(val+salt));
+        let md5Pwd=md5(md5(val+global.constants.salt));
         this.setState({ 
             adminpassword:md5Pwd
         });
     }
     loginRequest(){
-        let url=api+"/login";
+        let url=global.constants.api+"/login";
         let formData=new FormData();
         formData.append('adminName',this.state.adminname);
         formData.append('adminPassword',this.state.adminpassword);
@@ -34,27 +36,34 @@ class Login extends React.Component{
             body: formData,
         }).then(res => res.json()
         ).then(data => {
-            if (data.msg=="wrong_password"){
+            if (data.msg==="wrong_password"){
                 this.setState({
                     namebordercolor:"#fff",
                     pswbordercolor:"red"
                 })
-            }else if(data.msg=="wrong_admin_name"){
+            }else if(data.msg==="wrong_admin_name"){
                 this.setState({
                     namebordercolor:"red",
                     pswbordercolor:"#fff"
                 })
-            }else if(data.msg=="fail_to_connect_radis"){
-                alert("fail_to_connect_radis");
-            }else{
+            }else if(data.msg==="fail_to_connect_radis"){
+                MyToast.notify(data.msg, "error");
+            }else if(data.msg==="already_logged_in"){
+                MyToast.notify(data.msg, "error");
+                //alert("already_logged_in");
+            }else if(data.msg==="success"){
                 this.setState({
                     namebordercolor:"#fff",
                     pswbordercolor:"#fff"
                 });
-                localStorage.setItem("token",data.msg);
+                localStorage.setItem("token",data.token);
                 localStorage.setItem("adminName",this.state.adminname);
                 this.props.history.push('/');
             }
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
     render(){
@@ -72,7 +81,7 @@ class Login extends React.Component{
                             </tr>
                             <tr>
                                 <td>
-                                    <input className="mytext" id="btnlogin" type="button" value="Login" onClick={()=>this.loginRequest()}/>
+                                    <input className="mytext" id="btnlogin" style={{backgroundColor:"white"}} type="button" value="Login" onClick={()=>this.loginRequest()}/>
                                 </td>
                             </tr>
                         </tbody>

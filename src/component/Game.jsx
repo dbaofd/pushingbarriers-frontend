@@ -1,14 +1,19 @@
 import React from 'react';
 import {Button,Table} from "react-bootstrap"
-import '../css/Game.css';
-import MyPagination from './MyPagination';
 import moment from 'moment';
 import ReactToExcel from 'react-html-table-to-excel';
+
+import '../css/Game.css';
+import '../config.js';
+import MyPagination from './MyPagination';
+import * as MyToast from '../tools/MyToast';
+
 var currentPage=1;//initialize current page, this global variable makes sense
 //when we put "currentPage" in state, every time when we try to update it, 
 //setState just can't immediately update its value, which may 
 //cause problem in requesting data of different pages
-var api=""
+
+
 class Game extends React.Component{
     constructor(props){
         super(props);
@@ -20,9 +25,10 @@ class Game extends React.Component{
             updateTime:"",
         }
     }
+    
 
     getAllTeams(){
-        let url=api+"/allteams";
+        let url=global.constants.api+"/allteams";
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -30,18 +36,22 @@ class Game extends React.Component{
             headers:headers,//we need to put correct token to send the request
         }).then(res => res.json()
         ).then(data => {
-            if(data.code==401){
-                alert(data.message+" wrong token!");
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 allTeams:data,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
     getUpdateTime(){
-        let url=api+"/get-update-time";
+        let url=global.constants.api+"/get-update-time/1";
         let headers=new Headers();
         headers.append("token",localStorage.getItem("token"));
         fetch(url,{
@@ -49,15 +59,19 @@ class Game extends React.Component{
             headers:headers,
         }).then(res => res.json()
         ).then(data => {
-            if(data.code==401){
-                alert(data.message+" wrong token!");
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
                 data=[];
             }
             this.setState({
                 updateTime:moment(data.gameupdatetimeDate).format('YYYY/MM/DD'),
             });
-            console.log(data.gameupdatetimeDate);
-            console.log(moment(data.gameupdatetimeDate).format('YYYY/MM/DD'))
+            //console.log(data.gameupdatetimeDate);
+            //console.log(moment(data.gameupdatetimeDate).format('YYYY/MM/DD'))
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -67,7 +81,7 @@ class Game extends React.Component{
     }
 
     setTeamOptions(){
-        const teamOptions=[];//set team options, using info graped from database.
+        let teamOptions=[];//set team options, using info graped from database.
         teamOptions.push(
             <option key="Allteam">AllTeams</option>
         );
@@ -79,9 +93,10 @@ class Game extends React.Component{
         return teamOptions;
     }
 
-    getGameByPage(activePage){
-        currentPage=activePage;
-        let url=api+"/games/"+currentPage+"/"+this.selectedPagesize.value+"/"+this.selectedTeam.value+
+    getGameByPage=(activePage)=>{//this function will be used by child component
+        currentPage=activePage;//using => to define the function has benefits
+        //we don't need to put "bind(this)"  
+        let url=global.constants.api+"/games/"+currentPage+"/"+this.selectedPagesize.value+"/"+this.selectedTeam.value+
         "/"+this.selectedPeriod.value+"/"+this.selectedSortedAttr.value;
         //console.log(url);
         let headers=new Headers();
@@ -91,8 +106,8 @@ class Game extends React.Component{
             headers:headers,
         }).then(res => res.json()
         ).then(data => {
-            if(data.code==401){
-                alert(data.message+" wrong token!");
+            if(data.code===401){
+                MyToast.notify(data.message+" wrong token!", "error");
                 data.content=[];
                 data.totalPages=null;
                 data.totalElements=null;
@@ -102,6 +117,10 @@ class Game extends React.Component{
                 totalPages:data.totalPages,
                 totalElements:data.totalElements,
             });
+        }).catch(
+            (error)=>{
+                MyToast.notify("Network request failed", "error");
+                console.error('Error:', error);
         });
     }
 
@@ -170,7 +189,8 @@ class Game extends React.Component{
                     <div id="export-excel">
                         <ReactToExcel 
                         table="my-game-table" 
-                        filename="exportFile" 
+                        filename="exportGameInfo" 
+                        sheet="exportdriverInfo"
                         id="export-excel-btn"
                         buttonText="Export"/>
                     </div>
@@ -195,10 +215,15 @@ class Game extends React.Component{
                     </Table>
                 </div>
                 <div id="game-footer">
-                    <MyPagination totalPages={this.state.totalPages} totalElements={this.state.totalElements} updateTime={this.state.updateTime} currentPage={currentPage} fromParentGetGameByPage={this.getGameByPage.bind(this)}/>
+                    <MyPagination 
+                    totalPages={this.state.totalPages} 
+                    totalElements={this.state.totalElements} 
+                    updateTime={this.state.updateTime} 
+                    currentPage={currentPage} 
+                    loadNewPage={this.getGameByPage}/>
                 </div>
             </div>
-        );
+        );//here we don't need to write "this.getGameByPage.bind(this)"
     }
 }
 

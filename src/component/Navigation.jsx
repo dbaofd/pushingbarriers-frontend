@@ -1,4 +1,5 @@
 import React from 'react';
+import Moment from 'moment';
 import '../css/Navigation.css';
 class Navigation extends React.Component{
     constructor(props){
@@ -8,16 +9,14 @@ class Navigation extends React.Component{
             currentDate:new Date(),
         };
     }
-    getCurrentDate(){
-        return new Date().toLocaleDateString();
-    }
     render(){
         return(
             <div id="NavigationBar">
-                <div id="column1">Pushing Barriers Management System</div>
-                <div id="column3"></div>
-                <div id="column4">Welcome~ {this.state.adminName}</div>
-                <div id="column5">{this.getCurrentDate()}</div>
+                <div id="NavigationBar-column1"></div>
+                <div id="NavigationBar-column2">Pushing Barriers Management System</div>
+                <div id="NavigationBar-column3"></div>
+                <div id="NavigationBar-column4">Welcome~ {this.state.adminName}</div>
+                <div id="NavigationBar-column5">{Moment(new Date).format('YYYY/MM/DD')}</div>
             </div>
         );
     }

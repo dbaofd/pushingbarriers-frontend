@@ -1,0 +1,62 @@
+#driver{
+    height:100%;
+    width:100%;
+}
+
+#driver-bar{
+    height:7%;
+    width:100%;
+    background-color: #35527b;
+}
+
+#driver-table{
+    height:93%;
+    width:100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#driver-bar div{
+    height:100%;
+    float:right;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+#driver-name-textbox{
+    height:100%;
+    width:15%;
+}
+
+#driver-status-select{
+    height:100%;
+    width: 20%;
+}
+#driver-name-input{
+    outline: none;
+    border-radius: 5px;
+}
+
+#driver-search{
+    height:100%;
+    width:9%;
+}
+
+#driver-export-excel{
+    height:100%;
+    width:7%;
+}
+
+#totalNumberOfDrivers{
+    height:100%;
+    width:10%;
+    color: white;
+}
+
+.driver_note_div{
+    overflow-y: auto;
+    height:120px;
+}

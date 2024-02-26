@@ -1,0 +1,53 @@
+#newPlayerDetail tr{
+    height:100%;
+    width:100%;
+    text-align: center;
+}
+#newPlayerDetail label{
+    display:block;
+    text-align: right;
+    height:20px;
+    width:150px;
+    margin-right:15px;
+}
+
+#newPlayerDetail input{
+    text-align: left;
+    outline: none;
+    height:20px;
+    width:200px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(218, 222, 216);
+    
+}
+#newPlayerDetail textarea{
+    text-align: left;
+    outline: none;
+    height:50px;
+    width:200px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(218, 222, 216);
+}
+
+
+#newPlayerDetail select{
+    border: 0px;
+    width: 65px;
+    height:20px;
+    text-align: left;
+}
+
+.modal-content{
+    width: 450px;
+}
+
+.MuiAutocomplete-root{
+    width:200px;
+}
+
+.MuiInputBase-root{
+    border:none;
+
+}

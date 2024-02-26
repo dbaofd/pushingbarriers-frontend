@@ -1,0 +1,30 @@
+#trainingDetail tr{
+    height:100%;
+    width:100%;
+    display:block;
+    text-align: center;
+}
+#trainingDetail label{
+    display:block;
+    text-align: right;
+    height:20px;
+    width:50px;
+    margin-right:5px;
+}
+
+#trainingDetail input{
+    text-align: left;
+    border:1px;
+    outline: none;
+}
+
+#trainingDetail select{
+    border: 1px;
+    text-align: left;
+    outline: none;
+}
+
+.modal-content{
+    width: 400px;
+}
+
